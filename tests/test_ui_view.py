@@ -2,7 +2,7 @@ from unittest.mock import Mock
 
 import arcade
 
-from arcade_gui import UIView, KEY_PRESS, KEY_RELEASE, MOUSE_PRESS, MOUSE_SCROLL, MOUSE_RELEASE
+from arcade_gui import KEY_PRESS, KEY_RELEASE, MOUSE_PRESS, MOUSE_SCROLL, MOUSE_RELEASE, UIView
 
 
 def test_added_ui_element_is_drawn():

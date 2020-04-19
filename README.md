@@ -17,8 +17,14 @@ just have to contain one method to interact with user input.
 #### UIElement
 A general interface of an UI element.
 
+## Examples
 
-## Reference Pygame GUI projects
+* [UILabel](./examples/show_uilabel.py)
+
+
+## Background information and other frameworks
+
+### Reference Pygame GUI projects
 
 [Overview](https://www.pygame.org/wiki/gui)
 
@@ -40,6 +46,6 @@ A general interface of an UI element.
         * Themes can be read from JSON files
 
 
-## Ideas
+### Ideas
 * Create own implementation
 * Build adapter for PyGame GUI

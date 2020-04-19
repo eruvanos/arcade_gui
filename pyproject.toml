@@ -2,7 +2,7 @@
 name = "arcade_gui"
 version = "0.1.0"
 description = ""
-authors = ["eruvanos <eruvanos@ewetel.net>"]
+authors = ["Maic Siemering <maic@siemering.tech>"]
 
 [tool.poetry.dependencies]
 python = "^3.8"
