@@ -1,6 +1,6 @@
 from unittest.mock import Mock
 
-from arcade_gui import MOUSE_PRESS, UIView, UIEvent
+from arcade_gui import UIView, UIEvent, MOUSE_PRESS
 
 
 def test_view_tracks_focused_element():

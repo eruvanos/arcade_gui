@@ -3,7 +3,11 @@ from typing import List
 import arcade
 from arcade import View
 
-from arcade_gui import MOUSE_PRESS, MOUSE_RELEASE, MOUSE_SCROLL, KEY_PRESS, KEY_RELEASE
+MOUSE_PRESS = 'MOUSE_PRESS'
+MOUSE_RELEASE = 'MOUSE_RELEASE'
+MOUSE_SCROLL = 'MOUSE_SCROLL'
+KEY_PRESS = 'KEY_PRESS'
+KEY_RELEASE = 'KEY_RELEASE'
 
 
 class UIEvent:
@@ -27,7 +31,7 @@ class UIElement:
 
     def on_unfocus(self):
         """
-        Callback if the element gets unfocused aka not focused any more
+        Callback if the element gets unfocused aka is not focused any more
         """
         pass
 

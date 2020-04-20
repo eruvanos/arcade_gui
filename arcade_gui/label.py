@@ -1,6 +1,6 @@
 import arcade
 
-from arcade_gui.core import UIElement
+from arcade_gui import UIElement
 
 
 class UILabel(UIElement):

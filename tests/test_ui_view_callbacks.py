@@ -1,11 +1,12 @@
-from unittest.mock import Mock
+from unittest.mock import Mock, patch
 
 import arcade
 
-from arcade_gui import KEY_PRESS, KEY_RELEASE, MOUSE_PRESS, MOUSE_SCROLL, MOUSE_RELEASE, UIView
+from arcade_gui import UIView
+from arcade_gui import MOUSE_PRESS, MOUSE_RELEASE, MOUSE_SCROLL, KEY_PRESS, KEY_RELEASE
 
-
-def test_added_ui_element_is_drawn():
+@patch('arcade.start_render')
+def test_added_ui_element_is_drawn(start_render):
     subject = UIView()
     ui_element = Mock()
     subject.add_ui_element(ui_element)
