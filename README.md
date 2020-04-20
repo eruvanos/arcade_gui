@@ -20,6 +20,18 @@ A general interface of an UI element.
 ## Examples
 
 * [UILabel](./examples/show_uilabel.py)
+* [UIButton](./examples/show_uibutton.py)
+
+
+## Features for first release
+
+* [x] UILabel
+* [x] UIButton
+* [x] Focused element tracked
+* [ ] UIImageButton
+* [ ] UITextInput
+* [ ] UIElements emit own UIEvents
+* [ ] Theme support
 
 
 ## Background information and other frameworks
