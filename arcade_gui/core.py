@@ -19,13 +19,41 @@ class UIElement:
     def on_draw(self):
         pass
 
+    def on_focus(self):
+        """
+        Callback if the element gets focused
+        """
+        pass
+
+    def on_unfocus(self):
+        """
+        Callback if the element gets unfocused aka not focused any more
+        """
+        pass
+
     def on_update(self, dt: float):
         pass
+
+    def hover_point(self, hover_x: float, hover_y: float) -> bool:
+        """
+        Test if a given point counts as 'hovering' this UI element. Normally that is a
+        straightforward matter of seeing if a point is inside the rectangle. Occasionally it
+        will also check if we are in a wider zone around a UI element once it is already active,
+        this makes it easier to move scroll bars and the like.
+
+        :param hover_x: The x (horizontal) position of the point.
+        :param hover_y: The y (vertical) position of the point.
+
+        :return: Returns True if we are hovering this element.
+
+        """
+        return False
 
 
 class UIView(View):
     def __init__(self, *args, **kwargs):
         super().__init__()  # Here happens a lot of stuff we don't need
+        self.focused_element = None
 
         self._ui_elements: List[UIElement] = []
 
@@ -55,7 +83,20 @@ class UIView(View):
             ui_element.on_draw()
 
     def on_event(self, event: UIEvent):
+        """
+        Processes UIEvents, forward events to registered elements and manages focused element
+        """
         for ui_element in self._ui_elements:
+            if event.type == MOUSE_PRESS:
+                if ui_element.hover_point(event.x, event.y):
+                    ui_element.on_focus()
+                    self.focused_element = ui_element
+
+                elif ui_element is self.focused_element:
+                    if self.focused_element:
+                        self.focused_element.on_unfocus()
+                    self.focused_element = None
+
             ui_element.on_event(event)
 
     def on_mouse_press(self, x: float, y: float, button: int, modifiers: int):
