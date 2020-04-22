@@ -18,6 +18,11 @@ class UIEvent:
         self.type = type
         self.__dict__.update(**kwargs)
 
+        self._repr_keys = tuple(kwargs.keys())
+
+    def __str__(self):
+        return ' '.join([f'{self.type} ', *[f'{key}={getattr(self, key)}' for key in self._repr_keys]])
+
 
 class UIElement:
     def on_event(self, event: UIEvent):
