@@ -4,14 +4,17 @@ from arcade_gui import UIElement
 
 
 class UILabel(UIElement):
-    def __init__(self, text, x, y, color=arcade.color.BLACK, font_size=22,
+    def __init__(self, text, x, y,
+                 color=arcade.color.BLACK,
+                 font_size=22,
                  anchor_x="center",
                  anchor_y="center",
                  width: int = 0,
                  align="center",
                  font_name=('Calibri', 'Arial'),
                  bold: bool = False,
-                 italic: bool = False, rotation=0):
+                 italic: bool = False,
+                 rotation=0):
         self.text = text
         self.x = x
         self.y = y
@@ -28,7 +31,11 @@ class UILabel(UIElement):
         self.active = True
 
     def on_draw(self):
-        arcade.draw_text(self.text, self.x, self.y, self.color, font_size=self.font_size,
+        arcade.draw_text(self.text,
+                         self.x,
+                         self.y,
+                         self.color,
+                         font_size=self.font_size,
                          anchor_x=self.anchor_x,
                          anchor_y=self.anchor_y,
                          width=self.width, align=self.align,
