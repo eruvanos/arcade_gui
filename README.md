@@ -26,13 +26,26 @@ A general interface of an UI element.
 ## Features for first release
 
 * [x] UILabel
+    * [ ] Align with UITextInput
 * [x] UIButton
 * [x] Focused element tracked
+* [x] UITextInput
+    * [x] Basic setup
+    * [ ] Textured frame
+    * [ ] Scroll text with cursor
+    * [ ] Set max length
+    * [ ] Emit event on ENTER
 * [ ] UIImageButton
-* [ ] UITextInput
+* [ ] UITextArea
 * [ ] UIElements emit own UIEvents
 * [ ] Theme support
 
+### Chores
+
+* [ ] harmonize constructors `x, y` vs `center_x, center_y`
+* [ ] improve docs
+    * [ ] setup readthedocs
+    * [ ] fix reference to examples
 
 ## Background information and other frameworks
 
