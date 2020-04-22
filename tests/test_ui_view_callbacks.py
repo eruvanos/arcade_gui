@@ -1,9 +1,12 @@
 from unittest.mock import Mock, patch
 
 import arcade
+from arcade.key import MOTION_UP
 
+from arcade_gui import MOUSE_PRESS, MOUSE_RELEASE, MOUSE_SCROLL, KEY_PRESS, KEY_RELEASE, TEXT_MOTION_SELECTION
 from arcade_gui import UIView
-from arcade_gui import MOUSE_PRESS, MOUSE_RELEASE, MOUSE_SCROLL, KEY_PRESS, KEY_RELEASE
+from arcade_gui import TEXT_INPUT, TEXT_MOTION
+
 
 @patch('arcade.start_render')
 def test_added_ui_element_is_drawn(start_render):
@@ -93,3 +96,38 @@ def test_on_key_release_passes_an_event():
     event, *_ = ui_element.on_event.call_args.args
     assert event.type == KEY_RELEASE
     assert event.symbol == arcade.key.ENTER
+
+
+def test_on_text_passes_an_event():
+    subject = UIView()
+    ui_element = Mock()
+    subject.add_ui_element(ui_element)
+
+    subject.on_text('a')
+
+    event, *_ = ui_element.on_event.call_args.args
+    assert event.type == TEXT_INPUT
+    assert event.text == 'a'
+
+
+def test_on_text_motion_passes_an_event():
+    subject = UIView()
+    ui_element = Mock()
+    subject.add_ui_element(ui_element)
+
+    subject.on_text_motion(MOTION_UP)
+
+    event, *_ = ui_element.on_event.call_args.args
+    assert event.type == TEXT_MOTION
+    assert event.motion == MOTION_UP
+
+def test_on_text_motion_selection_passes_an_event():
+    subject = UIView()
+    ui_element = Mock()
+    subject.add_ui_element(ui_element)
+
+    subject.on_text_motion_selection(MOTION_UP)
+
+    event, *_ = ui_element.on_event.call_args.args
+    assert event.type == TEXT_MOTION_SELECTION
+    assert event.selection == MOTION_UP

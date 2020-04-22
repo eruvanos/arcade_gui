@@ -1,13 +1,16 @@
 from typing import List
 
 import arcade
-from arcade import View
 
 MOUSE_PRESS = 'MOUSE_PRESS'
 MOUSE_RELEASE = 'MOUSE_RELEASE'
 MOUSE_SCROLL = 'MOUSE_SCROLL'
 KEY_PRESS = 'KEY_PRESS'
 KEY_RELEASE = 'KEY_RELEASE'
+
+TEXT_INPUT = 'TEXT_INPUT'
+TEXT_MOTION = 'TEXT_MOTION'
+TEXT_MOTION_SELECTION = 'TEXT_MOTION_SELECTION'
 
 
 class UIEvent:
@@ -54,7 +57,7 @@ class UIElement:
         return False
 
 
-class UIView(View):
+class UIView(arcade.View):
     def __init__(self, *args, **kwargs):
         super().__init__()  # Here happens a lot of stuff we don't need
         self.focused_element = None
@@ -130,4 +133,19 @@ class UIView(View):
         self.on_event(UIEvent(KEY_RELEASE,
                               symbol=symbol,
                               modifiers=modifiers
+                              ))
+
+    def on_text(self, text):
+        self.on_event(UIEvent(TEXT_INPUT,
+                              text=text,
+                              ))
+
+    def on_text_motion(self, motion):
+        self.on_event(UIEvent(TEXT_MOTION,
+                              motion=motion,
+                              ))
+
+    def on_text_motion_selection(self, selection):
+        self.on_event(UIEvent(TEXT_MOTION_SELECTION,
+                              selection=selection,
                               ))
