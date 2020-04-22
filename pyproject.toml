@@ -1,11 +1,33 @@
 [tool.poetry]
 name = "arcade_gui"
-version = "0.1.0"
-description = ""
+version = "0.1.0a0"
+description = "GUI extension for the Python game library Arcade  https://arcade.academy/"
 authors = ["Maic Siemering <maic@siemering.tech>"]
 
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.6",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Topic :: Games/Entertainment :: Arcade",
+    "Topic :: Software Development :: User Interfaces",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+license = "MIT"
+readme = "README.md"
+homepage="https://github.com/eruvanos/arcade_gui"
+repository="https://github.com/eruvanos/arcade_gui"
+documentation="https://github.com/eruvanos/arcade_gui"
+keywords = ["arcade", "game", "gui"]
+#packages = []
+
+
 [tool.poetry.dependencies]
-python = "^3.8"
+python = ">=3.6"
 arcade = "^2.3.15"
 
 [tool.poetry.dev-dependencies]
