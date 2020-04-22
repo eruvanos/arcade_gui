@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/eruvanos/arcade_gui.svg?branch=master)](https://travis-ci.org/eruvanos/arcade_gui)
+
 # GUI Library for Python Arcade
 
 This project targets to offer simple to complex ui elements
@@ -35,10 +37,12 @@ A general interface of an UI element.
     * [ ] Scroll text with cursor
     * [ ] Set max length
     * [ ] Emit event on ENTER
+* [ ] UIElements emit own UIEvents
+    * [ ] UIButton
 * [ ] UIImageButton
 * [ ] UITextArea
-* [ ] UIElements emit own UIEvents
 * [ ] Theme support
+* [x] CI/CD
 
 ### Chores
 
