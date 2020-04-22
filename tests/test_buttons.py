@@ -1,6 +1,6 @@
 from unittest.mock import Mock
 
-from arcade_gui.button import UIButton
+from arcade_gui import UIButton
 from tests import TestUIView
 
 
@@ -79,3 +79,14 @@ def test_uibutton_not_clicked_if_released_beside():
     view.release(100, 100)
 
     assert not button.on_click.called
+
+
+def test_uibutton_send_custom_event():
+    view = TestUIView()
+    button: UIButton = UIButton('hello world', center_x=50, center_y=50, width=40, height=40)
+    view.add_ui_element(button)
+
+    view.click(50, 50)
+
+    assert view.last_event.type == UIButton.CLICKED
+    assert view.last_event.ui_element == button

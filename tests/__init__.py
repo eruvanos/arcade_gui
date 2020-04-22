@@ -1,4 +1,5 @@
 from contextlib import ExitStack
+from typing import List
 from unittest.mock import patch
 
 import pytest
@@ -7,6 +8,9 @@ import arcade_gui
 
 
 class TestUIView(arcade_gui.UIView):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.event_history: List[arcade_gui.UIEvent] = []
 
     def click_and_hold(self, x: int, y: int):
         self.on_event(arcade_gui.UIEvent(
@@ -31,7 +35,12 @@ class TestUIView(arcade_gui.UIView):
         self.release(x, y)
 
     def on_event(self, event: arcade_gui.UIEvent):
+        self.event_history.append(event)
         super().on_event(event)
+
+    @property
+    def last_event(self):
+        return self.event_history[-1] if self.event_history else None
 
 
 def T(name, *args):

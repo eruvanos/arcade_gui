@@ -8,6 +8,8 @@ from arcade_gui import UIElement, UIEvent, MOUSE_PRESS, MOUSE_RELEASE
 class UIButton(UIElement):
     """ Text-based button """
 
+    CLICKED = 'CLICKED'
+
     def __init__(self,
                  text,
                  center_x, center_y,
@@ -59,6 +61,7 @@ class UIButton(UIElement):
 
                 if self.hover_point(event.x, event.y):
                     self.on_click()
+                    self.view.on_event(UIEvent(UIButton.CLICKED, ui_element=self))
 
     def on_press(self):
         pass
