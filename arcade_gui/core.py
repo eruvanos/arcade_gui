@@ -25,6 +25,8 @@ class UIEvent:
 
 
 class UIElement:
+    view: 'UIView'
+
     def on_event(self, event: UIEvent):
         pass
 
@@ -73,6 +75,7 @@ class UIView(arcade.View):
         self._ui_elements = []
 
     def add_ui_element(self, ui_element: UIElement):
+        ui_element.view = self
         self._ui_elements.append(ui_element)
 
     def update(self, delta_time: float):
