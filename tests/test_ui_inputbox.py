@@ -81,7 +81,7 @@ def test_shows_cursor_if_highlighted(draws):
     inputbox.on_draw()
 
     # THEN
-    text, *_ = draws.draw_text.call_args.args
+    text = draws.draw_text.call_args[0][0]
     assert text == 'Great |UI'
 
 
@@ -128,7 +128,7 @@ def test_changes_text_on_text_input(draws):
     inputbox.on_event(UIEvent(TEXT_INPUT, text='a'))
     inputbox.on_draw()
 
-    text, *_ = draws.draw_text.call_args.args
+    text = draws.draw_text.call_args[0][0]
     assert text == 'Best a|Game Lib!'
 
 
@@ -142,7 +142,7 @@ def test_ignores_newline(draws):
     inputbox.on_event(UIEvent(TEXT_INPUT, text='\r'))
     inputbox.on_draw()
 
-    text, *_ = draws.draw_text.call_args.args
+    text = draws.draw_text.call_args[0][0]
     assert text == 'Best |Game Lib!'
 
 
@@ -156,7 +156,7 @@ def test_changes_text_on_backspace(draws):
     inputbox.on_event(UIEvent(TEXT_MOTION, motion=MOTION_BACKSPACE))
     inputbox.on_draw()
 
-    text, *_ = draws.draw_text.call_args.args
+    text = draws.draw_text.call_args[0][0]
     assert text == 'Best|Game Lib!'
 
 
@@ -170,7 +170,7 @@ def test_changes_text_on_delete(draws):
     inputbox.on_event(UIEvent(TEXT_MOTION, motion=MOTION_DELETE))
     inputbox.on_draw()
 
-    text, *_ = draws.draw_text.call_args.args
+    text = draws.draw_text.call_args[0][0]
     assert text == 'Best |ame Lib!'
 
 @pytest.mark.parametrize(

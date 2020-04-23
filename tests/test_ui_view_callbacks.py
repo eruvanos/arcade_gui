@@ -36,7 +36,7 @@ def test_on_mouse_press_passes_an_event():
 
     subject.on_mouse_press(1, 2, 3, 4)
 
-    event, *_ = ui_element.on_event.call_args.args
+    event = ui_element.on_event.call_args[0][0]
     assert event.type == MOUSE_PRESS
     assert event.x == 1
     assert event.y == 2
@@ -51,7 +51,7 @@ def test_on_mouse_release_passes_an_event():
 
     subject.on_mouse_release(1, 2, 3, 4)
 
-    event, *_ = ui_element.on_event.call_args.args
+    event = ui_element.on_event.call_args[0][0]
     assert event.type == MOUSE_RELEASE
     assert event.x == 1
     assert event.y == 2
@@ -66,7 +66,7 @@ def test_on_mouse_scroll_passes_an_event():
 
     subject.on_mouse_scroll(1, 2, 3, 4)
 
-    event, *_ = ui_element.on_event.call_args.args
+    event = ui_element.on_event.call_args[0][0]
     assert event.type == MOUSE_SCROLL
     assert event.x == 1
     assert event.y == 2
@@ -81,7 +81,7 @@ def test_on_key_press_passes_an_event():
 
     subject.on_key_press(arcade.key.ENTER, 0)
 
-    event, *_ = ui_element.on_event.call_args.args
+    event = ui_element.on_event.call_args[0][0]
     assert event.type == KEY_PRESS
     assert event.symbol == arcade.key.ENTER
 
@@ -93,7 +93,7 @@ def test_on_key_release_passes_an_event():
 
     subject.on_key_release(arcade.key.ENTER, 0)
 
-    event, *_ = ui_element.on_event.call_args.args
+    event = ui_element.on_event.call_args[0][0]
     assert event.type == KEY_RELEASE
     assert event.symbol == arcade.key.ENTER
 
@@ -105,7 +105,7 @@ def test_on_text_passes_an_event():
 
     subject.on_text('a')
 
-    event, *_ = ui_element.on_event.call_args.args
+    event = ui_element.on_event.call_args[0][0]
     assert event.type == TEXT_INPUT
     assert event.text == 'a'
 
@@ -117,7 +117,7 @@ def test_on_text_motion_passes_an_event():
 
     subject.on_text_motion(MOTION_UP)
 
-    event, *_ = ui_element.on_event.call_args.args
+    event = ui_element.on_event.call_args[0][0]
     assert event.type == TEXT_MOTION
     assert event.motion == MOTION_UP
 
@@ -128,6 +128,6 @@ def test_on_text_motion_selection_passes_an_event():
 
     subject.on_text_motion_selection(MOTION_UP)
 
-    event, *_ = ui_element.on_event.call_args.args
+    event = ui_element.on_event.call_args[0][0]
     assert event.type == TEXT_MOTION_SELECTION
     assert event.selection == MOTION_UP
