@@ -21,35 +21,54 @@ A general interface of an UI element.
 
 ## Examples
 
-* [UILabel](./examples/show_uilabel.py)
-* [UIButton](./examples/show_uibutton.py)
+Examples providing an overview of features, there will be dedicated documentation soon.
+
+* [UILabel](https://github.com/eruvanos/arcade_gui/blob/master/examples/show_uilabel.py)
+* [UIButton](https://github.com/eruvanos/arcade_gui/blob/master/examples/show_uibutton.py)
+* [UIInputBox](https://github.com/eruvanos/arcade_gui/blob/master/examples/show_uiinputbox.py)
+* [Example with ID](https://github.com/eruvanos/arcade_gui/blob/master/examples/show_id_example.py)
+
+### Screenshots
+
+![Example with ID Screenshot](docs/assets/ProGramer.png)
 
 
 ## Features for first release
 
 * [x] UILabel
-    * [ ] Align with UITextInput
+    * [x] Align with UITextInput
 * [x] UIButton
 * [x] Focused element tracked
+* [x] ID reference system for UIElements
+* [x] CI/CD
 * [x] UITextInput
     * [x] Basic setup
-    * [ ] Textured frame
     * [ ] Scroll text with cursor
     * [ ] Set max length
     * [ ] Emit event on ENTER
 * [ ] UIElements emit own UIEvents
-    * [ ] UIButton
+    * [x] UIButton
+    * [ ] UITextInput
 * [ ] UIImageButton
+* [ ] UITexturedInputBox
+* [ ] FlatButtons (https://codepen.io/maziarzamani/full/YXgvjv)
 * [ ] UITextArea
 * [ ] Theme support
-* [x] CI/CD
+    * [ ] Provide different standard themes for flat buttons
+* [ ] Add documentation and doc strings (sphinx)
+    * [ ] release notes
+    * [ ] setup readthedocs
+* [ ] track new features and issues in Github
 
 ### Chores
 
 * [ ] harmonize constructors `x, y` vs `center_x, center_y`
+* [ ] figure out, how `UIView.find_by_id` does not produce typing warnings
 * [ ] improve docs
-    * [ ] setup readthedocs
-    * [ ] fix reference to examples
+    * [x] fix reference to examples
+    * [x] include screenshots (at least one)
+* [ ] make 3D Button more realistic, or change to flat buttons
+* [ ] support Python 3.7
 
 ## Background information and other frameworks
 
