@@ -27,7 +27,7 @@ keywords = ["arcade", "game", "gui"]
 
 
 [tool.poetry.dependencies]
-python = ">=3.8"
+python = ">=3.7"
 arcade = "^2.3.15"
 
 [tool.poetry.dev-dependencies]

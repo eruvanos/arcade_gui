@@ -1,7 +1,7 @@
 """
 Tests if examples render and show the same screen like expected
 """
-
+import os
 from importlib import import_module
 from pathlib import Path
 
@@ -42,6 +42,9 @@ def load_view(abs_module_path) -> arcade.View:
     return target_class
 
 
+@pytest.mark.skipif(os.getenv('TRAVIS'),
+                    reason=('Example tests not executable on travis, '
+                            'check https://travis-ci.org/github/eruvanos/arcade_gui/jobs/678758144#L506'))
 @pytest.mark.parametrize('example', [
     T('show_id_example', 'show_id_example'),
     T('show_uibutton', 'show_uibutton'),

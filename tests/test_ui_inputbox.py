@@ -1,3 +1,4 @@
+import os
 from unittest.mock import patch, ANY, call
 
 import arcade
@@ -171,7 +172,6 @@ def test_changes_text_on_delete(draws):
 
     text, *_ = draws.draw_text.call_args.args
     assert text == 'Best |ame Lib!'
-
 
 @pytest.mark.parametrize(
     'motion,expected_index',
