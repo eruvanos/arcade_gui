@@ -69,6 +69,7 @@ Examples providing an overview of features, there will be dedicated documentatio
     * [x] include screenshots (at least one)
 * [ ] make 3D Button more realistic, or change to flat buttons
 * [ ] support Python 3.7
+* [x] test examples render the expected screen
 
 ## Background information and other frameworks
 

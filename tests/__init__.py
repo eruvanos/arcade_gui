@@ -1,3 +1,4 @@
+import os
 from contextlib import ExitStack
 from typing import List
 from unittest.mock import patch
@@ -73,3 +74,23 @@ def patch_draw_commands(f):
             return f(holder, *args, **kwargs)
 
     return wrapper
+
+
+class Env:
+    def __init__(self, **kwargs):
+        self.variables = kwargs
+        self.old_vars = {}
+
+    def __enter__(self):
+        for key, value in self.variables.items():
+            if key in os.environ:
+                self.old_vars[key] = os.environ[key]
+
+            os.environ[key] = value
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        for key in self.variables.keys():
+            del os.environ[key]
+
+        for key, value in self.old_vars.items():
+            os.environ[key] = value
