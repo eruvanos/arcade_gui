@@ -2,6 +2,7 @@
 Tests if examples render and show the same screen like expected
 """
 import os
+import sys
 from importlib import import_module
 from pathlib import Path
 
@@ -45,6 +46,7 @@ def load_view(abs_module_path) -> arcade.View:
 @pytest.mark.skipif(os.getenv('TRAVIS') == 'true',
                     reason=('Example tests not executable on travis, '
                             'check https://travis-ci.org/github/eruvanos/arcade_gui/jobs/678758144#L506'))
+@pytest.mark.skipif(sys.platform == 'darwin', reason='Not yet supported on darwin')
 @pytest.mark.parametrize('example', [
     T('show_id_example', 'show_id_example'),
     T('show_uibutton', 'show_uibutton'),
