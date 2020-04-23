@@ -30,7 +30,7 @@ Examples providing an overview of features, there will be dedicated documentatio
 
 ### Screenshots
 
-![Example with ID Screenshot](docs/assets/ProGramer.png)
+![Example with ID Screenshot](https://github.com/eruvanos/arcade_gui/blob/master/docs/assets/ProGramer.png)
 
 
 ## Features for first release

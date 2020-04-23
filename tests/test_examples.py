@@ -42,7 +42,7 @@ def load_view(abs_module_path) -> arcade.View:
     return target_class
 
 
-@pytest.mark.skipif(os.getenv('TRAVIS'),
+@pytest.mark.skipif(os.getenv('TRAVIS') == 'true',
                     reason=('Example tests not executable on travis, '
                             'check https://travis-ci.org/github/eruvanos/arcade_gui/jobs/678758144#L506'))
 @pytest.mark.parametrize('example', [
