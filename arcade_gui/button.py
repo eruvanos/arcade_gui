@@ -19,7 +19,8 @@ class UIButton(UIElement):
                  highlight_color=arcade.color.WHITE,
                  shadow_color=arcade.color.GRAY,
                  button_height=2,
-                 theme=None):
+                 theme=None, **kwargs):
+        super().__init__(**kwargs)
         self.center_x = center_x
         self.center_y = center_y
         self.width = width

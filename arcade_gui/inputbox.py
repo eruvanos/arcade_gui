@@ -157,7 +157,8 @@ class UIInputBox(UIElement):
                  outline_color=arcade.color.BLACK,
                  font_size=24,
                  shadow_color=arcade.color.WHITE_SMOKE,
-                 highlight_color=arcade.color.WHITE):
+                 highlight_color=arcade.color.WHITE, **kwargs):
+        super().__init__(**kwargs)
         # self.theme = theme
         # if self.theme:
         #     self.text_display = TextDisplay(x, y, width, height, theme=self.theme)

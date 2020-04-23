@@ -14,7 +14,8 @@ class UILabel(UIElement):
                  font_name=('Calibri', 'Arial'),
                  bold: bool = False,
                  italic: bool = False,
-                 rotation=0):
+                 rotation=0, **kwargs):
+        super().__init__(**kwargs)
         self.text = text
         self.x = x
         self.y = y

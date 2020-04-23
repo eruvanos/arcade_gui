@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Dict, Optional
 
 import arcade
 
@@ -26,6 +26,9 @@ class UIEvent:
 
 class UIElement:
     view: 'UIView'
+
+    def __init__(self, id=None, **kwargs):
+        self.id = id
 
     def on_event(self, event: UIEvent):
         pass
@@ -64,19 +67,35 @@ class UIElement:
         return False
 
 
+class UIException(Exception):
+    pass
+
+
 class UIView(arcade.View):
     def __init__(self, *args, **kwargs):
         super().__init__()  # Here happens a lot of stuff we don't need
         self.focused_element = None
 
         self._ui_elements: List[UIElement] = []
+        self._id_cache: Dict[str, UIElement] = {}
 
     def purge_ui_elements(self):
         self._ui_elements = []
+        self._id_cache = {}
 
     def add_ui_element(self, ui_element: UIElement):
         ui_element.view = self
         self._ui_elements.append(ui_element)
+
+        if not hasattr(ui_element, 'id'):
+            raise UIException('UIElement seems not to be properly setup, please check if you'
+                              ' overwrite the constructor and forgot "super().__init__(**kwargs)"')
+
+        if ui_element.id is not None:
+            if ui_element.id in self._id_cache:
+                raise UIException(f'duplicate id "{ui_element.id}"')
+
+            self._id_cache[ui_element.id] = ui_element
 
     def update(self, delta_time: float):
         """
@@ -113,6 +132,9 @@ class UIView(arcade.View):
                     self.focused_element = None
 
             ui_element.on_event(event)
+
+    def find_by_id(self, ui_element_id: str) -> Optional[UIElement]:
+        return self._id_cache.get(ui_element_id)
 
     def on_mouse_press(self, x: float, y: float, button: int, modifiers: int):
         super().on_mouse_press(x, y, button, modifiers)

@@ -9,8 +9,10 @@ class MyView(arcade_gui.UIView):
         super().__init__()
 
     def on_show(self):
-        arcade.set_background_color(arcade.color.WHITE)
+        # If the view is shown multiple times, we should always start from scratch
         self.purge_ui_elements()
+        arcade.set_background_color(arcade.color.WHITE)
+
         self.add_ui_element(arcade_gui.UILabel(
             'Hello world',
             x=self.window.width // 2,
@@ -19,5 +21,5 @@ class MyView(arcade_gui.UIView):
 
 
 if __name__ == '__main__':
-    arcade.Window().show_view(MyView())
+    arcade.Window(title='ARCADE_GUI').show_view(MyView())
     arcade.run()
