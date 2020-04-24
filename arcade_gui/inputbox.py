@@ -150,6 +150,9 @@ class TextDisplay:
 
 
 class UIInputBox(UIElement):
+
+    ENTER = 'ENTER'
+
     def __init__(self,
                  x, y,
                  width=300, height=40,
@@ -200,6 +203,9 @@ class UIInputBox(UIElement):
         super().on_event(event)
 
         if self.text_display.highlighted:
+            if event.type == TEXT_INPUT and event.text == '\r':
+                self.view.on_event(UIEvent(UIInputBox.ENTER, ui_element=self))
+
             self.text_adapter.on_event(event)
 
             # keep cursor_index in sync

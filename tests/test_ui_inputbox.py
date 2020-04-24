@@ -1,5 +1,4 @@
-import os
-from unittest.mock import patch, ANY, call
+from unittest.mock import ANY, call
 
 import arcade
 import pytest
@@ -139,11 +138,29 @@ def test_ignores_newline(draws):
     inputbox.text = 'Best Game Lib!'
     inputbox.cursor_index = 5
 
+    view = TestUIView()
+    view.add_ui_element(inputbox)
+
     inputbox.on_event(UIEvent(TEXT_INPUT, text='\r'))
     inputbox.on_draw()
 
     text = draws.draw_text.call_args[0][0]
     assert text == 'Best |Game Lib!'
+
+
+def test_emits_event_on_enter():
+    inputbox = UIInputBox(x=30, y=30, width=40, height=40)
+    inputbox.text_display.highlighted = True
+    inputbox.text = 'Best Game Lib!'
+    inputbox.cursor_index = 5
+
+    view = TestUIView()
+    view.add_ui_element(inputbox)
+
+    inputbox.on_event(UIEvent(TEXT_INPUT, text='\r'))
+
+    assert view.last_event.type == UIInputBox.ENTER
+    assert view.last_event.ui_element == inputbox
 
 
 @patch_draw_commands
@@ -172,6 +189,7 @@ def test_changes_text_on_delete(draws):
 
     text = draws.draw_text.call_args[0][0]
     assert text == 'Best |ame Lib!'
+
 
 @pytest.mark.parametrize(
     'motion,expected_index',

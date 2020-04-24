@@ -43,9 +43,9 @@ Examples providing an overview of features, there will be dedicated documentatio
 * [x] CI/CD
 * [x] UITextInput
     * [x] Basic setup
+    * [x] Emit event on ENTER
     * [ ] Scroll text with cursor
     * [ ] Set max length
-    * [ ] Emit event on ENTER
 * [ ] UIElements emit own UIEvents
     * [x] UIButton
     * [ ] UITextInput

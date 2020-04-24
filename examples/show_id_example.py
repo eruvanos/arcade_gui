@@ -51,13 +51,20 @@ class MyView(UIView):
         super(MyView, self).on_event(event)
 
         if event.type == UIButton.CLICKED and event.ui_element.id == 'submit_button':
-            username_input: UIInputBox = self.find_by_id('username')
-            username = username_input.text
+            # Trigger action if 'submit_button' was clicked
+            self.submit()
+        elif event.type == UIInputBox.ENTER and event.ui_element.id == 'username':
+            # Trigger action if ENTER pressed in 'username'-UIInputBox
+            self.submit()
 
-            login_message: UILabel = self.find_by_id('login_message')
 
-            login_message.text = f'Welcome {username}, you are my first player.'
+    # noinspection PyTypeChecker
+    def submit(self):
+        username_input: UIInputBox = self.find_by_id('username')
+        username = username_input.text
 
+        login_message: UILabel = self.find_by_id('login_message')
+        login_message.text = f'Welcome {username}, you are my first player.'
 
 if __name__ == '__main__':
     arcade.Window(title='ARCADE_GUI').show_view(MyView())
