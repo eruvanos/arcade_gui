@@ -26,8 +26,6 @@ class UIButton(UIElement):
         self.width = width
         self.height = height
         self.text = text
-        self.pressed = False
-        self.active = True
         self.button_height = button_height
         self.theme = theme
         self.font_color = font_color

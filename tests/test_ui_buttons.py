@@ -36,8 +36,8 @@ def test_uibutton_is_pressed():
     view.click_and_hold(50, 50)
 
     assert button.pressed
-    assert button.on_press.called
-    assert not button.on_click.called
+    button.on_press.assert_called_once()
+    button.on_click.assert_not_called()
 
 
 def test_uibutton_clicked():
@@ -57,8 +57,8 @@ def test_uibutton_clicked():
     view.click(50, 50)
 
     assert not button.pressed
-    assert button.on_release.called
-    assert button.on_click.called
+    button.on_release.assert_called_once()
+    button.on_click.assert_called_once()
 
 
 def test_uibutton_not_clicked_if_released_beside():
@@ -78,7 +78,7 @@ def test_uibutton_not_clicked_if_released_beside():
     view.click_and_hold(50, 50)
     view.release(100, 100)
 
-    assert not button.on_click.called
+    button.on_click.assert_not_called()
 
 
 def test_uibutton_send_custom_event():

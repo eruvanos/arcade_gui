@@ -4,8 +4,9 @@ import arcade
 from arcade.key import MOTION_UP
 
 from arcade_gui import MOUSE_PRESS, MOUSE_RELEASE, MOUSE_SCROLL, KEY_PRESS, KEY_RELEASE, TEXT_MOTION_SELECTION
-from arcade_gui import UIView
 from arcade_gui import TEXT_INPUT, TEXT_MOTION
+from arcade_gui import UIView
+from arcade_gui.core import MOUSE_MOTION
 
 
 @patch('arcade.start_render')
@@ -16,7 +17,7 @@ def test_added_ui_element_is_drawn(start_render):
 
     subject.on_draw()
 
-    assert ui_element.on_draw.called
+    ui_element.on_draw.assert_called_once()
 
 
 def test_added_ui_element_is_updated():
@@ -26,7 +27,7 @@ def test_added_ui_element_is_updated():
 
     subject.on_update(0)
 
-    assert ui_element.on_update.called
+    ui_element.on_update.assert_called_once()
 
 
 def test_on_mouse_press_passes_an_event():
@@ -120,6 +121,7 @@ def test_on_text_motion_passes_an_event():
     event = ui_element.on_event.call_args[0][0]
     assert event.type == TEXT_MOTION
     assert event.motion == MOTION_UP
+
 
 def test_on_text_motion_selection_passes_an_event():
     subject = UIView()

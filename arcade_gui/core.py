@@ -74,10 +74,26 @@ class UIException(Exception):
 class UIView(arcade.View):
     def __init__(self, *args, **kwargs):
         super().__init__()  # Here happens a lot of stuff we don't need
-        self.focused_element = None
+        self._focused_element: Optional[UIElement] = None
 
         self._ui_elements: List[UIElement] = []
         self._id_cache: Dict[str, UIElement] = {}
+
+    @property
+    def focused_element(self):
+        return self._focused_element
+
+    @focused_element.setter
+    def focused_element(self, new_focus: UIElement):
+
+        if self._focused_element is not None:
+            self._focused_element.on_unfocus()
+            self._focused_element = None
+
+        if new_focus is not None:
+            new_focus.on_focus()
+
+        self._focused_element = new_focus
 
     def purge_ui_elements(self):
         self._ui_elements = []
@@ -123,12 +139,9 @@ class UIView(arcade.View):
         for ui_element in self._ui_elements:
             if event.type == MOUSE_PRESS:
                 if ui_element.hover_point(event.x, event.y):
-                    ui_element.on_focus()
                     self.focused_element = ui_element
 
                 elif ui_element is self.focused_element:
-                    if self.focused_element:
-                        self.focused_element.on_unfocus()
                     self.focused_element = None
 
             ui_element.on_event(event)
