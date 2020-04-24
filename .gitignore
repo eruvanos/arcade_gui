@@ -4,3 +4,5 @@
 
 .idea/
 dist/
+
+docs/_build

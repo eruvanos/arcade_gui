@@ -30,7 +30,7 @@ Examples providing an overview of features, there will be dedicated documentatio
 
 ### Screenshots
 
-![Example with ID Screenshot](https://github.com/eruvanos/arcade_gui/blob/master/docs/assets/ProGramer.png)
+![Example with ID Screenshot](https://github.com/eruvanos/arcade_gui/blob/master/docs/_static/ProGramer.png)
 
 
 ## Features for first release
@@ -56,7 +56,9 @@ Examples providing an overview of features, there will be dedicated documentatio
 * [ ] Theme support
     * [ ] Provide different standard themes for flat buttons
 * [ ] Add documentation and doc strings (sphinx)
-    * [ ] release notes
+    * [x] release notes
+    * [x] setup sphinx
+    * [ ] choose a sphinx theme
     * [ ] setup readthedocs
 * [ ] track new features and issues in Github
 
@@ -68,7 +70,7 @@ Examples providing an overview of features, there will be dedicated documentatio
     * [x] fix reference to examples
     * [x] include screenshots (at least one)
 * [ ] make 3D Button more realistic, or change to flat buttons
-* [ ] support Python 3.7
+* [x] support Python 3.7
 * [x] test examples render the expected screen
 
 ## Background information and other frameworks
