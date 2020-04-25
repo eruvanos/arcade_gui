@@ -18,6 +18,7 @@ class UIButton(UIElement):
                  face_color=arcade.color.LIGHT_GRAY,
                  highlight_color=arcade.color.WHITE,
                  shadow_color=arcade.color.GRAY,
+                 hover_color=arcade.color.DARK_GRAY,
                  button_height=2,
                  theme=None, **kwargs):
         super().__init__(**kwargs)
@@ -30,6 +31,7 @@ class UIButton(UIElement):
         self.theme = theme
         self.font_color = font_color
         self.pressed = False
+        self.hover = False
 
         if self.theme:
             self.normal_texture = self.theme.button_textures['normal']
@@ -44,6 +46,7 @@ class UIButton(UIElement):
             self.font_face = font_face
             self.face_color = face_color
             self.highlight_color = highlight_color
+            self.hover_color = hover_color
             self.shadow_color = shadow_color
             self.font_name = font_face
         if self.font_color is None:
@@ -61,6 +64,12 @@ class UIButton(UIElement):
                 if self.hover_point(event.x, event.y):
                     self.on_click()
                     self.view.on_event(UIEvent(UIButton.CLICKED, ui_element=self))
+
+    def on_hover(self):
+        self.hover = True
+
+    def on_unhover(self):
+        self.hover = False
 
     def on_press(self):
         pass
@@ -84,13 +93,16 @@ class UIButton(UIElement):
         return True
 
     def draw_color_theme(self):
-        arcade.draw_rectangle_filled(self.center_x, self.center_y, self.width,
-                                     self.height, self.face_color)
 
-        if not self.pressed:
-            color = self.shadow_color
+        if self.hover:
+            arcade.draw_rectangle_filled(self.center_x, self.center_y, self.width, self.height, self.hover_color)
         else:
+            arcade.draw_rectangle_filled(self.center_x, self.center_y, self.width, self.height, self.face_color)
+
+        if self.pressed:
             color = self.highlight_color
+        else:
+            color = self.shadow_color
 
         # Bottom horizontal
         arcade.draw_line(self.center_x - self.width / 2, self.center_y - self.height / 2,
