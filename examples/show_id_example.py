@@ -1,6 +1,6 @@
 import arcade
 
-from arcade_gui import UIView, UILabel, UIButton, UIInputBox, UIEvent
+from arcade_gui import UIView, UILabel, UIButton, UIInputBox, UIEvent, UI3DButton
 
 
 class MyView(UIView):
@@ -8,13 +8,12 @@ class MyView(UIView):
         super().__init__()
 
     def on_show(self):
-        # If the view is shown multiple times, we should always start from scratch
-        self.purge_ui_elements()
         arcade.set_background_color(arcade.color.WHITE)
-
         self.setup()
 
     def setup(self):
+        self.purge_ui_elements()
+
         self.add_ui_element(UILabel(
             'Username:',
             x=100,
@@ -29,7 +28,7 @@ class MyView(UIView):
             height=40,
             id='username'
         ))
-        self.add_ui_element(UIButton(
+        self.add_ui_element(UI3DButton(
             'Login',
             center_x=650,
             center_y=self.window.height // 2,
@@ -57,7 +56,6 @@ class MyView(UIView):
             # Trigger action if ENTER pressed in 'username'-UIInputBox
             self.submit()
 
-
     # noinspection PyTypeChecker
     def submit(self):
         username_input: UIInputBox = self.find_by_id('username')
@@ -65,6 +63,7 @@ class MyView(UIView):
 
         login_message: UILabel = self.find_by_id('login_message')
         login_message.text = f'Welcome {username}, you are my first player.'
+
 
 if __name__ == '__main__':
     arcade.Window(title='ARCADE_GUI').show_view(MyView())

@@ -1,6 +1,7 @@
 import arcade
 
 import arcade_gui
+from arcade_gui import FlatButton, GhostFlatButton
 
 
 class MyView(arcade_gui.UIView):
@@ -13,17 +14,21 @@ class MyView(arcade_gui.UIView):
 
     def setup(self):
         self.purge_ui_elements()
-
-        self.add_ui_element(arcade_gui.UIInputBox(
-            x=400,
-            y=300,
+        self.add_ui_element(FlatButton(
+            'Hello world',
+            center_x=200,
+            center_y=self.window.height // 2,
             width=200,
             height=40
         ))
 
-    def on_text(self, text):
-        super().on_text(text)
-        print()
+        self.add_ui_element(GhostFlatButton(
+            'Hello world',
+            center_x=600,
+            center_y=self.window.height // 2,
+            width=200,
+            height=40
+        ))
 
 
 if __name__ == '__main__':

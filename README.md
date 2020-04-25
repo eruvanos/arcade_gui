@@ -46,9 +46,9 @@ Examples providing an overview of features, there will be dedicated documentatio
     * [x] Emit event on ENTER
     * [ ] Scroll text with cursor
     * [ ] Set max length
-* [ ] UIElements emit own UIEvents
+* [x] UIElements emit own UIEvents
     * [x] UIButton
-    * [ ] UITextInput
+    * [x] UITextInput
 * [ ] UIImageButton
 * [ ] UITexturedInputBox
 * [ ] FlatButtons (https://codepen.io/maziarzamani/full/YXgvjv)
@@ -72,6 +72,14 @@ Examples providing an overview of features, there will be dedicated documentatio
 * [ ] make 3D Button more realistic, or change to flat buttons
 * [x] support Python 3.7
 * [x] test examples render the expected screen
+* [x] separate button functionality from appearance 
+* [ ] fix hitbox of FlatButtons 
+
+### Thoughts on themes
+
+* UIView should hold a theme that is used by all components, added this view
+* Container Elements could override themes
+
 
 ## Background information and other frameworks
 
