@@ -5,6 +5,7 @@ import arcade
 MOUSE_PRESS = 'MOUSE_PRESS'
 MOUSE_RELEASE = 'MOUSE_RELEASE'
 MOUSE_SCROLL = 'MOUSE_SCROLL'
+MOUSE_MOTION = 'MOUSE_MOTION'
 KEY_PRESS = 'KEY_PRESS'
 KEY_RELEASE = 'KEY_RELEASE'
 
@@ -48,6 +49,18 @@ class UIElement:
         """
         pass
 
+    def on_hover(self):
+        """
+        Callback if the element gets hovered
+        """
+        pass
+
+    def on_unhover(self):
+        """
+        Callback if the element gets unhovered aka is not focused any more
+        """
+        pass
+
     def on_update(self, dt: float):
         pass
 
@@ -75,6 +88,7 @@ class UIView(arcade.View):
     def __init__(self, *args, **kwargs):
         super().__init__()  # Here happens a lot of stuff we don't need
         self._focused_element: Optional[UIElement] = None
+        self._hovered_element: Optional[UIElement] = None
 
         self._ui_elements: List[UIElement] = []
         self._id_cache: Dict[str, UIElement] = {}
@@ -94,6 +108,21 @@ class UIView(arcade.View):
             new_focus.on_focus()
 
         self._focused_element = new_focus
+
+    @property
+    def hovered_element(self):
+        return self._hovered_element
+
+    @hovered_element.setter
+    def hovered_element(self, new_hover: UIElement):
+        if self._hovered_element is not None:
+            self._hovered_element.on_unhover()
+            self._hovered_element = None
+
+        if new_hover is not None:
+            new_hover.on_hover()
+
+        self._hovered_element = new_hover
 
     def purge_ui_elements(self):
         self._ui_elements = []
@@ -142,7 +171,15 @@ class UIView(arcade.View):
                     self.focused_element = ui_element
 
                 elif ui_element is self.focused_element:
+                    # TODO does this work like expected?
                     self.focused_element = None
+
+            if event.type == MOUSE_MOTION:
+                if ui_element.hover_point(event.x, event.y):
+                    self.hovered_element = ui_element
+
+                elif ui_element is self.hovered_element:
+                    self.hovered_element = None
 
             ui_element.on_event(event)
 
@@ -162,6 +199,15 @@ class UIView(arcade.View):
                               y=y,
                               scroll_x=scroll_x,
                               scroll_y=scroll_y,
+                              ))
+
+    def on_mouse_motion(self, x: float, y: float, dx: float, dy: float):
+        super().on_mouse_motion(x, y, dx, dy)
+        self.on_event(UIEvent(MOUSE_MOTION,
+                              x=x,
+                              y=y,
+                              dx=dx,
+                              dy=dy,
                               ))
 
     def on_key_press(self, symbol: int, modifiers: int):

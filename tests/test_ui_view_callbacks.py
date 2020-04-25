@@ -75,6 +75,21 @@ def test_on_mouse_scroll_passes_an_event():
     assert event.scroll_y == 4
 
 
+def test_on_mouse_motion_passes_an_event():
+    subject = UIView()
+    ui_element = Mock()
+    subject.add_ui_element(ui_element)
+
+    subject.on_mouse_motion(1, 2, 3, 4)
+
+    event = ui_element.on_event.call_args[0][0]
+    assert event.type == MOUSE_MOTION
+    assert event.x == 1
+    assert event.y == 2
+    assert event.dx == 3
+    assert event.dy == 4
+
+
 def test_on_key_press_passes_an_event():
     subject = UIView()
     ui_element = Mock()
