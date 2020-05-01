@@ -2,6 +2,8 @@ from typing import List, Dict, Optional
 
 import arcade
 
+from arcade_gui.ui_theme import UITheme
+
 MOUSE_PRESS = 'MOUSE_PRESS'
 MOUSE_RELEASE = 'MOUSE_RELEASE'
 MOUSE_SCROLL = 'MOUSE_SCROLL'
@@ -92,6 +94,8 @@ class UIView(arcade.View):
 
         self._ui_elements: List[UIElement] = []
         self._id_cache: Dict[str, UIElement] = {}
+
+        self.theme = UITheme({})
 
     @property
     def focused_element(self):
