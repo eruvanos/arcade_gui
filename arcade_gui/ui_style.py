@@ -57,15 +57,19 @@ class UIStyle:
         with path.open() as file:
             self.style = yaml.safe_load(file)
 
-    def _get(self, ui_element: 'UIElement', param):
+    def _get(self, ui_element: 'UIElement', attr):
         element_style = getattr(ui_element, '_style', {})
-        if param in element_style:
-            return element_style[param]
+        if attr in element_style:
+            return element_style[attr]
 
-        style_classes = reversed(ui_element.style_classes)
+        style_classes = reversed(ui_element.style_classes + [ui_element.id])
         for style_class in style_classes:
-            ui_element_data = self.style.get(style_class, {})
-            return ui_element_data.get(param)
+            style_data = self.style.get(style_class, {})
+            attr_value = style_data.get(attr)
+            if attr_value:
+                return attr_value
+        else:
+            return None
 
     def get_color(self, ui_element, param):
         value = self._get(ui_element, param)

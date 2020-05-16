@@ -56,7 +56,8 @@ Examples providing an overview of features, there will be dedicated documentatio
     * [x] Load style from yaml
     * [x] Parse arcade.color, hex and rgb
     * [x] Introduce style classes
-    * [ ] Use UIElement.id to lookup special style data
+    * [ ] General class to set global fallback
+    * [x] Use UIElement.id to lookup special style data
     * [ ] Use UIStyle in UIElements
       * [x] UI3DButton
       * [x] FlatButton

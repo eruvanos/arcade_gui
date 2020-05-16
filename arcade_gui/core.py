@@ -58,8 +58,8 @@ class UIElement:
         return self.view.style
 
     def find_color(self, param):
-        paren_theme = self.parent_style()
-        return paren_theme.get_color(self, param)
+        parent_style = self.parent_style()
+        return parent_style.get_color(self, param)
 
     def on_event(self, event: UIEvent):
         pass
