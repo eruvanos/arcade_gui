@@ -4,20 +4,20 @@ from arcade_gui import UIButton
 
 
 class UI3DButton(UIButton):
-    def __init__(self, text, center_x, center_y, width, height, *args, **kwargs):
-        super().__init__(text, center_x, center_y, width, height, *args, **kwargs)
+    def __init__(self, text, center_x, center_y, width, height, **kwargs):
+        super().__init__(text, center_x, center_y, width, height, **kwargs)
         self.style_classes.append('ui3dbutton')
 
         self.font_size = 18
         self.font_face = "Arial"
 
-        self.shadow_color = arcade.color.GRAY
         self.button_height = 2
 
     def draw_button(self):
         normal_color = self.find_color('normal_color')
         hover_color = self.find_color('hover_color')
         pressed_color = self.find_color('pressed_color')
+        shadow_color = self.find_color('shadow_color')
 
         if self.hovered:
             arcade.draw_rectangle_filled(self.center_x, self.center_y, self.width, self.height, hover_color)
@@ -27,7 +27,7 @@ class UI3DButton(UIButton):
         if self.pressed:
             color = pressed_color
         else:
-            color = self.shadow_color
+            color = shadow_color
 
         # Bottom horizontal
         arcade.draw_line(self.center_x - self.width / 2 + self.button_height / 2, self.center_y - self.height / 2,
@@ -42,7 +42,7 @@ class UI3DButton(UIButton):
         if not self.pressed:
             color = pressed_color
         else:
-            color = self.shadow_color
+            color = shadow_color
 
         # Top horizontal
         arcade.draw_line(self.center_x - self.width / 2, self.center_y + self.height / 2,

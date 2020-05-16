@@ -7,6 +7,7 @@ ui3dbutton:
   normal_color: LIGHT_GRAY
   hover_color: DARK_GRAY
   pressed_color: WHITE
+  shadow_color: GRAY
 
 flatbutton:
   font_color: BLACK

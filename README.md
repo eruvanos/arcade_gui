@@ -59,7 +59,7 @@ Examples providing an overview of features, there will be dedicated documentatio
     * [x] Introduce style classes
     * [ ] Use UIElement.id to lookup special theme data
     * [ ] Use UIStyle in UIElements
-      * [ ] UI3DButton
+      * [x] UI3DButton
       * [x] FlatButton
       * [x] GhostFlatButton
       * [x] UILabel
