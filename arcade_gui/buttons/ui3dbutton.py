@@ -9,7 +9,7 @@ class UI3DButton(UIButton):
         self.style_classes.append('ui3dbutton')
 
         self.font_size = 18
-        self.font_face = "Arial"
+        self.font_name = ('Calibri', 'Arial')
 
         self.button_height = 2
 
@@ -74,8 +74,11 @@ class UI3DButton(UIButton):
             center_y += 2
 
         font_color = self.find_color('font_color')
-        arcade.draw_text(self.text, center_x, center_y,
-                         font_color, font_size=self.font_size,
-                         font_name=self.font_face,
+        arcade.draw_text(self.text,
+                         center_x,
+                         center_y,
+                         font_color,
+                         font_size=self.font_size,
+                         font_name=self.font_name,
                          width=self.width, align="center",
                          anchor_x="center", anchor_y="center")
