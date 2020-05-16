@@ -1,7 +1,5 @@
 import os
-from contextlib import ExitStack
 from typing import List
-from unittest.mock import patch
 
 import pytest
 
@@ -54,26 +52,6 @@ class MockHolder(dict):
     """
     __getattr__ = dict.__getitem__
     __setattr__ = dict.__setitem__
-
-
-def patch_draw_commands(f):
-    """
-    Decorator
-
-    Mocks all 'arcade.draw_...' methods and injects a holder with mocks
-    """
-    import arcade
-
-    to_patch = [attr for attr in dir(arcade) if attr.startswith('draw_')]
-    holder = MockHolder()
-
-    def wrapper(*args, **kwargs):
-        with ExitStack() as stack:
-            for method in to_patch:
-                holder[method] = stack.enter_context(patch(f'arcade.{method}'))
-            return f(holder, *args, **kwargs)
-
-    return wrapper
 
 
 class Env:

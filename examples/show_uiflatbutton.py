@@ -1,7 +1,7 @@
 import arcade
 
 import arcade_gui
-from arcade_gui import FlatButton, GhostFlatButton
+from arcade_gui import UIFlatButton, UIGhostFlatButton
 
 
 class MyView(arcade_gui.UIView):
@@ -14,7 +14,7 @@ class MyView(arcade_gui.UIView):
 
     def setup(self):
         self.purge_ui_elements()
-        self.add_ui_element(FlatButton(
+        self.add_ui_element(UIFlatButton(
             'Hello world',
             center_x=200,
             center_y=self.window.height // 2,
@@ -22,7 +22,7 @@ class MyView(arcade_gui.UIView):
             height=40
         ))
 
-        self.add_ui_element(GhostFlatButton(
+        self.add_ui_element(UIGhostFlatButton(
             'Hello world',
             center_x=600,
             center_y=self.window.height // 2,

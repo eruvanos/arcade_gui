@@ -17,8 +17,8 @@ class MyView(arcade_gui.UIView):
 
         self.add_ui_element(arcade_gui.UILabel(
             'Hello world',
-            x=self.window.width // 2,
-            y=self.window.height // 2,
+            center_x=self.window.width // 2,
+            center_y=self.window.height // 2,
         ))
 
 

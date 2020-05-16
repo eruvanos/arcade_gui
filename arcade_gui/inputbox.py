@@ -65,39 +65,29 @@ class KeyAdapter:
 
 
 class TextDisplay:
-    def __init__(self, center_x, center_y, width=300,
+    def __init__(self,
+                 parent: UIElement,
+                 center_x,
+                 center_y,
+                 width=300,
                  height=40,
-                 font_size=24,
-                 outline_color=arcade.color.BLACK,
-                 shadow_color=arcade.color.WHITE_SMOKE,
-                 highlight_color=arcade.color.WHITE,
-                 theme=None):
-        # TODO: use style from UIInputBox
+                 font_size=24
+                 ):
+        self.parent = parent
 
         self.center_x = center_x
         self.center_y = center_y
         self.width = width
         self.height = height
-        self.outline_color = outline_color
-        self.shadow_color = shadow_color
-        self.highlight_color = highlight_color
-        self.highlighted = False
+
         self.text = ""
-        self.left_text = ""
-        self.right_text = ""
         self.symbol = "|"
         self.cursor_index = 0
-        self.theme = theme
-        if self.theme:
-            self.texture = self.theme.text_box_texture
-            self.font_size = self.theme.font_size
-            self.font_color = self.theme.font_color
-            self.font_name = self.theme.font_name
-        else:
-            self.texture = None
-            self.font_size = font_size
-            self.font_color = arcade.color.BLACK
-            self.font_name = ('Calibri', 'Arial')
+        self.highlighted = False
+
+        # Style
+        self.font_size = font_size
+        self.font_name = ('Calibri', 'Arial')
 
     def hover_point(self, hover_x: float, hover_y: float) -> bool:
         if hover_x > self.center_x + self.width / 2:
@@ -120,50 +110,50 @@ class TextDisplay:
         else:
             text_to_show = self.text
 
+        font_color = self.parent.find_color('font_color')
         arcade.draw_text(text_to_show,
                          self.center_x - self.width / 2.1,
                          self.center_y,
-                         self.font_color,
+                         font_color,
                          font_size=self.font_size,
                          anchor_y="center",
                          font_name=self.font_name)
 
-    #
-    def color_theme_draw(self):
-        if self.highlighted:
-            arcade.draw_rectangle_filled(self.center_x, self.center_y, self.width, self.height, self.highlight_color)
-        else:
-            arcade.draw_rectangle_filled(self.center_x, self.center_y, self.width, self.height, self.shadow_color)
-
-        arcade.draw_rectangle_outline(self.center_x, self.center_y, self.width, self.height, self.outline_color, 2)
-        self.draw_text()
-        #
-
-    # def texture_theme_draw(self):
-    # arcade.draw_texture_rectangle(self.x, self.y, self.width, self.height, self.texture)
-    # self.draw_text()
-
     def on_draw(self):
-        # if self.texture:
-        # self.texture_theme_draw()
-        # else:
-        self.color_theme_draw()
+        normal_color = self.parent.find_color('normal_color')
+        shadow_color = self.parent.find_color('shadow_color')
+        highlight_color = self.parent.find_color('highlight_color')
+
+        if self.highlighted:
+            arcade.draw_rectangle_filled(self.center_x, self.center_y, self.width, self.height, highlight_color)
+        else:
+            arcade.draw_rectangle_filled(self.center_x, self.center_y, self.width, self.height, shadow_color)
+
+        arcade.draw_rectangle_outline(self.center_x, self.center_y, self.width, self.height, normal_color, 2)
+        self.draw_text()
 
 
 class UIInputBox(UIElement):
-
     ENTER = 'ENTER'
 
     def __init__(self,
-                 x, y,
+                 center_x, center_y,
                  width=300, height=40,
-                 outline_color=arcade.color.BLACK,
                  font_size=24,
-                 shadow_color=arcade.color.WHITE_SMOKE,
-                 highlight_color=arcade.color.WHITE, **kwargs):
+                 normal_color=None,
+                 shadow_color=None,
+                 highlight_color=None,
+                 **kwargs):
         super().__init__(**kwargs)
         self.text_adapter = KeyAdapter()
-        self.text_display = TextDisplay(x, y, width, height, font_size, outline_color, shadow_color, highlight_color)
+        self.text_display = TextDisplay(self, center_x, center_y, width, height, font_size)
+
+        self.style_classes.append('inputbox')
+        self.set_style_attrs(
+            normal_color=normal_color,
+            shadow_color=shadow_color,
+            highlight_color=highlight_color
+        )
 
     @property
     def cursor_index(self):

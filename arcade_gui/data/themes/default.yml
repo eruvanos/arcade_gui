@@ -1,7 +1,7 @@
-uilabel:
+label:
   font_color: BLACK
 
-ui3dbutton:
+3dbutton:
   font_color: BLACK
 
   normal_color: LIGHT_GRAY
@@ -24,5 +24,8 @@ ghostflatbutton:
   pressed_color: 1E7339
 
 inputbox:
-  border_color: BLACK
-  active_color: GREY
+  font_color: BLACK
+
+  normal_color: BLACK
+  shadow_color: WHITE_SMOKE
+  highlight_color: WHITE

@@ -1,6 +1,6 @@
 import arcade
 
-from arcade_gui import FlatButton, GhostFlatButton, UI3DButton
+from arcade_gui import UIFlatButton, UIGhostFlatButton, UI3DButton
 from arcade_gui.ui_style import UIStyle, parse_color
 
 
@@ -9,7 +9,7 @@ def test_view_loads_default_style(view):
 
 
 def test_ui_element_provides_ui_style_from_parent(view):
-    button = FlatButton('Love snakes.', 100, 100, 100, 30)
+    button = UIFlatButton('Love snakes.', 100, 100, 100, 30)
 
     view.add_ui_element(button)
 
@@ -21,15 +21,15 @@ def test_style_returns_property_for_ui_elements(shared_datadir, view):
         'flatbutton': {'normal_color': 'RED'},
         'ghostflatbutton': {'normal_color': 'BLUE'},
     })
-    flat = FlatButton('Love snakes.', 100, 100, 100, 30)
-    ghost = GhostFlatButton('Love snakes.', 100, 100, 100, 30)
+    flat = UIFlatButton('Love snakes.', 100, 100, 100, 30)
+    ghost = UIGhostFlatButton('Love snakes.', 100, 100, 100, 30)
 
     assert style.get_color(flat, 'normal_color') == arcade.color.RED
     assert style.get_color(ghost, 'normal_color') == arcade.color.BLUE
 
 
 def test_style_returns_property_for_custom_ui_element(shared_datadir, view):
-    class MyButton(FlatButton):
+    class MyButton(UIFlatButton):
         """Custom button, which should use style attributes of FlatButton"""
         pass
 

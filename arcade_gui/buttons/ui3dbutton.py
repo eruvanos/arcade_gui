@@ -6,7 +6,7 @@ from arcade_gui import UIButton
 class UI3DButton(UIButton):
     def __init__(self, text, center_x, center_y, width, height, **kwargs):
         super().__init__(text, center_x, center_y, width, height, **kwargs)
-        self.style_classes.append('ui3dbutton')
+        self.style_classes.append('3dbutton')
 
         self.font_size = 18
         self.font_name = ('Calibri', 'Arial')

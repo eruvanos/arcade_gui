@@ -1,4 +1,5 @@
-from unittest.mock import ANY, call
+from contextlib import ExitStack
+from unittest.mock import ANY, call, patch
 
 import arcade
 import pytest
@@ -6,13 +7,31 @@ from arcade.key import *
 
 from arcade_gui import UIEvent, TEXT_INPUT, TEXT_MOTION
 from arcade_gui.inputbox import UIInputBox
-from tests import TestUIView, T, patch_draw_commands
+from tests import TestUIView, T, MockHolder
+
+
+@pytest.fixture()
+def draw_commands():
+    """
+    Decorator
+
+    Mocks all 'arcade.draw_...' methods and injects a holder with mocks
+    """
+
+    to_patch = [attr for attr in dir(arcade) if attr.startswith('draw_')]
+    holder = MockHolder()
+
+    with ExitStack() as stack:
+        for method in to_patch:
+            holder[method] = stack.enter_context(patch(f'arcade.{method}'))
+
+        yield holder
 
 
 def test_hover_point():
     inputbox = UIInputBox(
-        x=30,
-        y=30,
+        center_x=30,
+        center_y=30,
         width=40,
         height=40,
     )
@@ -37,7 +56,7 @@ def test_hover_point():
 
 def test_highlight_on_focus():
     view = TestUIView()
-    inputbox = UIInputBox(x=30, y=30, width=40, height=40)
+    inputbox = UIInputBox(center_x=30, center_y=30, width=40, height=40)
     view.add_ui_element(inputbox)
 
     # WHEN
@@ -49,7 +68,7 @@ def test_highlight_on_focus():
 
 def test_normal_on_unfocus():
     view = TestUIView()
-    inputbox = UIInputBox(x=30, y=30, width=40, height=40)
+    inputbox = UIInputBox(center_x=30, center_y=30, width=40, height=40)
     view.add_ui_element(inputbox)
 
     # WHEN
@@ -60,53 +79,53 @@ def test_normal_on_unfocus():
     assert not inputbox.text_display.highlighted
 
 
-@patch_draw_commands
-def test_draws_border(draws):
-    inputbox = UIInputBox(x=30, y=30, width=40, height=40)
+def test_draws_border(draw_commands):
+    inputbox = UIInputBox(center_x=30, center_y=30, width=40, height=40)
+    TestUIView().add_ui_element(inputbox)
 
     inputbox.on_draw()
 
-    draws.draw_rectangle_outline.assert_called_once()
+    draw_commands.draw_rectangle_outline.assert_called_once()
 
 
-@patch_draw_commands
-def test_shows_cursor_if_highlighted(draws):
-    inputbox = UIInputBox(x=30, y=30, width=40, height=40)
+def test_shows_cursor_if_highlighted(draw_commands, view):
+    inputbox = UIInputBox(center_x=30, center_y=30, width=40, height=40)
     inputbox.text_display.highlighted = True
     inputbox.text = 'Great UI'
     inputbox.cursor_index = 6
+    TestUIView().add_ui_element(inputbox)
 
     # WHEN
     inputbox.on_draw()
 
     # THEN
-    text = draws.draw_text.call_args[0][0]
+    text = draw_commands.draw_text.call_args[0][0]
     assert text == 'Great |UI'
 
 
-@patch_draw_commands
-def test_dont_render_text_if_empty(draws):
-    inputbox = UIInputBox(x=30, y=30, width=40, height=40)
+def test_dont_render_text_if_empty(draw_commands, view):
+    inputbox = UIInputBox(center_x=30, center_y=30, width=40, height=40)
+    TestUIView().add_ui_element(inputbox)
 
     # WHEN
     inputbox.on_draw()
 
     # THEN
-    draws.draw_text.assert_not_called()
+    draw_commands.draw_text.assert_not_called()
 
 
-@patch_draw_commands
-def test_render_normal_text(draws):
+def test_render_normal_text(draw_commands, view):
     expected_font_size = 42
     expected_text = 'Great UI'
-    inputbox = UIInputBox(x=30, y=30, width=40, height=40, font_size=expected_font_size)
+    inputbox = UIInputBox(center_x=30, center_y=30, width=40, height=40, font_size=expected_font_size)
     inputbox.text = expected_text
+    TestUIView().add_ui_element(inputbox)
 
     # WHEN
     inputbox.on_draw()
 
     # THEN
-    assert draws.draw_text.call_args == call(
+    assert draw_commands.draw_text.call_args == call(
         expected_text,
         ANY,
         ANY,
@@ -117,44 +136,39 @@ def test_render_normal_text(draws):
     )
 
 
-@patch_draw_commands
-def test_changes_text_on_text_input(draws):
-    inputbox = UIInputBox(x=30, y=30, width=40, height=40)
+def test_changes_text_on_text_input(draw_commands, view):
+    inputbox = UIInputBox(center_x=30, center_y=30, width=40, height=40)
     inputbox.text_display.highlighted = True
     inputbox.text = 'Best Game Lib!'
     inputbox.cursor_index = 5
+    TestUIView().add_ui_element(inputbox)
 
     inputbox.on_event(UIEvent(TEXT_INPUT, text='a'))
     inputbox.on_draw()
 
-    text = draws.draw_text.call_args[0][0]
+    text = draw_commands.draw_text.call_args[0][0]
     assert text == 'Best a|Game Lib!'
 
 
-@patch_draw_commands
-def test_ignores_newline(draws):
-    inputbox = UIInputBox(x=30, y=30, width=40, height=40)
+def test_ignores_newline(draw_commands, view):
+    inputbox = UIInputBox(center_x=30, center_y=30, width=40, height=40)
     inputbox.text_display.highlighted = True
     inputbox.text = 'Best Game Lib!'
     inputbox.cursor_index = 5
-
-    view = TestUIView()
-    view.add_ui_element(inputbox)
+    TestUIView().add_ui_element(inputbox)
 
     inputbox.on_event(UIEvent(TEXT_INPUT, text='\r'))
     inputbox.on_draw()
 
-    text = draws.draw_text.call_args[0][0]
+    text = draw_commands.draw_text.call_args[0][0]
     assert text == 'Best |Game Lib!'
 
 
-def test_emits_event_on_enter():
-    inputbox = UIInputBox(x=30, y=30, width=40, height=40)
+def test_emits_event_on_enter(view):
+    inputbox = UIInputBox(center_x=30, center_y=30, width=40, height=40)
     inputbox.text_display.highlighted = True
     inputbox.text = 'Best Game Lib!'
     inputbox.cursor_index = 5
-
-    view = TestUIView()
     view.add_ui_element(inputbox)
 
     inputbox.on_event(UIEvent(TEXT_INPUT, text='\r'))
@@ -163,31 +177,31 @@ def test_emits_event_on_enter():
     assert view.last_event.ui_element == inputbox
 
 
-@patch_draw_commands
-def test_changes_text_on_backspace(draws):
-    inputbox = UIInputBox(x=30, y=30, width=40, height=40)
+def test_changes_text_on_backspace(draw_commands, view):
+    inputbox = UIInputBox(center_x=30, center_y=30, width=40, height=40)
     inputbox.text_display.highlighted = True
     inputbox.text = 'Best Game Lib!'
     inputbox.cursor_index = 5
+    TestUIView().add_ui_element(inputbox)
 
     inputbox.on_event(UIEvent(TEXT_MOTION, motion=MOTION_BACKSPACE))
     inputbox.on_draw()
 
-    text = draws.draw_text.call_args[0][0]
+    text = draw_commands.draw_text.call_args[0][0]
     assert text == 'Best|Game Lib!'
 
 
-@patch_draw_commands
-def test_changes_text_on_delete(draws):
-    inputbox = UIInputBox(x=30, y=30, width=40, height=40)
+def test_changes_text_on_delete(draw_commands, view):
+    inputbox = UIInputBox(center_x=30, center_y=30, width=40, height=40)
     inputbox.text_display.highlighted = True
     inputbox.text = 'Best Game Lib!'
     inputbox.cursor_index = 5
+    TestUIView().add_ui_element(inputbox)
 
     inputbox.on_event(UIEvent(TEXT_MOTION, motion=MOTION_DELETE))
     inputbox.on_draw()
 
-    text = draws.draw_text.call_args[0][0]
+    text = draw_commands.draw_text.call_args[0][0]
     assert text == 'Best |ame Lib!'
 
 
@@ -211,11 +225,12 @@ def test_changes_text_on_delete(draws):
         T('MOTION_DELETE', MOTION_DELETE, 5),
     ]
 )
-def test_changes_cursor_on_text_motion(motion, expected_index):
-    inputbox = UIInputBox(x=30, y=30, width=40, height=40)
+def test_changes_cursor_on_text_motion(motion, expected_index, view):
+    inputbox = UIInputBox(center_x=30, center_y=30, width=40, height=40)
     inputbox.text_display.highlighted = True
     inputbox.text = 'Best Game Lib!'
     inputbox.cursor_index = 5
+    view.add_ui_element(inputbox)
 
     inputbox.on_event(UIEvent(TEXT_MOTION, motion=motion))
 
@@ -223,7 +238,7 @@ def test_changes_cursor_on_text_motion(motion, expected_index):
 
 
 def test_cursor_in_sync():
-    inputbox = UIInputBox(x=30, y=30, width=40, height=40)
+    inputbox = UIInputBox(center_x=30, center_y=30, width=40, height=40)
     inputbox.text = 'awesome'
     inputbox.cursor_index = 5
 
@@ -232,7 +247,7 @@ def test_cursor_in_sync():
 
 
 def test_cursor_index_not_outside_text():
-    inputbox = UIInputBox(x=30, y=30, width=40, height=40)
+    inputbox = UIInputBox(center_x=30, center_y=30, width=40, height=40)
     inputbox.text = 'love'
     inputbox.cursor_index = 5
 
@@ -240,7 +255,7 @@ def test_cursor_index_not_outside_text():
 
 
 def test_cursor_index_always_greater_equals_0():
-    inputbox = UIInputBox(x=30, y=30, width=40, height=40)
+    inputbox = UIInputBox(center_x=30, center_y=30, width=40, height=40)
     inputbox.text = 'love'
     inputbox.cursor_index = -1
 
@@ -248,7 +263,7 @@ def test_cursor_index_always_greater_equals_0():
 
 
 def test_text_in_sync():
-    inputbox = UIInputBox(x=30, y=30, width=40, height=40)
+    inputbox = UIInputBox(center_x=30, center_y=30, width=40, height=40)
     inputbox.text = 'Nice Games!'
 
     assert inputbox.text_display.text == 'Nice Games!'

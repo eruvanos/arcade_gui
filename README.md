@@ -36,12 +36,12 @@ Examples providing an overview of features, there will be dedicated documentatio
 ## Features for first release
 
 * [x] UILabel
-    * [x] Align with UITextInput
+    * [x] Align with UITextBox
 * [x] UIButton
 * [x] Focused element tracked
 * [x] ID reference system for UIElements
 * [x] CI/CD
-* [x] UITextInput
+* [x] UITextBox
     * [x] Basic setup
     * [x] Emit event on ENTER
     * [ ] Scroll text with cursor
@@ -52,19 +52,19 @@ Examples providing an overview of features, there will be dedicated documentatio
 * [x] FlatButtons (https://codepen.io/maziarzamani/full/YXgvjv)
 * [ ] UIImageButton
 * [ ] UITexturedInputBox
-
 * [ ] Theme support
-    * [x] Load theme from yaml
+    * [x] Load style from yaml
     * [x] Parse arcade.color, hex and rgb
     * [x] Introduce style classes
-    * [ ] Use UIElement.id to lookup special theme data
+    * [ ] Use UIElement.id to lookup special style data
     * [ ] Use UIStyle in UIElements
       * [x] UI3DButton
       * [x] FlatButton
       * [x] GhostFlatButton
       * [x] UILabel
-      * [ ] UIInputBox
-    * [ ] Provide different color themes
+      * [x] UIInputBox
+      * [ ] Read font attributes from style
+    * [ ] Provide different color styles
     * [x] Overwrite properties on UIElement 
 * [ ] Add documentation and doc strings (sphinx)
     * [x] release notes
@@ -91,17 +91,18 @@ Examples providing an overview of features, there will be dedicated documentatio
 
 ### Chores
 
-* [ ] harmonize constructors `x, y` vs `center_x, center_y`
-* [ ] figure out, how `UIView.find_by_id` does not produce typing warnings
 * [ ] improve docs
     * [x] fix reference to examples
     * [x] include screenshots (at least one)
-* [ ] make 3D Button more realistic, or change to flat buttons
 * [x] support Python 3.7
 * [x] test examples render the expected screen
 * [x] separate button functionality from appearance 
-* [ ] fix hitbox of FlatButtons 
 * [x] move theme resolve logic into UIElement (now called `.parent_style()`) 
+* [ ] make 3D Button more realistic, or change to flat buttons
+* [ ] fix hitbox of FlatButtons 
+* [ ] add example for custom styles for all elements (perfect for test coverage)
+* [x] harmonize constructors `x, y` vs `center_x, center_y`
+* [ ] figure out, how `UIView.find_by_id` does not produce typing warnings
 
 ### Thoughts on themes (now called style)
 

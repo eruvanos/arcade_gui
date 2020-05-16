@@ -20,23 +20,23 @@ class MyView(arcade_gui.UIView):
         # left
         self.add_ui_element(arcade_gui.UILabel(
             'Hello world',
-            x=self.window.width // 4,
-            y=y_slot * 3,
+            center_x=self.window.width // 4,
+            center_y=y_slot * 3,
         ))
         self.add_ui_element(arcade_gui.UIInputBox(
-            x=self.window.width // 4,
-            y=y_slot * 2,
+            center_x=self.window.width // 4,
+            center_y=y_slot * 2,
         ))
 
         # right
-        self.add_ui_element(arcade_gui.FlatButton(
+        self.add_ui_element(arcade_gui.UIFlatButton(
             'FlatButton',
             center_x=self.window.width // 4 * 3,
             center_y=y_slot * 1,
             width=200,
             height=20
         ))
-        self.add_ui_element(arcade_gui.GhostFlatButton(
+        self.add_ui_element(arcade_gui.UIGhostFlatButton(
             'GhostFlatButton',
             center_x=self.window.width // 4 * 3,
             center_y=y_slot * 2,

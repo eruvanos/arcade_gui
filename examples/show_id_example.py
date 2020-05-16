@@ -16,14 +16,14 @@ class MyView(UIView):
 
         self.add_ui_element(UILabel(
             'Username:',
-            x=100,
-            y=self.window.height // 2,
+            center_x=100,
+            center_y=self.window.height // 2,
             width=300,
             height=40,
         ))
         self.add_ui_element(UIInputBox(
-            x=350,
-            y=self.window.height // 2,
+            center_x=350,
+            center_y=self.window.height // 2,
             width=300,
             height=40,
             id='username'
@@ -39,8 +39,8 @@ class MyView(UIView):
 
         self.add_ui_element(UILabel(
             '',
-            x=self.window.width // 2,
-            y=self.window.height // 2 - 100,
+            center_x=self.window.width // 2,
+            center_y=self.window.height // 2 - 100,
             width=600,
             height=40,
             id='login_message'

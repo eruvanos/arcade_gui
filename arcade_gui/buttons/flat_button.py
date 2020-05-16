@@ -3,12 +3,11 @@ import arcade
 from arcade_gui import UIButton, UIView
 
 
-class GhostFlatButton(UIButton):
+class UIGhostFlatButton(UIButton):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
         self.style_classes.append('ghostflatbutton')
-
 
     def on_draw(self):
         """ Draw the button """
@@ -61,8 +60,7 @@ class GhostFlatButton(UIButton):
             anchor_x="center", anchor_y="center")
 
 
-class FlatButton(UIButton):
-
+class UIFlatButton(UIButton):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -122,14 +120,14 @@ if __name__ == '__main__':
     window = arcade.Window(height=200, width=600)
     window.show_view(view)
 
-    view.add_ui_element(FlatButton(
+    view.add_ui_element(UIFlatButton(
         'Hallo',
         center_x=100,
         center_y=100,
         width=150,
         height=20
     ))
-    view.add_ui_element(GhostFlatButton(
+    view.add_ui_element(UIGhostFlatButton(
         'Hallo',
         center_x=300,
         center_y=100,
