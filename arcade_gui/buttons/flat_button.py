@@ -68,10 +68,6 @@ class FlatButton(UIButton):
 
         self.style_classes.append('flatbutton')
 
-    def find_color(self, param):
-        parent_theme = self.parent_style()
-        return parent_theme.get_color(self, param)
-
     def on_draw(self):
         """ Draw the button """
         font_color = self.find_color('font_color')

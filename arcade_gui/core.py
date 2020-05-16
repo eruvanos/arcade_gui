@@ -37,13 +37,29 @@ class UIElement:
         self.view = None
 
     def set_style_attrs(self, **kwargs):
-        self._style.update(kwargs)
+        """
+        Sets a custom style attribute for this UIElement
+
+        For a color the value should be formatted like 'BLACK', '42,42,42', '2A2A2A'
+
+        :param kwargs: key-value pairs
+        """
+        for key, value in kwargs.items():
+            if value is None:
+                if key in self._style:
+                    del self._style[key]
+            else:
+                self._style[key] = value
 
     def get_style_attr(self, key, default=None):
         return self._style.get(key, default)
 
     def parent_style(self) -> UIStyle:
         return self.view.style
+
+    def find_color(self, param):
+        paren_theme = self.parent_style()
+        return paren_theme.get_color(self, param)
 
     def on_event(self, event: UIEvent):
         pass

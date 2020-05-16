@@ -5,7 +5,7 @@ from arcade_gui import UIElement
 
 class UILabel(UIElement):
     def __init__(self, text, x, y,
-                 color=arcade.color.BLACK,
+                 font_color=None,
                  font_size=22,
                  anchor_x="center",
                  anchor_y="center",
@@ -16,10 +16,13 @@ class UILabel(UIElement):
                  italic: bool = False,
                  rotation=0, **kwargs):
         super().__init__(**kwargs)
+
+        self.style_classes.append('uilabel')
+        self.set_style_attrs(font_color=font_color)
+
         self.text = text
         self.x = x
         self.y = y
-        self.color = color
         self.font_size = font_size
         self.anchor_x = anchor_x
         self.anchor_y = anchor_y
@@ -31,13 +34,13 @@ class UILabel(UIElement):
         self.rotation = rotation
         self.active = True
 
-        # TODO: use style from style
-
     def on_draw(self):
+        font_color = self.find_color('font_color')
+
         arcade.draw_text(self.text,
                          self.x,
                          self.y,
-                         self.color,
+                         font_color,
                          font_size=self.font_size,
                          anchor_x=self.anchor_x,
                          anchor_y=self.anchor_y,

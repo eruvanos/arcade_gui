@@ -62,21 +62,21 @@ Examples providing an overview of features, there will be dedicated documentatio
       * [ ] UI3DButton
       * [x] FlatButton
       * [x] GhostFlatButton
-      * [ ] Label
+      * [x] UILabel
       * [ ] UIInputBox
     * [ ] Provide different color themes
-    * [ ] Overwrite properties on UIElement 
+    * [x] Overwrite properties on UIElement 
+* [ ] Add documentation and doc strings (sphinx)
+    * [x] release notes
+    * [x] setup sphinx
+    * [ ] choose a sphinx theme
+    * [ ] setup readthedocs
     * [ ] Document features
       * [ ] Quickstart
       * [ ] Interactions with ids 
       * [ ] Styles
       * [ ] Style with id and classes
       * [ ] Implement own components
-* [ ] Add documentation and doc strings (sphinx)
-    * [x] release notes
-    * [x] setup sphinx
-    * [ ] choose a sphinx theme
-    * [ ] setup readthedocs
 * [ ] track new features and issues in Github
 
 ## Features for later
@@ -145,3 +145,5 @@ Examples providing an overview of features, there will be dedicated documentatio
         * UIManager manages every interaction, new elements get the UIManager on creation
         * Elements create events and hook into pygames event system
         * Themes can be read from JSON files
+* CSS Layout Engine: [Colosseum](https://colosseum.readthedocs.io/en/latest/index.html)
+* Tkinter Geometry Manager: [doc](https://effbot.org/tkinterbook/pack.htm)

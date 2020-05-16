@@ -1,9 +1,4 @@
-from typing import Union, Tuple
-
-import arcade
-
 from arcade_gui import UIElement, UIEvent, MOUSE_PRESS, MOUSE_RELEASE
-from arcade_gui.ui_style import UIStyle
 
 
 class UIButton(UIElement):
@@ -25,10 +20,6 @@ class UIButton(UIElement):
 
         self.pressed = False
         self.hovered = False
-
-    def find_color(self, param):
-        paren_theme = self.parent_style()
-        return paren_theme.get_color(self, param)
 
     def on_event(self, event: UIEvent):
         if event.type == MOUSE_PRESS and self.hover_point(event.x, event.y):
