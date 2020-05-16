@@ -1,8 +1,9 @@
+from pathlib import Path
 from typing import List, Dict, Optional
 
 import arcade
 
-from arcade_gui.ui_theme import UITheme
+from arcade_gui.ui_style import UIStyle
 
 MOUSE_PRESS = 'MOUSE_PRESS'
 MOUSE_RELEASE = 'MOUSE_RELEASE'
@@ -28,10 +29,21 @@ class UIEvent:
 
 
 class UIElement:
-    view: 'UIView'
-
     def __init__(self, id=None, **kwargs):
         self.id = id
+        self.style_classes = list()
+        self._style = kwargs
+
+        self.view = None
+
+    def set_style_attrs(self, **kwargs):
+        self._style.update(kwargs)
+
+    def get_style_attr(self, key, default=None):
+        return self._style.get(key, default)
+
+    def parent_style(self) -> UIStyle:
+        return self.view.style
 
     def on_event(self, event: UIEvent):
         pass
@@ -95,7 +107,11 @@ class UIView(arcade.View):
         self._ui_elements: List[UIElement] = []
         self._id_cache: Dict[str, UIElement] = {}
 
-        self.theme = UITheme({})
+        import pkg_resources
+        data_path = Path(pkg_resources.resource_filename('arcade_gui', 'data'))
+        self.style = UIStyle({})
+
+        self.style.load(data_path / 'themes/default.yml')
 
     @property
     def focused_element(self):
@@ -108,8 +124,7 @@ class UIView(arcade.View):
             self._focused_element.on_unfocus()
             self._focused_element = None
 
-        if new_focus is not None:
-            new_focus.on_focus()
+        if new_focus is not None:            new_focus.on_focus()
 
         self._focused_element = new_focus
 

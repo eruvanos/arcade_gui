@@ -31,6 +31,8 @@ class UILabel(UIElement):
         self.rotation = rotation
         self.active = True
 
+        # TODO: use style from style
+
     def on_draw(self):
         arcade.draw_text(self.text,
                          self.x,

@@ -2,8 +2,3 @@ flatbutton:
   normal_color: RED
   hover_color: RED
   pressed_color: DARK_RED
-
-.submit_button:
-  normal_color: GREEN
-  hover_color: GREEN
-  pressed_color: DARK_GREEN

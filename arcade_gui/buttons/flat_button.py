@@ -1,56 +1,22 @@
-import colorsys
-
 import arcade
 
 from arcade_gui import UIButton, UIView
 
 
-class MColor:
-    def __init__(self, r: int, g: int, b: int):
-        self.g = g
-        self.r = r
-        self.b = b
-
-    @staticmethod
-    def from_hex(color: str):
-        r, g, b = MColor.hex_to_rgb(color)
-        return MColor(r, g, b)
-
-    @staticmethod
-    def hex_to_rgb(value):
-        value = value.lstrip('#')
-        lv = len(value)
-        # noinspection PyTypeChecker
-        r, g, b = tuple(int(value[i:i + lv // 3], 16) for i in range(0, lv, lv // 3))
-        return MColor(r, g, b)
-
-    def adjust_darkness(self, factor):
-        h, s, v = colorsys.rgb_to_hsv(self.r, self.g, self.b)
-        v = min(255, max(v * factor, 0))
-        r, g, b = colorsys.hsv_to_rgb(h, s, v)
-        return MColor(int(r), int(g), int(b))
-
-    def __len__(self):
-        return 3
-
-    def __iter__(self):
-        yield from self.rgb()
-
-    def __getitem__(self, index):
-        return self.rgb()[index]
-
-    def rgb(self):
-        return self.r, self.b, self.g
-
-
 class GhostFlatButton(UIButton):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.style_classes.append('ghostflatbutton')
+
+
     def on_draw(self):
         """ Draw the button """
+        font_color = self.find_color('font_color')
 
-        font_color = arcade.color.BLACK
-
-        primary_color = MColor.from_hex('#25A258').rgb()
-        secondary_color = MColor.from_hex('#25A258').adjust_darkness(0.8).rgb()
+        normal_color = self.find_color('normal_color')
+        hover_color = self.find_color('hover_color')
+        pressed_color = self.find_color('pressed_color')
 
         font_size = 20
         button_height = font_size * 2
@@ -63,7 +29,7 @@ class GhostFlatButton(UIButton):
                 center_y=self.center_y + border_x_offset,
                 width=self.width,
                 height=button_height,
-                color=secondary_color,
+                color=pressed_color,
             )
 
         elif self.hovered:
@@ -72,7 +38,7 @@ class GhostFlatButton(UIButton):
                 center_y=self.center_y + border_x_offset,
                 width=self.width,
                 height=button_height,
-                color=primary_color,
+                color=hover_color,
             )
 
         arcade.draw_rectangle_outline(
@@ -80,7 +46,7 @@ class GhostFlatButton(UIButton):
             center_y=self.center_y + border_x_offset,
             width=self.width,
             height=button_height,
-            color=primary_color,
+            color=normal_color,
             border_width=border_width,
         )
 
@@ -96,19 +62,26 @@ class GhostFlatButton(UIButton):
 
 
 class FlatButton(UIButton):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.style_classes.append('flatbutton')
+
+    def find_color(self, param):
+        parent_theme = self.parent_style()
+        return parent_theme.get_color(self, param)
+
     def on_draw(self):
         """ Draw the button """
+        font_color = self.find_color('font_color')
 
-        font_color = arcade.color.BLACK
-
-        base_color = MColor.from_hex('#25A258')
-        primary_color = base_color.rgb()
-        secondary_color = base_color.adjust_darkness(1.1).rgb()
-        tertiary_color = base_color.adjust_darkness(0.8).rgb()
+        normal_color = self.find_color('normal_color')
+        hover_color = self.find_color('hover_color')
+        pressed_color = self.find_color('pressed_color')
 
         font_size = 20
         button_height = font_size * 2
-        border_width = 3
         border_x_offset = +2
 
         if self.pressed:
@@ -117,7 +90,7 @@ class FlatButton(UIButton):
                 center_y=self.center_y + border_x_offset,
                 width=self.width,
                 height=button_height,
-                color=tertiary_color,
+                color=pressed_color,
             )
 
         elif self.hovered:
@@ -126,7 +99,7 @@ class FlatButton(UIButton):
                 center_y=self.center_y + border_x_offset,
                 width=self.width,
                 height=button_height,
-                color=secondary_color,
+                color=hover_color,
             )
         else:
             arcade.draw_rectangle_filled(
@@ -134,7 +107,7 @@ class FlatButton(UIButton):
                 center_y=self.center_y + border_x_offset,
                 width=self.width,
                 height=button_height,
-                color=primary_color,
+                color=normal_color,
             )
 
         arcade.draw_text(

@@ -51,7 +51,8 @@ def load_view(abs_module_path) -> arcade.View:
     T('show_id_example', 'show_id_example'),
     T('show_uibutton', 'show_uibutton'),
     T('show_uiinputbox', 'show_uiinputbox'),
-    T('show_uilabel', 'show_uilabel')
+    T('show_uilabel', 'show_uilabel'),
+    T('show_all', 'show_all')
 ])
 def test_id_example(window, tmp_path, example):
     expected_screen = Path(f'assets/{example}.png')

@@ -49,18 +49,45 @@ Examples providing an overview of features, there will be dedicated documentatio
 * [x] UIElements emit own UIEvents
     * [x] UIButton
     * [x] UITextInput
+* [x] FlatButtons (https://codepen.io/maziarzamani/full/YXgvjv)
 * [ ] UIImageButton
 * [ ] UITexturedInputBox
-* [ ] FlatButtons (https://codepen.io/maziarzamani/full/YXgvjv)
-* [ ] UITextArea
+
 * [ ] Theme support
-    * [ ] Provide different standard themes for flat buttons
+    * [x] Load theme from yaml
+    * [x] Parse arcade.color, hex and rgb
+    * [x] Introduce style classes
+    * [ ] Use UIElement.id to lookup special theme data
+    * [ ] Use UIStyle in UIElements
+      * [ ] UI3DButton
+      * [x] FlatButton
+      * [x] GhostFlatButton
+      * [ ] Label
+      * [ ] UIInputBox
+    * [ ] Provide different color themes
+    * [ ] Overwrite properties on UIElement 
+    * [ ] Document features
+      * [ ] Quickstart
+      * [ ] Interactions with ids 
+      * [ ] Styles
+      * [ ] Style with id and classes
+      * [ ] Implement own components
 * [ ] Add documentation and doc strings (sphinx)
     * [x] release notes
     * [x] setup sphinx
     * [ ] choose a sphinx theme
     * [ ] setup readthedocs
 * [ ] track new features and issues in Github
+
+## Features for later
+
+* [ ] Add hierarchy for ui_elements 
+* [ ] style classes can have effect on child elements
+* [ ] live refresh of loaded image
+* [ ] New UIElements
+  * [ ] UITextArea
+  * [ ] UIContainer supporting automatic positioning (row & column) 
+
 
 ### Chores
 
@@ -74,14 +101,29 @@ Examples providing an overview of features, there will be dedicated documentatio
 * [x] test examples render the expected screen
 * [x] separate button functionality from appearance 
 * [ ] fix hitbox of FlatButtons 
+* [x] move theme resolve logic into UIElement (now called `.parent_style()`) 
 
-### Thoughts on themes
+### Thoughts on themes (now called style)
 
-* UIView should hold a theme that is used by all components, added this view
-* Container Elements could override themes
-
+* UIView should hold a UIStyle that is used by all components, added to this view
+* UIElements have a _style attribute to overwrite style properties
+* Maybe supporting a hierarchy would be nice 
 
 ## Background information and other frameworks
+
+## Decisions
+
+* UIView is central component
+* One UIStyle object per UIView  
+  seems to be easier to implement a live refresh later
+* UIStyle information can be loaded from file or set programmatically
+* Themes vs Style  
+  talking to my younger brother gave me the impression, that 'style' or 'design' are more understandable then 'theme'
+* Events vs o 'on_'-callbacks  
+  Implementing new UIElements is way easier (less typing) if there is a central on_event method.  
+  Furthermore subclassing of UIElements to add custom actions like butten is pressed feels not as easy as it should be,
+  an alternative could have been a signal/slot mechanism like in QT
+
 
 ### Reference Pygame GUI projects
 
@@ -103,8 +145,3 @@ Examples providing an overview of features, there will be dedicated documentatio
         * UIManager manages every interaction, new elements get the UIManager on creation
         * Elements create events and hook into pygames event system
         * Themes can be read from JSON files
-
-
-### Ideas
-* Create own implementation
-* Build adapter for PyGame GUI

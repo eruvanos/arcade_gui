@@ -1,0 +1,24 @@
+ui3dbutton:
+  font_color: BLACK
+
+  normal_color: LIGHT_GRAY
+  hover_color: DARK_GRAY
+  pressed_color: WHITE
+
+flatbutton:
+  font_color: BLACK
+
+  normal_color: 25A258
+  hover_color: 26C06D
+  pressed_color: 1E7339
+
+ghostflatbutton:
+  font_color: BLACK
+
+  normal_color: 25A258
+  hover_color: 2BA24E
+  pressed_color: 1E7339
+
+inputbox:
+  border_color: BLACK
+  active_color: GREY

@@ -3,6 +3,7 @@ from typing import Union, Tuple
 import arcade
 
 from arcade_gui import UIElement, UIEvent, MOUSE_PRESS, MOUSE_RELEASE
+from arcade_gui.ui_style import UIStyle
 
 
 class UIButton(UIElement):
@@ -14,43 +15,20 @@ class UIButton(UIElement):
                  text,
                  center_x, center_y,
                  width, height,
-                 font_size=18, font_face: Union[str, Tuple[str, ...]] = "Arial", font_color=arcade.color.BLACK,
-                 face_color=arcade.color.LIGHT_GRAY,
-                 highlight_color=arcade.color.WHITE,
-                 shadow_color=arcade.color.GRAY,
-                 hover_color=arcade.color.DARK_GRAY,
-                 button_height=2,
-                 theme=None, **kwargs):
+                 **kwargs):
         super().__init__(**kwargs)
         self.center_x = center_x
         self.center_y = center_y
         self.width = width
         self.height = height
         self.text = text
-        self.button_height = button_height
-        self.theme = theme
-        self.font_color = font_color
+
         self.pressed = False
         self.hovered = False
 
-        if self.theme:
-            self.normal_texture = self.theme.button_textures['normal']
-            self.hover_texture = self.theme.button_textures['hover']
-            self.clicked_texture = self.theme.button_textures['clicked']
-            self.locked_texture = self.theme.button_textures['locked']
-            self.font_size = self.theme.font_size
-            self.font_name = self.theme.font_name
-            self.font_color = self.theme.font_color
-        else:
-            self.font_size = font_size
-            self.font_face = font_face
-            self.face_color = face_color
-            self.highlight_color = highlight_color
-            self.hover_color = hover_color
-            self.shadow_color = shadow_color
-            self.font_name = font_face
-        if self.font_color is None:
-            self.font_color = self.face_color
+    def find_color(self, param):
+        paren_theme = self.parent_style()
+        return paren_theme.get_color(self, param)
 
     def on_event(self, event: UIEvent):
         if event.type == MOUSE_PRESS and self.hover_point(event.x, event.y):

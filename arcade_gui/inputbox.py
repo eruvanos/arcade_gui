@@ -72,6 +72,8 @@ class TextDisplay:
                  shadow_color=arcade.color.WHITE_SMOKE,
                  highlight_color=arcade.color.WHITE,
                  theme=None):
+        # TODO: use style from UIInputBox
+
         self.center_x = center_x
         self.center_y = center_y
         self.width = width
@@ -128,7 +130,6 @@ class TextDisplay:
 
     #
     def color_theme_draw(self):
-
         if self.highlighted:
             arcade.draw_rectangle_filled(self.center_x, self.center_y, self.width, self.height, self.highlight_color)
         else:
@@ -156,19 +157,11 @@ class UIInputBox(UIElement):
     def __init__(self,
                  x, y,
                  width=300, height=40,
-                 theme=None,
                  outline_color=arcade.color.BLACK,
                  font_size=24,
                  shadow_color=arcade.color.WHITE_SMOKE,
                  highlight_color=arcade.color.WHITE, **kwargs):
         super().__init__(**kwargs)
-        # self.theme = theme
-        # if self.theme:
-        #     self.text_display = TextDisplay(x, y, width, height, theme=self.theme)
-        #     self.text_storage = TextStorage(width, theme=self.theme)
-        # else:
-        #     self.text_display = TextDisplay(x, y, width, height, outline_color, shadow_color, highlight_color)
-
         self.text_adapter = KeyAdapter()
         self.text_display = TextDisplay(x, y, width, height, font_size, outline_color, shadow_color, highlight_color)
 
