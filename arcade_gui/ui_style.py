@@ -71,8 +71,8 @@ class UIStyle:
         else:
             return None
 
-    def get_color(self, ui_element, param):
-        value = self._get(ui_element, param)
+    def get_color(self, ui_element, attr):
+        value = self._get(ui_element, attr)
         if value:
             return parse_color(value)
         else:

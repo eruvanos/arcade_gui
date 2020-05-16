@@ -31,7 +31,7 @@ class UIEvent:
 class UIElement:
     def __init__(self, id=None, **kwargs):
         self.id = id
-        self.style_classes = list()
+        self.style_classes = ['globals']
         self._style = kwargs
 
         self.view = None
@@ -127,7 +127,7 @@ class UIView(arcade.View):
         data_path = Path(pkg_resources.resource_filename('arcade_gui', 'data'))
         self.style = UIStyle({})
 
-        self.style.load(data_path / 'themes/default.yml')
+        self.style.load(data_path / 'style/default.yml')
 
     @property
     def focused_element(self):
