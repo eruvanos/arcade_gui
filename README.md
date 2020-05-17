@@ -9,6 +9,12 @@ Some UI components were copied over to adjust and fix them.
 
 This project could also end up in a PR to integrate within Arcade.
 
+## The vision - WIP
+
+ArcadeGui enables you to build this UI in 15 minutes:
+![Kenney 1 - UI Base Pack](docs\_static\UIBasePackPreview.png)
+
+
 ## Basic Components
 
 #### UIView
@@ -50,8 +56,8 @@ Examples providing an overview of features, there will be dedicated documentatio
     * [x] UIButton
     * [x] UITextInput
 * [x] FlatButtons (https://codepen.io/maziarzamani/full/YXgvjv)
-* [ ] UIImageButton
-* [ ] UITexturedInputBox
+* [x] UIImageButton
+* [ ] UITexturedInputBox (maybe include in UIInputBox)
 * [ ] Theme support
     * [x] Load style from yaml
     * [x] Parse arcade.color, hex and rgb
@@ -64,6 +70,7 @@ Examples providing an overview of features, there will be dedicated documentatio
       * [x] GhostFlatButton
       * [x] UILabel
       * [x] UIInputBox
+      * [ ] UIImageButton (images)
       * [ ] Read font attributes from style
     * [ ] Provide different color styles
     * [x] Overwrite properties on UIElement 
@@ -88,6 +95,7 @@ Examples providing an overview of features, there will be dedicated documentatio
 * [ ] New UIElements
   * [ ] UITextArea
   * [ ] UIContainer supporting automatic positioning (row & column) 
+* [ ] Layouting in general
 
 
 ### Chores
@@ -99,7 +107,7 @@ Examples providing an overview of features, there will be dedicated documentatio
 * [x] test examples render the expected screen
 * [x] separate button functionality from appearance 
 * [x] move theme resolve logic into UIElement (now called `.parent_style()`) 
-* [ ] make 3D Button more realistic, or change to flat buttons
+* [x] make 3D Button more realistic, or change to flat buttons
 * [ ] fix hitbox of FlatButtons 
 * [ ] add example for custom styles for all elements (perfect for test coverage)
 * [x] harmonize constructors `x, y` vs `center_x, center_y`

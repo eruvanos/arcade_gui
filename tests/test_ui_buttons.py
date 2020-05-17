@@ -1,11 +1,39 @@
-from unittest.mock import Mock
+import pytest
 
 from arcade_gui import UIButton
-from tests import TestUIView
 
 
-def test_hover_point():
-    button = UIButton(
+class MockButton(UIButton):
+    on_hover_called = False
+    on_unhover_called = False
+    on_press_called = False
+    on_release_called = False
+    on_click_called = False
+
+    def on_hover(self):
+        super().on_hover()
+        self.on_hover_called = True
+
+    def on_unhover(self):
+        super().on_unhover()
+        self.on_unhover_called = True
+
+    def on_press(self):
+        super().on_press()
+        self.on_press_called = True
+
+    def on_release(self):
+        super().on_release()
+        self.on_release_called = True
+
+    def on_click(self):
+        super().on_click()
+        self.on_click_called = True
+
+
+@pytest.fixture()
+def mock_button() -> MockButton:
+    return MockButton(
         'hello world',
         center_x=50,
         center_y=50,
@@ -13,80 +41,46 @@ def test_hover_point():
         height=40,
     )
 
-    assert button.hover_point(50, 50) is True
-    assert button.hover_point(30, 50) is True
-    assert button.hover_point(50, 30) is True
-    assert button.hover_point(0, 30) is False
-    assert button.hover_point(30, 0) is False
+
+def test_hover_point(mock_button):
+    assert mock_button.hover_point(50, 50) is True
+    assert mock_button.hover_point(30, 50) is True
+    assert mock_button.hover_point(50, 30) is True
+    assert mock_button.hover_point(0, 30) is False
+    assert mock_button.hover_point(30, 0) is False
 
 
-def test_uibutton_is_pressed():
-    view = TestUIView()
-    button: UIButton = UIButton(
-        'hello world',
-        center_x=50,
-        center_y=50,
-        width=40,
-        height=40,
-    )
-    button.on_press = Mock()
-    button.on_click = Mock()
-    view.add_ui_element(button)
+def test_uibutton_is_pressed(view, mock_button):
+    view.add_ui_element(mock_button)
 
     view.click_and_hold(50, 50)
 
-    assert button.pressed
-    button.on_press.assert_called_once()
-    button.on_click.assert_not_called()
+    assert mock_button.on_press_called
+    assert not mock_button.on_click_called
 
 
-def test_uibutton_clicked():
-    view = TestUIView()
-    button: UIButton = UIButton(
-        'hello world',
-        center_x=50,
-        center_y=50,
-        width=40,
-        height=40,
-    )
-    button.on_press = Mock()
-    button.on_release = Mock()
-    button.on_click = Mock()
-    view.add_ui_element(button)
+def test_uibutton_clicked(view, mock_button):
+    view.add_ui_element(mock_button)
 
     view.click(50, 50)
 
-    assert not button.pressed
-    button.on_release.assert_called_once()
-    button.on_click.assert_called_once()
+    assert mock_button.on_release
+    assert mock_button.on_click_called
 
 
-def test_uibutton_not_clicked_if_released_beside():
-    view = TestUIView()
-    button: UIButton = UIButton(
-        'hello world',
-        center_x=50,
-        center_y=50,
-        width=40,
-        height=40,
-    )
-    button.on_press = Mock()
-    button.on_release = Mock()
-    button.on_click = Mock()
-    view.add_ui_element(button)
+def test_uibutton_not_clicked_if_released_beside(view, mock_button):
+    view.add_ui_element(mock_button)
 
     view.click_and_hold(50, 50)
     view.release(100, 100)
 
-    button.on_click.assert_not_called()
+    assert not mock_button.on_click_called
 
 
-def test_uibutton_send_custom_event():
-    view = TestUIView()
-    button: UIButton = UIButton('hello world', center_x=50, center_y=50, width=40, height=40)
-    view.add_ui_element(button)
+def test_uibutton_send_custom_event(view, mock_button):
+    view.add_ui_element(mock_button)
 
     view.click(50, 50)
 
     assert view.last_event.type == UIButton.CLICKED
-    assert view.last_event.ui_element == button
+    assert view.last_event.ui_element == mock_button

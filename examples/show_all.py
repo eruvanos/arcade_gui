@@ -28,6 +28,18 @@ class MyView(arcade_gui.UIView):
             center_y=y_slot * 2,
         ))
 
+        button_normal = arcade.load_texture(arcade_gui.resources('basic_ui_pack/red/red_button11.png'))
+        hovered_texture = arcade.load_texture(arcade_gui.resources('basic_ui_pack/red/red_button01.png'))
+        pressed_texture = arcade.load_texture(arcade_gui.resources('basic_ui_pack/red/red_button00.png'))
+        self.add_ui_element(arcade_gui.UIImageButton(
+            center_x=self.window.width // 4,
+            center_y=y_slot * 1,
+            normal_texture=button_normal,
+            hovered_texture=hovered_texture,
+            pressed_texture=pressed_texture,
+            text='Start Game'
+        ))
+
         # right
         self.add_ui_element(arcade_gui.UIFlatButton(
             'FlatButton',

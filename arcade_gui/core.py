@@ -1,8 +1,8 @@
-from pathlib import Path
 from typing import List, Dict, Optional
 
 import arcade
 
+import arcade_gui
 from arcade_gui.ui_style import UIStyle
 
 MOUSE_PRESS = 'MOUSE_PRESS'
@@ -123,11 +123,8 @@ class UIView(arcade.View):
         self._ui_elements: List[UIElement] = []
         self._id_cache: Dict[str, UIElement] = {}
 
-        import pkg_resources
-        data_path = Path(pkg_resources.resource_filename('arcade_gui', 'data'))
         self.style = UIStyle({})
-
-        self.style.load(data_path / 'style/default.yml')
+        self.style.load(arcade_gui.resources.path('style/default.yml'))
 
     @property
     def focused_element(self):

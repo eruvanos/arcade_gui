@@ -5,12 +5,15 @@ import arcade_gui
 
 class MyButton(arcade_gui.UI3DButton):
     def on_press(self):
+        super().on_press()
         print('Pressed')
 
     def on_release(self):
+        super().on_release()
         print('Released')
 
     def on_click(self):
+        super().on_click()
         print('Clicked')
 
 

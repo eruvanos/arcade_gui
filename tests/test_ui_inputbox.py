@@ -1,5 +1,4 @@
-from contextlib import ExitStack
-from unittest.mock import ANY, call, patch
+from unittest.mock import ANY, call
 
 import arcade
 import pytest
@@ -7,25 +6,7 @@ from arcade.key import *
 
 from arcade_gui import UIEvent, TEXT_INPUT, TEXT_MOTION
 from arcade_gui.inputbox import UIInputBox
-from tests import TestUIView, T, MockHolder
-
-
-@pytest.fixture()
-def draw_commands():
-    """
-    Decorator
-
-    Mocks all 'arcade.draw_...' methods and injects a holder with mocks
-    """
-
-    to_patch = [attr for attr in dir(arcade) if attr.startswith('draw_')]
-    holder = MockHolder()
-
-    with ExitStack() as stack:
-        for method in to_patch:
-            holder[method] = stack.enter_context(patch(f'arcade.{method}'))
-
-        yield holder
+from tests import T
 
 
 def test_hover_point():
@@ -54,8 +35,7 @@ def test_hover_point():
     assert inputbox.hover_point(40, 9) is False
 
 
-def test_highlight_on_focus():
-    view = TestUIView()
+def test_highlight_on_focus(view):
     inputbox = UIInputBox(center_x=30, center_y=30, width=40, height=40)
     view.add_ui_element(inputbox)
 
@@ -66,8 +46,7 @@ def test_highlight_on_focus():
     assert inputbox.text_display.highlighted
 
 
-def test_normal_on_unfocus():
-    view = TestUIView()
+def test_normal_on_unfocus(view):
     inputbox = UIInputBox(center_x=30, center_y=30, width=40, height=40)
     view.add_ui_element(inputbox)
 
@@ -79,9 +58,9 @@ def test_normal_on_unfocus():
     assert not inputbox.text_display.highlighted
 
 
-def test_draws_border(draw_commands):
+def test_draws_border(draw_commands, view):
     inputbox = UIInputBox(center_x=30, center_y=30, width=40, height=40)
-    TestUIView().add_ui_element(inputbox)
+    view.add_ui_element(inputbox)
 
     inputbox.on_draw()
 
@@ -93,7 +72,7 @@ def test_shows_cursor_if_highlighted(draw_commands, view):
     inputbox.text_display.highlighted = True
     inputbox.text = 'Great UI'
     inputbox.cursor_index = 6
-    TestUIView().add_ui_element(inputbox)
+    view.add_ui_element(inputbox)
 
     # WHEN
     inputbox.on_draw()
@@ -105,7 +84,7 @@ def test_shows_cursor_if_highlighted(draw_commands, view):
 
 def test_dont_render_text_if_empty(draw_commands, view):
     inputbox = UIInputBox(center_x=30, center_y=30, width=40, height=40)
-    TestUIView().add_ui_element(inputbox)
+    view.add_ui_element(inputbox)
 
     # WHEN
     inputbox.on_draw()
@@ -119,7 +98,7 @@ def test_render_normal_text(draw_commands, view):
     expected_text = 'Great UI'
     inputbox = UIInputBox(center_x=30, center_y=30, width=40, height=40, font_size=expected_font_size)
     inputbox.text = expected_text
-    TestUIView().add_ui_element(inputbox)
+    view.add_ui_element(inputbox)
 
     # WHEN
     inputbox.on_draw()
@@ -141,7 +120,7 @@ def test_changes_text_on_text_input(draw_commands, view):
     inputbox.text_display.highlighted = True
     inputbox.text = 'Best Game Lib!'
     inputbox.cursor_index = 5
-    TestUIView().add_ui_element(inputbox)
+    view.add_ui_element(inputbox)
 
     inputbox.on_event(UIEvent(TEXT_INPUT, text='a'))
     inputbox.on_draw()
@@ -155,7 +134,7 @@ def test_ignores_newline(draw_commands, view):
     inputbox.text_display.highlighted = True
     inputbox.text = 'Best Game Lib!'
     inputbox.cursor_index = 5
-    TestUIView().add_ui_element(inputbox)
+    view.add_ui_element(inputbox)
 
     inputbox.on_event(UIEvent(TEXT_INPUT, text='\r'))
     inputbox.on_draw()
@@ -182,7 +161,7 @@ def test_changes_text_on_backspace(draw_commands, view):
     inputbox.text_display.highlighted = True
     inputbox.text = 'Best Game Lib!'
     inputbox.cursor_index = 5
-    TestUIView().add_ui_element(inputbox)
+    view.add_ui_element(inputbox)
 
     inputbox.on_event(UIEvent(TEXT_MOTION, motion=MOTION_BACKSPACE))
     inputbox.on_draw()
@@ -196,7 +175,7 @@ def test_changes_text_on_delete(draw_commands, view):
     inputbox.text_display.highlighted = True
     inputbox.text = 'Best Game Lib!'
     inputbox.cursor_index = 5
-    TestUIView().add_ui_element(inputbox)
+    view.add_ui_element(inputbox)
 
     inputbox.on_event(UIEvent(TEXT_MOTION, motion=MOTION_DELETE))
     inputbox.on_draw()

@@ -4,6 +4,8 @@ import sys
 from pathlib import Path
 from typing import Union
 
+import pkg_resources
+
 
 def create_resource_path(relative_path: Union[str, Path]):
     """
@@ -20,6 +22,18 @@ def create_resource_path(relative_path: Union[str, Path]):
         base_path = os.path.abspath(".")
 
     return os.path.join(base_path, relative_path)
+
+
+class Resources:
+    def __call__(self, file: str) -> Path:
+        return self.get(file)
+
+    @staticmethod
+    def get(file: str) -> Path:
+        return pkg_resources.resource_filename('arcade_gui', f'resources/{file}')
+
+    def path(self, file: str):
+        return Path(self.get(file))
 
 
 class MColor:

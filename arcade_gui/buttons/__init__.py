@@ -23,11 +23,9 @@ class UIButton(UIElement):
 
     def on_event(self, event: UIEvent):
         if event.type == MOUSE_PRESS and self.hover_point(event.x, event.y):
-            self.pressed = True
             self.on_press()
         elif event.type == MOUSE_RELEASE and self.pressed:
             if self.pressed:
-                self.pressed = False
                 self.on_release()
 
                 if self.hover_point(event.x, event.y):
@@ -41,10 +39,10 @@ class UIButton(UIElement):
         self.hovered = False
 
     def on_press(self):
-        pass
+        self.pressed = True
 
     def on_release(self):
-        pass
+        self.pressed = False
 
     def on_click(self):
         pass
