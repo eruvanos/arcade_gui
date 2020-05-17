@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/eruvanos/arcade_gui.svg?branch=master)](https://travis-ci.org/eruvanos/arcade_gui)
+[![Documentation Status](https://readthedocs.org/projects/arcade-gui/badge/?version=latest)](https://arcade-gui.readthedocs.io/en/latest/?badge=latest)
 
 # GUI Library for Python Arcade
 
@@ -108,9 +109,9 @@ Examples providing an overview of features, there will be dedicated documentatio
 * [x] separate button functionality from appearance 
 * [x] move theme resolve logic into UIElement (now called `.parent_style()`) 
 * [x] make 3D Button more realistic, or change to flat buttons
+* [x] harmonize constructors `x, y` vs `center_x, center_y`
 * [ ] fix hitbox of FlatButtons 
 * [ ] add example for custom styles for all elements (perfect for test coverage)
-* [x] harmonize constructors `x, y` vs `center_x, center_y`
 * [ ] figure out, how `UIView.find_by_id` does not produce typing warnings
 
 ### Thoughts on themes (now called style)

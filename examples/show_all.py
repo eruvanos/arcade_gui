@@ -19,14 +19,17 @@ class MyView(arcade_gui.UIView):
 
         # left
         self.add_ui_element(arcade_gui.UILabel(
-            'Hello world',
+            'UILabel',
             center_x=self.window.width // 4,
             center_y=y_slot * 3,
         ))
-        self.add_ui_element(arcade_gui.UIInputBox(
+        ui_input_box = arcade_gui.UIInputBox(
             center_x=self.window.width // 4,
             center_y=y_slot * 2,
-        ))
+        )
+        ui_input_box.text = 'UIInputBox'
+        ui_input_box.cursor_index = len(ui_input_box.text)
+        self.add_ui_element(ui_input_box)
 
         button_normal = arcade.load_texture(arcade_gui.resources('basic_ui_pack/red/red_button11.png'))
         hovered_texture = arcade.load_texture(arcade_gui.resources('basic_ui_pack/red/red_button01.png'))
@@ -37,7 +40,7 @@ class MyView(arcade_gui.UIView):
             normal_texture=button_normal,
             hovered_texture=hovered_texture,
             pressed_texture=pressed_texture,
-            text='Start Game'
+            text='UIImageButton'
         ))
 
         # right
