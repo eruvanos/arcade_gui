@@ -88,6 +88,10 @@ Examples providing an overview of features, there will be dedicated documentatio
       * [ ] Implement own components
 * [ ] track new features and issues in Github
 
+## Roadmap to arcade 2.4
+
+* [ ] render textures, and draw UIElements using a SpriteList
+
 ## Features for later
 
 * [ ] Add hierarchy for ui_elements 
