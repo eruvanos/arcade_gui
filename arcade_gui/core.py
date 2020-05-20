@@ -1,6 +1,7 @@
-from typing import List, Dict, Optional
+from typing import Dict, Optional
 
 import arcade
+from arcade import SpriteList
 
 import arcade_gui
 from arcade_gui.ui_style import UIStyle
@@ -28,13 +29,12 @@ class UIEvent:
         return ' '.join([f'{self.type} ', *[f'{key}={getattr(self, key)}' for key in self._repr_keys]])
 
 
-class UIElement:
-    def __init__(self, id=None, **kwargs):
-        self.id = id
-        self.style_classes = ['globals']
-        self._style = kwargs
+class Styled:
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
-        self.view = None
+        self.style_classes = ['globals']
+        self._style = {}
 
     def set_style_attrs(self, **kwargs):
         """
@@ -54,17 +54,31 @@ class UIElement:
     def get_style_attr(self, key, default=None):
         return self._style.get(key, default)
 
+
+class UIElement(Styled, arcade.Sprite):
+    def __init__(self,
+                 center_x=0, center_y=0,
+                 id=None,
+                 **kwargs):
+        super().__init__()
+        self.id = id
+        self.view = None
+
+        # what do we need to be a proper sprite
+        # self.texture <- subclass
+        # self.width/height <- subclass
+        self.center_x = center_x
+        self.center_y = center_y
+
     def parent_style(self) -> UIStyle:
         return self.view.style
 
     def find_color(self, param):
+        # TODO would be better to parse the values on load and just return the values, instead of find_xyz
         parent_style = self.parent_style()
         return parent_style.get_color(self, param)
 
     def on_event(self, event: UIEvent):
-        pass
-
-    def on_draw(self):
         pass
 
     def on_focus(self):
@@ -91,7 +105,7 @@ class UIElement:
         """
         pass
 
-    def on_update(self, dt: float):
+    def on_update(self, delta_time: float = 1 / 60):
         pass
 
     def hover_point(self, hover_x: float, hover_y: float) -> bool:
@@ -120,7 +134,7 @@ class UIView(arcade.View):
         self._focused_element: Optional[UIElement] = None
         self._hovered_element: Optional[UIElement] = None
 
-        self._ui_elements: List[UIElement] = []
+        self._ui_elements: SpriteList[UIElement] = SpriteList(use_spatial_hash=True)
         self._id_cache: Dict[str, UIElement] = {}
 
         self.style = UIStyle({})
@@ -157,17 +171,18 @@ class UIView(arcade.View):
         self._hovered_element = new_hover
 
     def purge_ui_elements(self):
-        self._ui_elements = []
+        self._ui_elements = SpriteList()
         self._id_cache = {}
 
     def add_ui_element(self, ui_element: UIElement):
-        ui_element.view = self
-        self._ui_elements.append(ui_element)
-
         if not hasattr(ui_element, 'id'):
             raise UIException('UIElement seems not to be properly setup, please check if you'
                               ' overwrite the constructor and forgot "super().__init__(**kwargs)"')
 
+        ui_element.view = self
+        self._ui_elements.append(ui_element)
+
+        # Add elements with id to lookup
         if ui_element.id is not None:
             if ui_element.id in self._id_cache:
                 raise UIException(f'duplicate id "{ui_element.id}"')
@@ -190,8 +205,7 @@ class UIView(arcade.View):
         :return:
         """
         arcade.start_render()
-        for ui_element in self._ui_elements:
-            ui_element.on_draw()
+        self._ui_elements.draw()
 
     def on_event(self, event: UIEvent):
         """

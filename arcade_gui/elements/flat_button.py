@@ -1,9 +1,9 @@
 import arcade
 
-from arcade_gui import UIButton, UIView
+from arcade_gui import UIAbstractButton, UIView
 
 
-class UIGhostFlatButton(UIButton):
+class UIGhostFlatButton(UIAbstractButton):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -60,7 +60,7 @@ class UIGhostFlatButton(UIButton):
             anchor_x="center", anchor_y="center")
 
 
-class UIFlatButton(UIButton):
+class UIFlatButton(UIAbstractButton):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 

@@ -15,13 +15,13 @@ from arcade_gui.core import (
     TEXT_MOTION,
     TEXT_MOTION_SELECTION
 )
-from arcade_gui.buttons import UIButton
-from arcade_gui.buttons.ui3dbutton import UI3DButton
-from arcade_gui.buttons.flat_button import UIFlatButton, UIGhostFlatButton
-from arcade_gui.buttons.image_button import UIImageButton
+from arcade_gui.elements import UIAbstractButton
+from arcade_gui.elements.flat_button import UIFlatButton, UIGhostFlatButton
+from arcade_gui.elements.image_button import UIImageButton
 
-from arcade_gui.inputbox import UIInputBox
-from arcade_gui.label import UILabel
+from arcade_gui.elements.inputbox import UIInputBox
+from arcade_gui.elements.label import UILabel
+from arcade_gui.elements.ui3dbutton import UI3DButton
 
 resources = utils.Resources()
 
@@ -32,7 +32,7 @@ __all__ = [
     'UIException',
     'UILabel',
     'UIInputBox',
-    'UIButton',
+    'UIAbstractButton',
     'UI3DButton',
     'UIFlatButton',
     'UIGhostFlatButton',

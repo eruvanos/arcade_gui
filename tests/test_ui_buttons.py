@@ -1,9 +1,9 @@
 import pytest
 
-from arcade_gui import UIButton
+from arcade_gui import UIAbstractButton
 
 
-class MockButton(UIButton):
+class MockButton(UIAbstractButton):
     on_hover_called = False
     on_unhover_called = False
     on_press_called = False
@@ -82,5 +82,5 @@ def test_uibutton_send_custom_event(view, mock_button):
 
     view.click(50, 50)
 
-    assert view.last_event.type == UIButton.CLICKED
+    assert view.last_event.type == UIAbstractButton.CLICKED
     assert view.last_event.ui_element == mock_button

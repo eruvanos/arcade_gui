@@ -1,10 +1,10 @@
 import arcade
 from pyglet.image import Texture
 
-from arcade_gui import UIButton
+from arcade_gui import UIAbstractButton
 
 
-class UIImageButton(UIButton):
+class UIImageButton(UIAbstractButton):
 
     def __init__(self,
                  center_x,

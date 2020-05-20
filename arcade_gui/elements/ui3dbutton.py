@@ -1,9 +1,9 @@
 import arcade
 
-from arcade_gui import UIButton
+from arcade_gui import UIAbstractButton
 
 
-class UI3DButton(UIButton):
+class UI3DButton(UIAbstractButton):
     def __init__(self, text, center_x, center_y, width, height, **kwargs):
         super().__init__(text, center_x, center_y, width, height, **kwargs)
         self.style_classes.append('3dbutton')

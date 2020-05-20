@@ -5,7 +5,7 @@ import pytest
 from arcade.key import *
 
 from arcade_gui import UIEvent, TEXT_INPUT, TEXT_MOTION
-from arcade_gui.inputbox import UIInputBox
+from arcade_gui.elements.inputbox import UIInputBox
 from tests import T
 
 
