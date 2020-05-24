@@ -1,78 +1,66 @@
-import arcade
-from pyglet.image import Texture
+from uuid import uuid4
 
-from arcade_gui import UIAbstractButton
+import arcade
+from arcade import Texture
+
+from arcade_gui import UIAbstractButton, utils
 
 
 class UIImageButton(UIAbstractButton):
-
     def __init__(self,
                  center_x,
                  center_y,
                  normal_texture: Texture,
-                 hovered_texture: Texture,
-                 pressed_texture: Texture,
+                 hover_texture: Texture,
+                 press_texture: Texture,
                  text='',
                  **kwargs
                  ):
-        self.normal_texture = normal_texture
-        self.hovered_texture = hovered_texture
-        self.pressed_texture = pressed_texture
-
-        width = min(
-            self.normal_texture.width,
-            self.hovered_texture.width,
-            self.pressed_texture.width,
-        )
-        height = min(
-            self.normal_texture.height,
-            self.hovered_texture.height,
-            self.pressed_texture.height,
-        )
-
         super().__init__(
-            text,
             center_x,
             center_y,
-            width,
-            height,
             **kwargs
         )
 
-    def on_draw(self):
-        if self.pressed:
-            arcade.draw_texture_rectangle(
-                self.center_x,
-                self.center_y,
-                self.width,
-                self.height,
-                self.pressed_texture
-            )
-        elif self.hovered:
-            arcade.draw_texture_rectangle(
-                self.center_x,
-                self.center_y,
-                self.width,
-                self.height,
-                self.hovered_texture
-            )
+        self._normal_texture = normal_texture
+        self._hover_texture = hover_texture
+        self._press_texture = press_texture
+        if text:
+            self.render_with_text(text)
         else:
-            arcade.draw_texture_rectangle(
-                self.center_x,
-                self.center_y,
-                self.width,
-                self.height,
-                self.normal_texture
-            )
+            self.normal_texture = normal_texture
+            self.hover_texture = hover_texture
+            self.press_texture = press_texture
 
-        if self.text:
-            font_color = self.find_color('font_color')
+        self.set_proper_texture()
 
-            arcade.draw_text(self.text,
-                             self.center_x, self.center_y,
-                             font_color,
-                             width=self.width,
-                             font_size=20,
-                             align='center',
-                             anchor_x="center", anchor_y="center"
-                             )
+    def render_with_text(self, text: str):
+        font_color = arcade.color.GRAY
+        font_size = 20
+
+        normal_image = utils.get_image_with_text(text,
+                                                 background_image=self._normal_texture.image,
+                                                 text_color=font_color,
+                                                 font_size=font_size,
+                                                 align='center',
+                                                 valign='middle'
+                                                 )
+        self.normal_texture = Texture(str(uuid4()), image=normal_image)
+
+        hover_image = utils.get_image_with_text(text,
+                                                background_image=self._hover_texture.image,
+                                                text_color=font_color,
+                                                font_size=font_size,
+                                                align='center',
+                                                valign='middle'
+                                                )
+        self.hover_texture = Texture(str(uuid4()), image=hover_image)
+
+        press_image = utils.get_image_with_text(text,
+                                                background_image=self._press_texture.image,
+                                                text_color=font_color,
+                                                font_size=font_size,
+                                                align='center',
+                                                valign='middle'
+                                                )
+        self.press_texture = Texture(str(uuid4()), image=press_image)

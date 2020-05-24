@@ -21,7 +21,6 @@ from arcade_gui.elements.image_button import UIImageButton
 
 from arcade_gui.elements.inputbox import UIInputBox
 from arcade_gui.elements.label import UILabel
-from arcade_gui.elements.ui3dbutton import UI3DButton
 
 resources = utils.Resources()
 
@@ -33,7 +32,6 @@ __all__ = [
     'UILabel',
     'UIInputBox',
     'UIAbstractButton',
-    'UI3DButton',
     'UIFlatButton',
     'UIGhostFlatButton',
     'UIImageButton',

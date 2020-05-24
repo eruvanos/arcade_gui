@@ -9,9 +9,10 @@ class UIAbstractButton(UIElement):
     def __init__(self,
                  center_x=0, center_y=0,
                  width=None, height=None,
+                 *args,
                  **kwargs):
         super().__init__(
-            center_x=center_x, center_y=center_y, id=None
+            center_x=center_x, center_y=center_y, **kwargs
         )
         self.width = width
         self.height = height
@@ -20,8 +21,8 @@ class UIAbstractButton(UIElement):
         self.hovered = False
 
         self.normal_texture = None
-        self.mouse_over_texture = None
-        self.mouse_press_texture = None
+        self.hover_texture = None
+        self.press_texture = None
 
     def on_event(self, event: UIEvent):
         if event.type == MOUSE_PRESS and self.hover_point(event.x, event.y):
@@ -36,11 +37,10 @@ class UIAbstractButton(UIElement):
 
     def set_proper_texture(self):
         """ Set normal, mouse-over, or clicked texture. """
-        # TODO maybe call from UIView
         if self.pressed:
-            self.texture = self.mouse_press_texture
+            self.texture = self.press_texture
         elif self.hovered:
-            self.texture = self.mouse_over_texture
+            self.texture = self.hover_texture
         else:
             self.texture = self.normal_texture
 

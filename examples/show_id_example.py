@@ -1,6 +1,6 @@
 import arcade
 
-from arcade_gui import UIView, UILabel, UIAbstractButton, UIInputBox, UIEvent, UI3DButton
+from arcade_gui import UIView, UILabel, UIAbstractButton, UIInputBox, UIEvent, UIFlatButton
 
 
 class MyView(UIView):
@@ -8,7 +8,7 @@ class MyView(UIView):
         super().__init__()
 
     def on_show(self):
-        arcade.set_background_color(arcade.color.WHITE)
+        arcade.set_background_color(arcade.color.BLACK)
         self.setup()
 
     def setup(self):
@@ -28,7 +28,7 @@ class MyView(UIView):
             height=40,
             id='username'
         ))
-        self.add_ui_element(UI3DButton(
+        self.add_ui_element(UIFlatButton(
             'Login',
             center_x=650,
             center_y=self.window.height // 2,

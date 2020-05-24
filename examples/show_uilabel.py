@@ -9,7 +9,7 @@ class MyView(arcade_gui.UIView):
         super().__init__()
 
     def on_show(self):
-        arcade.set_background_color(arcade.color.WHITE)
+        arcade.set_background_color(arcade.color.BLACK)
         self.setup()
 
     def setup(self):
@@ -19,6 +19,9 @@ class MyView(arcade_gui.UIView):
             'Hello world',
             center_x=self.window.width // 2,
             center_y=self.window.height // 2,
+            font_color=arcade.color.WHITE,
+            font_color_hover=arcade.color.LIGHT_GRAY,
+            font_color_press=arcade.color.GRAY,
         ))
 
 

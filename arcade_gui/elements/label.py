@@ -7,7 +7,7 @@ from arcade_gui.utils import get_text_image
 class UILabel(UIAbstractButton):
     def __init__(self, text,
                  center_x, center_y,
-                 width: int = None,
+                 width: int = 0,
 
                  font_name=('Calibri', 'Arial'),
                  font_size=22,
@@ -17,7 +17,7 @@ class UILabel(UIAbstractButton):
 
                  align="center",
                  **kwargs):
-        super().__init__(**kwargs)
+        super().__init__(center_x=center_x, center_y=center_y, width=width, **kwargs)
 
         self.style_classes.append('label')
 
@@ -26,41 +26,52 @@ class UILabel(UIAbstractButton):
         if font_color_press is None:
             font_color_press = font_color
 
-        self.set_style_attrs(font_name=font_name)
-        self.set_style_attrs(font_size=font_size)
-        self.set_style_attrs(font_color=font_color)
-        self.set_style_attrs(font_color_hover=font_color)
-        self.set_style_attrs(font_color_press=font_color)
+        self.font_size = font_size
+        self.font_name = font_name
 
-        self.center_x = center_x
-        self.center_y = center_y
-        self.width = width  # TODO needed?
-        if width is None:
-            width = 0
+        self.font_color = font_color
+        self.font_color_hover = font_color_hover
+        self.font_color_press = font_color_press
 
-        text_image_normal = get_text_image(text=text,
-                                           text_color=font_color,
-                                           font_size=font_size,
-                                           font_name=font_name,
-                                           align=align,
-                                           width=width,
+        self.align = align
+        self.width = width
+
+        self.text = text
+
+    @property
+    def text(self):
+        return self._text
+
+    @text.setter
+    def text(self, value):
+        self._text = value
+        self.render_texture()
+
+    def render_texture(self):
+
+        text_image_normal = get_text_image(text=self.text,
+                                           text_color=self.font_color,
+                                           font_size=self.font_size,
+                                           font_name=self.font_name,
+                                           align=self.align,
+                                           width=int(self.width),
                                            )
-        text_image_mouse_over = get_text_image(text=text,
-                                               text_color=font_color_hover,
-                                               font_size=font_size,
-                                               font_name=font_name,
-                                               align=align,
-                                               width=width,
+        text_image_mouse_over = get_text_image(text=self.text,
+                                               text_color=self.font_color_hover,
+                                               font_size=self.font_size,
+                                               font_name=self.font_name,
+                                               align=self.align,
+                                               width=int(self.width),
                                                )
-        text_image_mouse_press = get_text_image(text=text,
-                                                text_color=font_color_press,
-                                                font_size=font_size,
-                                                font_name=font_name,
-                                                align=align,
-                                                width=width,
+        text_image_mouse_press = get_text_image(text=self.text,
+                                                text_color=self.font_color_press,
+                                                font_size=self.font_size,
+                                                font_name=self.font_name,
+                                                align=self.align,
+                                                width=int(self.width),
                                                 )
 
-        self.normal_texture = arcade.Texture(image=text_image_normal, name=text)
-        self.mouse_press_texture = arcade.Texture(image=text_image_mouse_press, name=text + "3")
-        self.mouse_over_texture = arcade.Texture(image=text_image_mouse_over, name=text + "6")
+        self.normal_texture = arcade.Texture(image=text_image_normal, name=self.text + '1')
+        self.press_texture = arcade.Texture(image=text_image_mouse_press, name=self.text + '2')
+        self.hover_texture = arcade.Texture(image=text_image_mouse_over, name=self.text + '3')
         self.set_proper_texture()

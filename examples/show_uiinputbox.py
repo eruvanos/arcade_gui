@@ -8,7 +8,7 @@ class MyView(arcade_gui.UIView):
         super().__init__()
 
     def on_show(self):
-        arcade.set_background_color(arcade.color.WHITE)
+        arcade.set_background_color(arcade.color.BLACK)
         self.setup()
 
     def setup(self):
@@ -23,7 +23,6 @@ class MyView(arcade_gui.UIView):
 
     def on_text(self, text):
         super().on_text(text)
-        print()
 
 
 if __name__ == '__main__':
