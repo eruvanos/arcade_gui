@@ -126,7 +126,6 @@ class UIInputBox(UIClickable):
         self.focus_texture = None
 
         self.render_textures()
-        self.set_proper_texture()
 
     def render_textures(self):
         """
@@ -255,10 +254,9 @@ class UIInputBox(UIClickable):
 
         if self.focused:
             if event.type == TEXT_INPUT and event.text == '\r':
-                self.view.on_event(UIEvent(UIInputBox.ENTER, ui_element=self))
+                self.parent.on_event(UIEvent(UIInputBox.ENTER, ui_element=self))
                 return
 
             self.text_adapter.on_event(event)
 
         self.render_textures()
-        self.set_proper_texture()

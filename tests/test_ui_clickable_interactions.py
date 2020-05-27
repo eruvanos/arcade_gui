@@ -1,3 +1,7 @@
+from uuid import uuid4
+
+import PIL
+import arcade
 import pytest
 
 from arcade_gui import UIClickable
@@ -32,14 +36,35 @@ class MockButton(UIClickable):
 
 
 @pytest.fixture()
-def mock_button() -> MockButton:
-    return MockButton(
-        'hello world',
-        center_x=50,
-        center_y=50,
-        width=40,
-        height=40,
-    )
+def mock_button(view) -> MockButton:
+    button = MockButton(view, center_x=50, center_y=50)
+
+    button.normal_texture = arcade.Texture(image=PIL.Image.new("RGBA", (40, 40)), name=str(uuid4()))
+    button.hover_texture = arcade.Texture(image=PIL.Image.new("RGBA", (40, 40)), name=str(uuid4()))
+    button.press_texture = arcade.Texture(image=PIL.Image.new("RGBA", (40, 40)), name=str(uuid4()))
+    button.focus_texture = arcade.Texture(image=PIL.Image.new("RGBA", (40, 40)), name=str(uuid4()))
+    return button
+
+
+def test_has_normal_state(mock_button):
+    assert not mock_button.hovered
+    assert not mock_button.pressed
+    assert not mock_button.focused
+
+
+def test_change_state_on_hover(mock_button):
+    mock_button.on_hover()
+    assert mock_button.hovered
+
+
+def test_change_state_on_press(mock_button):
+    mock_button.on_press()
+    assert mock_button.pressed
+
+
+def test_change_state_on_button(mock_button):
+    mock_button.on_focus()
+    assert mock_button.focused
 
 
 def test_hover_point(mock_button):

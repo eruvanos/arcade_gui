@@ -80,4 +80,3 @@ class UILabel(UIClickable):
         self.normal_texture = arcade.Texture(image=text_image_normal, name=self.text + '1')
         self.press_texture = arcade.Texture(image=text_image_mouse_press, name=self.text + '2')
         self.hover_texture = arcade.Texture(image=text_image_mouse_over, name=self.text + '3')
-        self.set_proper_texture()

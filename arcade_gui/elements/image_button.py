@@ -34,8 +34,6 @@ class UIImageButton(UIClickable):
             self.hover_texture = hover_texture
             self.press_texture = press_texture
 
-        self.set_proper_texture()
-
     def render_with_text(self, text: str):
         font_color = arcade.color.GRAY
         font_size = 20

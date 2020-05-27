@@ -65,7 +65,6 @@ class UIElement(UIStyled, arcade.Sprite):
         super().__init__()
         self.__id = id
         self.parent = parent
-        parent.add_ui_element(self)
 
         # what do we need to be a proper sprite
         # self.texture <- subclass
@@ -187,7 +186,7 @@ class UIView(arcade.View):
             raise UIException('UIElement seems not to be properly setup, please check if you'
                               ' overwrite the constructor and forgot "super().__init__(**kwargs)"')
 
-        ui_element.view = self
+        ui_element.parent = self
         self._ui_elements.append(ui_element)
 
         # Add elements with id to lookup

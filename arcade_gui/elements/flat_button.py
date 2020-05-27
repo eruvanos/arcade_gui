@@ -3,7 +3,7 @@ from uuid import uuid4
 import arcade
 
 from arcade_gui import UIClickable, UIView
-from arcade_gui.elements import render_text_image
+from arcade_gui.utils import render_text_image
 
 
 class UIAbstractFlatButton(UIClickable):
@@ -96,7 +96,6 @@ class UIAbstractFlatButton(UIClickable):
         self.normal_texture = arcade.Texture(image=text_image_normal, name=str(uuid4()))
         self.hover_texture = arcade.Texture(image=text_image_hover, name=str(uuid4()))
         self.press_texture = arcade.Texture(image=text_image_press, name=str(uuid4()))
-        self.set_proper_texture()
 
 
 class UIFlatButton(UIAbstractFlatButton):
@@ -109,28 +108,3 @@ class UIGhostFlatButton(UIAbstractFlatButton):
     def __init__(self, parent, text, center_x, center_y, width: int = None, align="center", **kwargs):
         super().__init__(parent, text, center_x, center_y, width, align, **kwargs)
         self.style_classes.append('ghostflatbutton')
-
-
-if __name__ == '__main__':
-    view = UIView()
-    window = arcade.Window(height=200, width=600)
-    window.show_view(view)
-
-    view.add_ui_element(UIFlatButton(
-        'Hallo',
-        center_x=100,
-        center_y=100,
-        width=150,
-        height=20
-    ))
-    # view.add_ui_element(UIGhostFlatButton(
-    #     'Hallo',
-    #     center_x=300,
-    #     center_y=100,
-    #     width=150,
-    #     height=20
-    # ))
-
-    arcade.set_background_color(arcade.color.WHITE)
-    window.set_location(1200, 50)
-    arcade.run()

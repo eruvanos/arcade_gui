@@ -3,11 +3,13 @@ import os
 import sys
 from itertools import chain
 from pathlib import Path
-from typing import Union, cast, Tuple
+from typing import Union, cast, Tuple, Optional
 
 import PIL
+import arcade
 import pkg_resources
-from PIL import Image
+from PIL import Image, ImageDraw
+from PIL.Image import Image
 from arcade import RGBA, DEFAULT_FONT_NAMES, Color
 
 
@@ -91,7 +93,7 @@ def add_margin(pil_img, top, right, bottom, left, color=None):
 def get_image_with_text(text: str,
                         font_color: Color,
                         font_size: float = 12,
-                        background_image: Image.Image = None,
+                        background_image: Image = None,
                         align: str = "left",
                         valign: str = "top",
                         font_name: Union[str, Tuple[str, ...]] = ('calibri', 'arial'),
@@ -324,4 +326,75 @@ def get_text_image(text: str,
     draw.multiline_text((image_start_x, image_start_y), text, font_color, align=align, font=font)
     image = image.resize((max(1, text_image_size[0] // scale_down), text_image_size[1] // scale_down),
                          resample=PIL.Image.LANCZOS)
+    return image
+
+
+def render_text_image(
+        text: str,
+
+        font_size=22,
+        font_name=('Calibri', 'Arial'),
+        font_color: Color = arcade.color.WHITE,
+
+        border_width: int = 2,
+        border_color: Optional[Color] = arcade.color.WHITE,
+
+        align: str = "left",
+        valign: str = "top",
+
+        bg_color: Optional[Color] = None,
+        bg_image: Optional[Image] = None,
+
+        width: Optional[int] = None,
+        height: Optional[int] = None,
+        indent: int = 0
+):
+    if bg_image:
+
+        if width:
+            if not height:
+                height = bg_image.height
+            bg_image.resize((width, height), resample=PIL.Image.LANCZOS)
+
+        image = get_image_with_text(
+            text,
+            font_name=font_name,
+            font_color=font_color,
+            font_size=font_size,
+
+            background_image=bg_image,
+            align=align,
+            valign=valign,
+            indent=indent
+        )
+    else:
+        image = get_text_image(
+            text,
+            font_name=font_name,
+            font_color=font_color,
+            font_size=font_size,
+
+            background_color=bg_color,
+            align=align,
+            valign=valign,
+            indent=indent,
+
+            width=width if width else 0,
+            height=height
+        )
+
+    # add margin
+    # margin = (10, 15, 10, 15)
+    # image = add_margin(image, *margin, bg_color)
+
+    # draw outline
+    rect = [0,
+            0,
+            image.width - border_width / 2,
+            image.height - border_width / 2]
+
+    if border_color and border_width:
+        d = ImageDraw.Draw(image)
+        d.rectangle(rect, fill=None, outline=border_color, width=border_width)
+
     return image

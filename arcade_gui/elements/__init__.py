@@ -1,13 +1,8 @@
 from typing import Optional
 
-import PIL
-import arcade
-from PIL import ImageDraw
-from PIL.Image import Image
-from arcade import Color
+from arcade import Texture
 
 from arcade_gui import UIElement, UIEvent, MOUSE_PRESS, MOUSE_RELEASE, UIView
-from arcade_gui.utils import get_text_image, get_image_with_text
 
 
 class UIClickable(UIElement):
@@ -30,10 +25,46 @@ class UIClickable(UIElement):
         self._hovered = False
         self._focused = False
 
-        self.normal_texture = None
-        self.hover_texture = None
-        self.press_texture = None
-        self.focus_texture = None
+        self._normal_texture: Optional[Texture] = None
+        self._hover_texture: Optional[Texture] = None
+        self._press_texture: Optional[Texture] = None
+        self._focus_texture: Optional[Texture] = None
+
+    @property
+    def normal_texture(self):
+        return self._normal_texture
+
+    @normal_texture.setter
+    def normal_texture(self, texture: Texture):
+        self._normal_texture = texture
+        self.set_proper_texture()
+
+    @property
+    def hover_texture(self):
+        return self._hover_texture
+
+    @hover_texture.setter
+    def hover_texture(self, texture: Texture):
+        self._hover_texture = texture
+        self.set_proper_texture()
+
+    @property
+    def press_texture(self):
+        return self._press_texture
+
+    @press_texture.setter
+    def press_texture(self, texture: Texture):
+        self._press_texture = texture
+        self.set_proper_texture()
+
+    @property
+    def focus_texture(self):
+        return self._focus_texture
+
+    @focus_texture.setter
+    def focus_texture(self, texture: Texture):
+        self._focus_texture = texture
+        self.set_proper_texture()
 
     @property
     def hovered(self):
@@ -71,7 +102,7 @@ class UIClickable(UIElement):
 
                 if self.hover_point(event.x, event.y):
                     self.on_click()
-                    self.view.on_event(UIEvent(UIClickable.CLICKED, ui_element=self))
+                    self.parent.on_event(UIEvent(UIClickable.CLICKED, ui_element=self))
 
     def set_proper_texture(self):
         """ Set normal, mouse-over, or clicked texture. """
@@ -106,8 +137,8 @@ class UIClickable(UIElement):
         pass
 
     def hover_point(self, hover_x: float, hover_y: float) -> bool:
-        width = self.width if self.width else 0
-        height = self.height if self.height else 0
+        width = self.texture.width if self.texture else self.width
+        height = self.texture.height if self.texture else self.height
 
         if hover_x > self.center_x + width / 2:
             return False
@@ -119,74 +150,3 @@ class UIClickable(UIElement):
             return False
 
         return True
-
-
-def render_text_image(
-        text: str,
-
-        font_size=22,
-        font_name=('Calibri', 'Arial'),
-        font_color: Color = arcade.color.WHITE,
-
-        border_width: int = 2,
-        border_color: Optional[Color] = arcade.color.WHITE,
-
-        align: str = "left",
-        valign: str = "top",
-
-        bg_color: Optional[Color] = None,
-        bg_image: Optional[Image] = None,
-
-        width: Optional[int] = None,
-        height: Optional[int] = None,
-        indent: int = 0
-):
-    if bg_image:
-
-        if width:
-            if not height:
-                height = bg_image.height
-            bg_image.resize((width, height), resample=PIL.Image.LANCZOS)
-
-        image = get_image_with_text(
-            text,
-            font_name=font_name,
-            font_color=font_color,
-            font_size=font_size,
-
-            background_image=bg_image,
-            align=align,
-            valign=valign,
-            indent=indent
-        )
-    else:
-        image = get_text_image(
-            text,
-            font_name=font_name,
-            font_color=font_color,
-            font_size=font_size,
-
-            background_color=bg_color,
-            align=align,
-            valign=valign,
-            indent=indent,
-
-            width=width if width else 0,
-            height=height
-        )
-
-    # add margin
-    # margin = (10, 15, 10, 15)
-    # image = add_margin(image, *margin, bg_color)
-
-    # draw outline
-    rect = [0,
-            0,
-            image.width - border_width / 2,
-            image.height - border_width / 2]
-
-    if border_color and border_width:
-        d = ImageDraw.Draw(image)
-        d.rectangle(rect, fill=None, outline=border_color, width=border_width)
-
-    return image
