@@ -4,7 +4,7 @@ import arcade
 import pytest
 from arcade import Texture
 
-from arcade_gui.buttons.image_button import UIImageButton
+from arcade_gui import UIImageButton
 
 
 @pytest.fixture()

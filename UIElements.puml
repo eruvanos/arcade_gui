@@ -1,0 +1,122 @@
+@startuml
+
+
+
+class arcade.Sprite {
+    texture: Texture
+    center_x: int
+    center_y: int
+    width: int
+    height: int
+}
+
+package arcade_gui{
+
+    class UIView{
+        Holds UIElements
+        Holds UIStyle
+        Parent to al UIElements
+
+        Converts on_XY() callbacks into UIEvents passed to on_event()
+
+        --
+        + focused_element
+        + hovered_element
+
+        - _ui_elements
+        __
+        + on_event()
+
+        .. manage children ..
+        + find_by_id()
+        + purge_ui_elements()
+
+        -- arcade View callbacks  --
+
+        + on_draw() // starts render and draws UIElements
+        + update() // deprecated
+        + on_update()
+
+        .. converted to UIEvents ..
+        + on_mouse_press()
+        + on_mouse_release()
+        + on_mouse_scroll()
+        + on_mouse_motion()
+        + on_key_press()
+        + on_key_release()
+        + on_text()
+        + on_text_motion()
+        + on_text_motion_selection()
+    }
+
+
+    class UIStyled {
+        Mixin, store all stylish attributes in _style
+
+        + style_classes: List[str]
+        - _style: Dict[str, Any]
+
+        + get_style_attr()
+        + set_style_attrs()
+    }
+
+
+    abstract class UIElement {
+        Base class for any GUI Element
+
+        + id: str
+        + parent: UIView
+
+        + {abstract} parent_style()
+        + {abstract} find_color()
+        + {abstract} on_event()
+        + {abstract} on_focus()
+        + {abstract} on_unfocus()
+        + {abstract} on_hover()
+        + {abstract} on_unhover()
+        + {abstract} on_update()
+        + {abstract} hover_point()
+    }
+    UIElement -right-|> UIStyled
+    UIElement -up-|> arcade.Sprite
+
+    abstract class UIClickable {
+        + hovered: bool
+        + pressed: bool
+        + focused: bool
+
+        + normal_texture: Texture
+        + hover_texture: Texture
+        + focus_texture: Texture
+        + press_texture: Texture
+
+        __
+
+        + set_proper_texture()
+        + on_press()
+        + on_release()
+        + on_click()
+
+        .. implements ..
+        + on_event()
+        + on_hover()
+        + on_unhover()
+        + on_focus()
+        + on_unfocus()
+        + hover_point()
+    }
+    UIClickable -up-|> UIElement
+
+
+    UILabel -up-> UIClickable
+    UIAbstractFlatButton -up-> UIClickable
+    UIInputBox -up-> UIClickable
+
+    UIFlatButton -up-> UIAbstractFlatButton
+    UIGhostFlatButton -up-> UIAbstractFlatButton
+
+}
+
+
+
+@enduml

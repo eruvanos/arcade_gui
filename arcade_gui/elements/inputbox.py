@@ -102,12 +102,18 @@ class UIInputBox(UIElement):
     ENTER = 'ENTER'
 
     def __init__(self,
+                 parent,
                  center_x, center_y,
                  width,  # any way to not give width?
                  height=40,
                  text='',
                  **kwargs):
-        super().__init__(**kwargs)
+        super().__init__(
+            parent,
+            center_x=center_x,
+            center_y=center_y,
+            **kwargs
+        )
 
         self.center_x = center_x
         self.center_y = center_y
@@ -162,38 +168,38 @@ class UIInputBox(UIElement):
 
         # text
         text_image_normal = get_text_image(text=self.text,
-                                           text_color=font_color,
+                                           font_color=font_color,
                                            font_size=font_size,
                                            font_name=font_name,
                                            align=align,
                                            width=width,
                                            height=height,
                                            valign='middle',
-                                           margin_left=margin_left,
+                                           indent=margin_left,
                                            background_color=bg_color
                                            )
         text_image_hover = get_text_image(text=self.text,
-                                          text_color=font_color_hover,
+                                          font_color=font_color_hover,
                                           font_size=font_size,
                                           font_name=font_name,
                                           align=align,
                                           width=width,
                                           height=height,
                                           valign='middle',
-                                          margin_left=margin_left,
+                                          indent=margin_left,
                                           background_color=bg_color_hover
                                           )
 
         text_to_show = self.text[:self.cursor_index] + self.symbol + self.text[self.cursor_index:]
         text_image_active = get_text_image(text=text_to_show,
-                                           text_color=font_color_active,
+                                           font_color=font_color_active,
                                            font_size=font_size,
                                            font_name=font_name,
                                            align=align,
                                            width=width,
                                            height=height,
                                            valign='middle',
-                                           margin_left=margin_left,
+                                           indent=margin_left,
                                            background_color=bg_color_active
                                            )
 

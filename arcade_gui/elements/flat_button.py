@@ -1,31 +1,37 @@
+from uuid import uuid4
+
 import arcade
-from PIL import ImageDraw
 
-from arcade_gui import UIAbstractButton, UIView
-from arcade_gui.utils import get_text_image, add_margin
+from arcade_gui import UIClickable, UIView
+from arcade_gui.elements import render_text_image
 
 
-class UIAbstractFlatButton(UIAbstractButton):
+class UIAbstractFlatButton(UIClickable):
     def __init__(self,
-                 text,
-                 center_x, center_y,
+                 parent: UIView,
+                 text: str,
+                 center_x: int,
+                 center_y: int,
                  width: int = None,
 
                  align="center",
                  **kwargs):
-        super().__init__(**kwargs)
+        super().__init__(
+            parent,
+            center_x=center_x,
+            center_y=center_y,
+            **kwargs
+        )
 
         # TODO load defaults from style
 
         font_name = ('Calibri', 'Arial')
         font_size = 22
 
-        margin = (10, 15, 10, 15)
-
         border_width = 2
         border_color = None
-        border_color_mouse_over = arcade.color.WHITE
-        border_color_mouse_press = arcade.color.WHITE
+        border_color_hover = arcade.color.WHITE
+        border_color_press = arcade.color.WHITE
 
         font_color = arcade.color.WHITE
         font_color_hover = arcade.color.WHITE
@@ -36,94 +42,72 @@ class UIAbstractFlatButton(UIAbstractButton):
         bg_color_hover = DARK_GRAY
         bg_color_press = arcade.color.WHITE
 
-        # TODO set style attrs?
-        # self.set_style_attrs(font_name=font_name)
-        # self.set_style_attrs(font_size=font_size)
-        # self.set_style_attrs(font_color=font_color)
-        # self.set_style_attrs(font_color_hover=font_color_hover)
-        # self.set_style_attrs(font_color_press=font_color_press)
+        vmargin = 15
 
-        # TODO find_color crash, because parent view not available :/
-        # font_color = self.find_color('font_color')
-        # normal_color = self.find_color('normal_color')
-        # hover_color = self.find_color('hover_color')
-        # pressed_color = self.find_color('pressed_color')
+        text_image_normal = render_text_image(
+            text,
+            font_size=22,
+            font_name=font_name,
+            align=align,
+            valign='middle',
+            bg_image=None,
+            width=width,
+            height=font_size + vmargin,
+            indent=0,
 
-        self.center_x = center_x
-        self.center_y = center_y
-        self.width = width  # TODO needed?
-        if width is None:
-            width = 0
+            font_color=font_color,
+            border_width=border_width,
+            border_color=border_color,
+            bg_color=bg_color,
+        )
+        text_image_hover = render_text_image(
+            text,
+            font_size=22,
+            font_name=font_name,
+            align=align,
+            valign='middle',
+            bg_image=None,
+            width=width,
+            height=font_size + vmargin,
+            indent=0,
 
-        text_image_normal = get_text_image(text=text,
-                                           text_color=font_color,
-                                           font_size=font_size,
-                                           font_name=font_name,
-                                           align=align,
-                                           width=width,
-                                           background_color=bg_color
-                                           )
-        text_image_mouse_over = get_text_image(text=text,
-                                               text_color=font_color_hover,
-                                               font_size=font_size,
-                                               font_name=font_name,
-                                               align=align,
-                                               width=width,
-                                               background_color=bg_color_hover
-                                               )
-        text_image_mouse_press = get_text_image(text=text,
-                                                text_color=font_color_press,
-                                                font_size=font_size,
-                                                font_name=font_name,
-                                                align=align,
-                                                width=width,
-                                                background_color=bg_color_press
-                                                )
+            font_color=font_color_hover,
+            border_width=border_width,
+            border_color=border_color_hover,
+            bg_color=bg_color_hover,
+        )
+        text_image_press = render_text_image(
+            text,
+            font_size=font_size,
+            font_name=font_name,
+            align=align,
+            valign='middle',
+            bg_image=None,
+            width=width,
+            height=font_size + vmargin,
+            indent=0,
 
-        # add margin
-        text_image_normal = add_margin(text_image_normal,
-                                       *margin,
-                                       bg_color)
-        text_image_mouse_over = add_margin(text_image_mouse_over,
-                                           *margin,
-                                           bg_color_hover)
-        text_image_mouse_press = add_margin(text_image_mouse_press,
-                                            *margin,
-                                            bg_color_press)
+            font_color=font_color_press,
+            border_width=border_width,
+            border_color=border_color_press,
+            bg_color=bg_color_press,
+        )
 
-        # draw outline
-        rect = [0,
-                0,
-                text_image_normal.width - border_width / 2,
-                text_image_normal.height - border_width / 2]
-
-        if border_color and border_width:
-            d = ImageDraw.Draw(text_image_normal)
-            d.rectangle(rect, fill=None, outline=border_color, width=border_width)
-
-        if border_color_mouse_over:
-            d = ImageDraw.Draw(text_image_mouse_over)
-            d.rectangle(rect, fill=None, outline=border_color_mouse_over, width=border_width)
-
-        if border_color_mouse_press:
-            d = ImageDraw.Draw(text_image_mouse_press)
-            d.rectangle(rect, fill=None, outline=border_color_mouse_press, width=border_width)
-
-        self.normal_texture = arcade.Texture(image=text_image_normal, name=text + "5")
-        self.press_texture = arcade.Texture(image=text_image_mouse_press, name=text + "6")
-        self.hover_texture = arcade.Texture(image=text_image_mouse_over, name=text + "7")
+        self.normal_texture = arcade.Texture(image=text_image_normal, name=str(uuid4()))
+        self.hover_texture = arcade.Texture(image=text_image_hover, name=str(uuid4()))
+        self.press_texture = arcade.Texture(image=text_image_press, name=str(uuid4()))
         self.set_proper_texture()
 
 
 class UIFlatButton(UIAbstractFlatButton):
-    def __init__(self, text, center_x, center_y, width: int = None, align="center", **kwargs):
-        super().__init__(text, center_x, center_y, width, align, **kwargs)
+    def __init__(self, parent, text, center_x, center_y, width: int = None, align="center", **kwargs):
+        super().__init__(parent, text, center_x, center_y, width, align, **kwargs)
         self.style_classes.append('flatbutton')
 
 
 class UIGhostFlatButton(UIAbstractFlatButton):
-    def __init__(self, text, center_x, center_y, width: int = None, align="center", **kwargs):
-        super().__init__(text, center_x, center_y, width, align, **kwargs)
+    def __init__(self, parent, text, center_x, center_y, width: int = None, align="center", **kwargs):
+        super().__init__(parent, text, center_x, center_y, width, align, **kwargs)
         self.style_classes.append('ghostflatbutton')
 
 

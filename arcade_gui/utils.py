@@ -89,13 +89,13 @@ def add_margin(pil_img, top, right, bottom, left, color=None):
 
 
 def get_image_with_text(text: str,
-                        text_color: Color,
-                        background_image: Image.Image = None,
+                        font_color: Color,
                         font_size: float = 12,
+                        background_image: Image.Image = None,
                         align: str = "left",
                         valign: str = "top",
                         font_name: Union[str, Tuple[str, ...]] = ('calibri', 'arial'),
-                        margin_left=0
+                        indent=0
                         ) -> Image:
     # Scale the font up, so it matches with the sizes of the old code back
     # when Pyglet drew the text.
@@ -177,7 +177,7 @@ def get_image_with_text(text: str,
         field_width = width * scale_up
         image_start_x = (field_width // 2) - (text_width // 2)
     else:
-        image_start_x = margin_left
+        image_start_x = indent
 
     # Find y of top-left corner
     image_start_y = 0
@@ -195,9 +195,9 @@ def get_image_with_text(text: str,
 
     # Convert to tuple if needed, because the multiline_text does not take a
     # list for a color
-    if isinstance(text_color, list):
-        color = cast(RGBA, tuple(text_color))
-    draw.multiline_text((image_start_x, image_start_y), text, text_color, align=align, font=font)
+    if isinstance(font_color, list):
+        color = cast(RGBA, tuple(font_color))
+    draw.multiline_text((image_start_x, image_start_y), text, font_color, align=align, font=font)
     image = image.resize((max(1, text_image_size[0] // scale_down), text_image_size[1] // scale_down),
                          resample=PIL.Image.LANCZOS)
     return image
@@ -206,7 +206,7 @@ def get_image_with_text(text: str,
 # taken from arcade 2.4 alpha
 # TODO remove this!
 def get_text_image(text: str,
-                   text_color: Color,
+                   font_color: Color,
                    font_size: float = 12,
                    width: int = 0,
                    align: str = "left",
@@ -214,7 +214,7 @@ def get_text_image(text: str,
                    font_name: Union[str, Tuple[str, ...]] = ('calibri', 'arial'),
                    background_color: Color = None,
                    height: int = 0,
-                   margin_left=0
+                   indent=0
                    ) -> Image:
     # Scale the font up, so it matches with the sizes of the old code back
     # when Pyglet drew the text.
@@ -298,7 +298,7 @@ def get_text_image(text: str,
             field_width = width * scale_up
             image_start_x = (field_width // 2) - (text_width // 2)
         else:
-            image_start_x = margin_left
+            image_start_x = indent
 
     # Find y of top-left corner
     image_start_y = 0
@@ -319,9 +319,9 @@ def get_text_image(text: str,
 
     # Convert to tuple if needed, because the multiline_text does not take a
     # list for a color
-    if isinstance(text_color, list):
-        color = cast(RGBA, tuple(text_color))
-    draw.multiline_text((image_start_x, image_start_y), text, text_color, align=align, font=font)
+    if isinstance(font_color, list):
+        color = cast(RGBA, tuple(font_color))
+    draw.multiline_text((image_start_x, image_start_y), text, font_color, align=align, font=font)
     image = image.resize((max(1, text_image_size[0] // scale_down), text_image_size[1] // scale_down),
                          resample=PIL.Image.LANCZOS)
     return image

@@ -18,47 +18,52 @@ class MyView(arcade_gui.UIView):
         y_slot = self.window.height // 4
 
         # left
-        self.add_ui_element(arcade_gui.UILabel(
+        arcade_gui.UILabel(
+            self,
             'UILabel',
             center_x=self.window.width // 4,
             center_y=y_slot * 3,
-        ))
+        )
+
         ui_input_box = arcade_gui.UIInputBox(
+            self,
             center_x=self.window.width // 4,
             center_y=y_slot * 2,
             width=300
         )
         ui_input_box.text = 'UIInputBox'
         ui_input_box.cursor_index = len(ui_input_box.text)
-        self.add_ui_element(ui_input_box)
 
         button_normal = arcade.load_texture(arcade_gui.resources('basic_ui_pack/red/red_button11.png'))
         hovered_texture = arcade.load_texture(arcade_gui.resources('basic_ui_pack/red/red_button01.png'))
         pressed_texture = arcade.load_texture(arcade_gui.resources('basic_ui_pack/red/red_button00.png'))
-        self.add_ui_element(arcade_gui.UIImageButton(
+        arcade_gui.UIImageButton(
+            self,
             center_x=self.window.width // 4,
             center_y=y_slot * 1,
             normal_texture=button_normal,
             hover_texture=hovered_texture,
             press_texture=pressed_texture,
             text='UIImageButton'
-        ))
+        )
 
         # right
-        self.add_ui_element(arcade_gui.UIFlatButton(
+        arcade_gui.UIFlatButton(
+            self,
             'FlatButton',
             center_x=self.window.width // 4 * 3,
             center_y=y_slot * 1,
-            width=200,
+            width=250,
             height=20
-        ))
-        self.add_ui_element(arcade_gui.UIGhostFlatButton(
+        )
+        arcade_gui.UIGhostFlatButton(
+            self,
             'GhostFlatButton',
             center_x=self.window.width // 4 * 3,
             center_y=y_slot * 2,
-            width=200,
+            width=250,
             height=20
-        ))
+        )
 
 
 if __name__ == '__main__':

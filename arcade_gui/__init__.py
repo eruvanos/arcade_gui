@@ -15,7 +15,7 @@ from arcade_gui.core import (
     TEXT_MOTION,
     TEXT_MOTION_SELECTION
 )
-from arcade_gui.elements import UIAbstractButton
+from arcade_gui.elements import UIClickable
 from arcade_gui.elements.flat_button import UIFlatButton, UIGhostFlatButton
 from arcade_gui.elements.image_button import UIImageButton
 
@@ -31,7 +31,7 @@ __all__ = [
     'UIException',
     'UILabel',
     'UIInputBox',
-    'UIAbstractButton',
+    'UIClickable',
     'UIFlatButton',
     'UIGhostFlatButton',
     'UIImageButton',

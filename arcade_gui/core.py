@@ -29,7 +29,7 @@ class UIEvent:
         return ' '.join([f'{self.type} ', *[f'{key}={getattr(self, key)}' for key in self._repr_keys]])
 
 
-class Styled:
+class UIStyled:
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -55,14 +55,17 @@ class Styled:
         return self._style.get(key, default)
 
 
-class UIElement(Styled, arcade.Sprite):
+class UIElement(UIStyled, arcade.Sprite):
     def __init__(self,
-                 center_x=0, center_y=0,
-                 id=None,
+                 parent: 'UIView',
+                 center_x=0,
+                 center_y=0,
+                 id: Optional[str] = None,
                  **kwargs):
         super().__init__()
-        self.id = id
-        self.view = None
+        self.__id = id
+        self.parent = parent
+        parent.add_ui_element(self)
 
         # what do we need to be a proper sprite
         # self.texture <- subclass
@@ -70,8 +73,15 @@ class UIElement(Styled, arcade.Sprite):
         self.center_x = center_x
         self.center_y = center_y
 
+    @property
+    def id(self) -> str:
+        """
+        You can set id on creation, but not modify later
+        """
+        return self.__id
+
     def parent_style(self) -> UIStyle:
-        return self.view.style
+        return self.parent.style
 
     def find_color(self, param):
         # TODO would be better to parse the values on load and just return the values, instead of find_xyz
@@ -103,9 +113,6 @@ class UIElement(Styled, arcade.Sprite):
         """
         Callback if the element gets unhovered aka is not focused any more
         """
-        pass
-
-    def on_update(self, delta_time: float = 1 / 60):
         pass
 
     def hover_point(self, hover_x: float, hover_y: float) -> bool:
@@ -151,7 +158,8 @@ class UIView(arcade.View):
             self._focused_element.on_unfocus()
             self._focused_element = None
 
-        if new_focus is not None:            new_focus.on_focus()
+        if new_focus is not None:
+            new_focus.on_focus()
 
         self._focused_element = new_focus
 

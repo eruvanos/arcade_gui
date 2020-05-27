@@ -1,6 +1,6 @@
 import arcade
 
-from arcade_gui import UIView, UILabel, UIAbstractButton, UIInputBox, UIEvent, UIFlatButton
+from arcade_gui import UIView, UILabel, UIClickable, UIInputBox, UIEvent, UIFlatButton
 
 
 class MyView(UIView):
@@ -49,7 +49,7 @@ class MyView(UIView):
     def on_event(self, event: UIEvent):
         super(MyView, self).on_event(event)
 
-        if event.type == UIAbstractButton.CLICKED and event.ui_element.id == 'submit_button':
+        if event.type == UIClickable.CLICKED and event.ui_element.id == 'submit_button':
             # Trigger action if 'submit_button' was clicked
             self.submit()
         elif event.type == UIInputBox.ENTER and event.ui_element.id == 'username':

@@ -3,11 +3,12 @@ from uuid import uuid4
 import arcade
 from arcade import Texture
 
-from arcade_gui import UIAbstractButton, utils
+from arcade_gui import UIClickable, utils, UIView
 
 
-class UIImageButton(UIAbstractButton):
+class UIImageButton(UIClickable):
     def __init__(self,
+                 parent: UIView,
                  center_x,
                  center_y,
                  normal_texture: Texture,
@@ -17,8 +18,9 @@ class UIImageButton(UIAbstractButton):
                  **kwargs
                  ):
         super().__init__(
-            center_x,
-            center_y,
+            parent,
+            center_x=center_x,
+            center_y=center_y,
             **kwargs
         )
 
@@ -40,7 +42,7 @@ class UIImageButton(UIAbstractButton):
 
         normal_image = utils.get_image_with_text(text,
                                                  background_image=self._normal_texture.image,
-                                                 text_color=font_color,
+                                                 font_color=font_color,
                                                  font_size=font_size,
                                                  align='center',
                                                  valign='middle'
@@ -49,7 +51,7 @@ class UIImageButton(UIAbstractButton):
 
         hover_image = utils.get_image_with_text(text,
                                                 background_image=self._hover_texture.image,
-                                                text_color=font_color,
+                                                font_color=font_color,
                                                 font_size=font_size,
                                                 align='center',
                                                 valign='middle'
@@ -58,7 +60,7 @@ class UIImageButton(UIAbstractButton):
 
         press_image = utils.get_image_with_text(text,
                                                 background_image=self._press_texture.image,
-                                                text_color=font_color,
+                                                font_color=font_color,
                                                 font_size=font_size,
                                                 align='center',
                                                 valign='middle'

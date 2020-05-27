@@ -1,6 +1,6 @@
 import arcade
 
-from arcade_gui import UIFlatButton, UIGhostFlatButton, UI3DButton
+from arcade_gui import UIFlatButton, UIGhostFlatButton
 from arcade_gui.ui_style import UIStyle, parse_color
 
 
@@ -46,7 +46,7 @@ def test_style_returns_none_for_unknown_ui_element_class(shared_datadir, view):
     style = UIStyle({
         'flatbutton': {'normal_color': 'RED'},
     })
-    button = UI3DButton('Love snakes.', 100, 100, 100, 30)
+    button = UIFlatButton('Love snakes.', 100, 100, 100, 30)
 
     assert style.get_color(button, 'normal_color') is None
 
