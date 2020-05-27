@@ -1,49 +1,4 @@
-from uuid import uuid4
-
-import PIL
-import arcade
-import pytest
-
 from arcade_gui import UIClickable
-
-
-class MockButton(UIClickable):
-    on_hover_called = False
-    on_unhover_called = False
-    on_press_called = False
-    on_release_called = False
-    on_click_called = False
-
-    def on_hover(self):
-        super().on_hover()
-        self.on_hover_called = True
-
-    def on_unhover(self):
-        super().on_unhover()
-        self.on_unhover_called = True
-
-    def on_press(self):
-        super().on_press()
-        self.on_press_called = True
-
-    def on_release(self):
-        super().on_release()
-        self.on_release_called = True
-
-    def on_click(self):
-        super().on_click()
-        self.on_click_called = True
-
-
-@pytest.fixture()
-def mock_button(view) -> MockButton:
-    button = MockButton(view, center_x=50, center_y=50)
-
-    button.normal_texture = arcade.Texture(image=PIL.Image.new("RGBA", (40, 40)), name=str(uuid4()))
-    button.hover_texture = arcade.Texture(image=PIL.Image.new("RGBA", (40, 40)), name=str(uuid4()))
-    button.press_texture = arcade.Texture(image=PIL.Image.new("RGBA", (40, 40)), name=str(uuid4()))
-    button.focus_texture = arcade.Texture(image=PIL.Image.new("RGBA", (40, 40)), name=str(uuid4()))
-    return button
 
 
 def test_has_normal_state(mock_button):
