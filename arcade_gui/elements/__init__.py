@@ -77,10 +77,10 @@ class UIClickable(UIElement):
         """ Set normal, mouse-over, or clicked texture. """
         if self.pressed and self.press_texture:
             self.texture = self.press_texture
-        elif self.hovered and self.hover_texture:
-            self.texture = self.hover_texture
         elif self.focused and self.focus_texture:
             self.texture = self.focus_texture
+        elif self.hovered and self.hover_texture:
+            self.texture = self.hover_texture
         else:
             self.texture = self.normal_texture
 

@@ -16,7 +16,7 @@ from arcade.key import (
     MOTION_DELETE, MOTION_BEGINNING_OF_LINE,
 )
 
-from arcade_gui import UIElement, UIEvent, TEXT_INPUT, TEXT_MOTION
+from arcade_gui import UIEvent, TEXT_INPUT, TEXT_MOTION, UIClickable
 from arcade_gui.utils import get_text_image
 
 
@@ -98,7 +98,7 @@ class KeyAdapter:
                 self.text = self.text[:self.cursor_index] + self.text[self.cursor_index + 1:]
 
 
-class UIInputBox(UIElement):
+class UIInputBox(UIClickable):
     ENTER = 'ENTER'
 
     def __init__(self,
@@ -115,19 +115,15 @@ class UIInputBox(UIElement):
             **kwargs
         )
 
-        self.center_x = center_x
-        self.center_y = center_y
         self.width = width
         self.height = height
 
-        self.hovered = False
-        self.active = False
         self.symbol = '|'
         self.text_adapter = KeyAdapter(text)
 
         self.normal_texture = None
         self.hover_texture = None
-        self.active_texture = None
+        self.focus_texture = None
 
         self.render_textures()
         self.set_proper_texture()
@@ -191,17 +187,17 @@ class UIInputBox(UIElement):
                                           )
 
         text_to_show = self.text[:self.cursor_index] + self.symbol + self.text[self.cursor_index:]
-        text_image_active = get_text_image(text=text_to_show,
-                                           font_color=font_color_active,
-                                           font_size=font_size,
-                                           font_name=font_name,
-                                           align=align,
-                                           width=width,
-                                           height=height,
-                                           valign='middle',
-                                           indent=margin_left,
-                                           background_color=bg_color_active
-                                           )
+        text_image_focus = get_text_image(text=text_to_show,
+                                          font_color=font_color_active,
+                                          font_size=font_size,
+                                          font_name=font_name,
+                                          align=align,
+                                          width=width,
+                                          height=height,
+                                          valign='middle',
+                                          indent=margin_left,
+                                          background_color=bg_color_active
+                                          )
 
         # draw outline
         rect = [0, 0, text_image_normal.width - border_width / 2, text_image_normal.height - border_width / 2]
@@ -215,21 +211,12 @@ class UIInputBox(UIElement):
             d.rectangle(rect, fill=None, outline=border_color_hover, width=border_width)
 
         if border_color_active:
-            d = ImageDraw.Draw(text_image_active)
+            d = ImageDraw.Draw(text_image_focus)
             d.rectangle(rect, fill=None, outline=border_color_active, width=border_width)
 
         self.normal_texture = arcade.Texture(image=text_image_normal, name=str(uuid4()))
         self.hover_texture = arcade.Texture(image=text_image_hover, name=str(uuid4()))
-        self.active_texture = arcade.Texture(image=text_image_active, name=str(uuid4()))
-
-    def set_proper_texture(self):
-        """ Set texture for current state. """
-        if self.active:
-            self.texture = self.active_texture
-        elif self.hovered:
-            self.texture = self.hover_texture
-        else:
-            self.texture = self.normal_texture
+        self.focus_texture = arcade.Texture(image=text_image_focus, name=str(uuid4()))
 
     @property
     def cursor_index(self):
@@ -266,7 +253,7 @@ class UIInputBox(UIElement):
     def on_event(self, event: UIEvent):
         super().on_event(event)
 
-        if self.active:
+        if self.focused:
             if event.type == TEXT_INPUT and event.text == '\r':
                 self.view.on_event(UIEvent(UIInputBox.ENTER, ui_element=self))
                 return
@@ -275,15 +262,3 @@ class UIInputBox(UIElement):
 
         self.render_textures()
         self.set_proper_texture()
-
-    def on_focus(self):
-        self.active = True
-
-    def on_unfocus(self):
-        self.active = False
-
-    def on_hover(self):
-        self.hovered = True
-
-    def on_unhover(self):
-        self.hovered = False
