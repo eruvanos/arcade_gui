@@ -35,13 +35,7 @@ def draw_commands():
 
 @pytest.fixture()
 def mock_button(view) -> MockButton:
-    button = MockButton(view, center_x=50, center_y=50)
-
-    button.normal_texture = arcade.Texture(image=PIL.Image.new("RGBA", (40, 40)), name=str(uuid4()))
-    button.hover_texture = arcade.Texture(image=PIL.Image.new("RGBA", (40, 40)), name=str(uuid4()))
-    button.press_texture = arcade.Texture(image=PIL.Image.new("RGBA", (40, 40)), name=str(uuid4()))
-    button.focus_texture = arcade.Texture(image=PIL.Image.new("RGBA", (40, 40)), name=str(uuid4()))
-    return button
+    return MockButton(view, center_x=50, center_y=50, width=40, height=40)
 
 
 # provide same fixture twice, in case we need a second button

@@ -1,3 +1,5 @@
+from typing import Optional
+
 import arcade
 
 from arcade_gui.elements import UIClickable
@@ -21,11 +23,13 @@ class UILabel(UIClickable):
                  font_color_hover=arcade.color.LIGHT_GRAY,
                  font_color_press=arcade.color.WHITE,
 
+                 id: Optional[str] = None,
                  **kwargs):
         super().__init__(
             parent,
             center_x=center_x,
             center_y=center_y,
+            id=id,
             **kwargs
         )
         self.style_classes.append('label')

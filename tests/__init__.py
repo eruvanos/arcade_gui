@@ -1,6 +1,9 @@
 import os
-from typing import List
+from typing import List, Optional
+from uuid import uuid4
 
+import PIL
+import arcade
 import pytest
 
 import arcade_gui
@@ -85,8 +88,19 @@ class MockButton(UIClickable):
     on_focus_called = False
     on_unfocus_called = False
 
-    def __init__(self, parent: UIView, *args, **kwargs):
-        super().__init__(parent, *args, **kwargs)
+    def __init__(self, parent: UIView,
+                 center_x=0,
+                 center_y=0,
+                 width=40,
+                 height=40,
+                 id: Optional[str] = None,
+                 **kwargs):
+        super().__init__(parent, center_x, center_y, id=id, **kwargs)
+
+        self.normal_texture = arcade.Texture(image=PIL.Image.new("RGBA", (width, height)), name=str(uuid4()))
+        self.hover_texture = arcade.Texture(image=PIL.Image.new("RGBA", (width, height)), name=str(uuid4()))
+        self.press_texture = arcade.Texture(image=PIL.Image.new("RGBA", (width, height)), name=str(uuid4()))
+        self.focus_texture = arcade.Texture(image=PIL.Image.new("RGBA", (width, height)), name=str(uuid4()))
 
         self.event_history: List[arcade_gui.UIEvent] = []
 
@@ -129,5 +143,3 @@ class MockButton(UIClickable):
     def on_update(self, delta_time: float = 1 / 60):
         super().on_update(delta_time)
         self.on_update_called = True
-
-

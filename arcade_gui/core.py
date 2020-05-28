@@ -79,6 +79,13 @@ class UIElement(UIStyled, arcade.Sprite):
         """
         return self.__id
 
+    @id.setter
+    def id(self, value):
+        if len(self.sprite_lists) > 0:
+            raise UIException('Setting id after adding to a view is to late!')
+
+        self.__id = value
+
     def parent_style(self) -> UIStyle:
         return self.parent.style
 

@@ -1,3 +1,4 @@
+from typing import Optional
 from uuid import uuid4
 
 import arcade
@@ -15,11 +16,13 @@ class UIAbstractFlatButton(UIClickable):
                  width: int = None,
 
                  align="center",
+                 id: Optional[str] = None,
                  **kwargs):
         super().__init__(
             parent,
             center_x=center_x,
             center_y=center_y,
+            id=id,
             **kwargs
         )
 
@@ -99,12 +102,14 @@ class UIAbstractFlatButton(UIClickable):
 
 
 class UIFlatButton(UIAbstractFlatButton):
-    def __init__(self, parent, text, center_x, center_y, width: int = None, align="center", **kwargs):
-        super().__init__(parent, text, center_x, center_y, width, align, **kwargs)
+    def __init__(self, parent, text, center_x, center_y, width: int = None, align="center", id: Optional[str] = None,
+                 **kwargs):
+        super().__init__(parent, text, center_x, center_y, width, align, id=id, **kwargs)
         self.style_classes.append('flatbutton')
 
 
 class UIGhostFlatButton(UIAbstractFlatButton):
-    def __init__(self, parent, text, center_x, center_y, width: int = None, align="center", **kwargs):
-        super().__init__(parent, text, center_x, center_y, width, align, **kwargs)
+    def __init__(self, parent, text, center_x, center_y, width: int = None, align="center", id: Optional[str] = None,
+                 **kwargs):
+        super().__init__(parent, text, center_x, center_y, width, align, id=id, **kwargs)
         self.style_classes.append('ghostflatbutton')

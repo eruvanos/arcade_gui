@@ -1,3 +1,4 @@
+from typing import Optional
 from uuid import uuid4
 
 import arcade
@@ -107,11 +108,13 @@ class UIInputBox(UIClickable):
                  width,  # any way to not give width?
                  height=40,
                  text='',
+                 id: Optional[str] = None,
                  **kwargs):
         super().__init__(
             parent,
             center_x=center_x,
             center_y=center_y,
+            id=id,
             **kwargs
         )
 

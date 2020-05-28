@@ -13,12 +13,13 @@ class UIClickable(UIElement):
     def __init__(self,
                  parent: UIView,
                  center_x=0, center_y=0,
-                 *args,
+                 id: Optional[str] = None,
                  **kwargs):
         super().__init__(
             parent,
             center_x=center_x,
             center_y=center_y,
+            id=id
         )
 
         self._pressed = False

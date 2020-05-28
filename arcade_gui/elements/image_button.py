@@ -1,3 +1,4 @@
+from typing import Optional
 from uuid import uuid4
 
 import arcade
@@ -15,12 +16,14 @@ class UIImageButton(UIClickable):
                  hover_texture: Texture,
                  press_texture: Texture,
                  text='',
+                 id: Optional[str] = None,
                  **kwargs
                  ):
         super().__init__(
             parent,
             center_x=center_x,
             center_y=center_y,
+            id=id,
             **kwargs
         )
 
