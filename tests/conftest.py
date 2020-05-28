@@ -5,7 +5,6 @@ from uuid import uuid4
 import PIL
 import arcade
 import pytest
-
 from pytest import fixture
 
 from tests import TestUIView, MockHolder, MockButton
@@ -43,3 +42,7 @@ def mock_button(view) -> MockButton:
     button.press_texture = arcade.Texture(image=PIL.Image.new("RGBA", (40, 40)), name=str(uuid4()))
     button.focus_texture = arcade.Texture(image=PIL.Image.new("RGBA", (40, 40)), name=str(uuid4()))
     return button
+
+
+# provide same fixture twice, in case we need a second button
+mock_button2 = mock_button
