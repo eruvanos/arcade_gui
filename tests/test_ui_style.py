@@ -9,7 +9,7 @@ def test_view_loads_default_style(view):
 
 
 def test_ui_element_provides_ui_style_from_parent(view):
-    button = UIFlatButton('Love snakes.', 100, 100, 100, 30)
+    button = UIFlatButton(view, 'Love snakes.', 100, 100, 100, 30)
 
     view.add_ui_element(button)
 
@@ -21,8 +21,8 @@ def test_style_returns_property_for_ui_elements(shared_datadir, view):
         'flatbutton': {'normal_color': 'RED'},
         'ghostflatbutton': {'normal_color': 'BLUE'},
     })
-    flat = UIFlatButton('Love snakes.', 100, 100, 100, 30)
-    ghost = UIGhostFlatButton('Love snakes.', 100, 100, 100, 30)
+    flat = UIFlatButton(view, 'Love snakes.', 100, 100, 100, 30)
+    ghost = UIGhostFlatButton(view, 'Love snakes.', 100, 100, 100, 30)
 
     assert style.get_color(flat, 'normal_color') == arcade.color.RED
     assert style.get_color(ghost, 'normal_color') == arcade.color.BLUE
@@ -37,7 +37,7 @@ def test_style_returns_property_for_custom_ui_element(shared_datadir, view):
         'flatbutton': {'normal_color': 'RED'},
     })
 
-    flat = MyButton('Love snakes.', 100, 100, 100, 30)
+    flat = MyButton(view, 'Love snakes.', 100, 100, 100, 30)
 
     assert style.get_color(flat, 'normal_color') == arcade.color.RED
 
@@ -46,7 +46,7 @@ def test_style_returns_none_for_unknown_ui_element_class(shared_datadir, view):
     style = UIStyle({
         'flatbutton': {'normal_color': 'RED'},
     })
-    button = UIFlatButton('Love snakes.', 100, 100, 100, 30)
+    button = UIGhostFlatButton(view, 'Love snakes.', 100, 100, 100, 30)
 
     assert style.get_color(button, 'normal_color') is None
 

@@ -14,6 +14,7 @@ class UIAbstractFlatButton(UIClickable):
                  center_x: int,
                  center_y: int,
                  width: int = None,
+                 height: int = None,
 
                  align="center",
                  id: Optional[str] = None,
@@ -55,7 +56,7 @@ class UIAbstractFlatButton(UIClickable):
             valign='middle',
             bg_image=None,
             width=width,
-            height=font_size + vmargin,
+            height= height if height else font_size + vmargin,
             indent=0,
 
             font_color=font_color,
@@ -102,14 +103,14 @@ class UIAbstractFlatButton(UIClickable):
 
 
 class UIFlatButton(UIAbstractFlatButton):
-    def __init__(self, parent, text, center_x, center_y, width: int = None, align="center", id: Optional[str] = None,
+    def __init__(self, parent, text, center_x, center_y, width: int = None, height: int = None, align="center", id: Optional[str] = None,
                  **kwargs):
-        super().__init__(parent, text, center_x, center_y, width, align, id=id, **kwargs)
+        super().__init__(parent, text, center_x, center_y, width, height, align, id=id, **kwargs)
         self.style_classes.append('flatbutton')
 
 
 class UIGhostFlatButton(UIAbstractFlatButton):
-    def __init__(self, parent, text, center_x, center_y, width: int = None, align="center", id: Optional[str] = None,
+    def __init__(self, parent, text, center_x, center_y, width: int = None, height: int = None, align="center", id: Optional[str] = None,
                  **kwargs):
-        super().__init__(parent, text, center_x, center_y, width, align, id=id, **kwargs)
+        super().__init__(parent, text, center_x, center_y, width, height, align, id=id, **kwargs)
         self.style_classes.append('ghostflatbutton')
