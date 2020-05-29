@@ -15,13 +15,15 @@ class MyView(UIView):
         self.purge_ui_elements()
 
         self.add_ui_element(UILabel(
-            'Username:',
+            self,
+            text='Username:',
             center_x=100,
             center_y=self.window.height // 2,
             width=300,
             height=40,
         ))
         self.add_ui_element(UIInputBox(
+            self,
             center_x=350,
             center_y=self.window.height // 2,
             width=300,
@@ -29,7 +31,8 @@ class MyView(UIView):
             id='username'
         ))
         self.add_ui_element(UIFlatButton(
-            'Login',
+            self,
+            text='Login',
             center_x=650,
             center_y=self.window.height // 2,
             width=200,
@@ -38,7 +41,8 @@ class MyView(UIView):
         ))
 
         self.add_ui_element(UILabel(
-            '',
+            self,
+            text='',
             center_x=self.window.width // 2,
             center_y=self.window.height // 2 - 100,
             width=600,
