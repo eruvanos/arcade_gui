@@ -2,6 +2,7 @@ import arcade
 import pytest
 
 from arcade_gui import UIElement, UIView
+from tests import MockButton
 
 ELEMENT_STYLE_CLASS = 'uielement'
 
@@ -15,7 +16,7 @@ EXPECTED_COLOR_STR = str(EXPECTED_COLOR)[1:-1]
 def element(view):
     view.style.style[ELEMENT_STYLE_CLASS] = {'normal_color': DEFAULT_COLOR_STR}
 
-    e = UIElement()
+    e = MockButton(view)
     e.style_classes.append(ELEMENT_STYLE_CLASS)
     view.add_ui_element(e)
 
@@ -57,11 +58,13 @@ def test_attr_loaded_from_second_class(element):
     assert element.find_color('normal_color') == DEFAULT_COLOR
 
 
-def test_loads_id_style_attributes_first(element):
+def test_loads_id_style_attributes_first(view):
     element_id = 'my_lovely_element'
+
+    element = MockButton(view)
     element.id = element_id
 
-    view: UIView = element.view
+    view: UIView = element.parent
     view.style.style[element_id] = {'normal_color': EXPECTED_COLOR_STR}
 
     assert element.find_color('normal_color') == EXPECTED_COLOR
