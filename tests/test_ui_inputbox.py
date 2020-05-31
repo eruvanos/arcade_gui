@@ -53,7 +53,7 @@ def test_set_cursor_behind_text_if_given_at_construction_time(draw_commands, vie
         height=40)
 
     # THEN
-    assert inputbox.cursor_index == 7
+    assert inputbox.cursor_index == 6
 
 
 def test_changes_text_on_text_input(view):
@@ -106,6 +106,19 @@ def test_changes_text_on_backspace(draw_commands, view):
 
     assert inputbox.text == 'BestGame Lib!'
     assert inputbox.cursor_index == 4
+
+
+def test_cursor_can_not_be_negative(draw_commands, view):
+    inputbox = UIInputBox(center_x=30, center_y=30, width=40, height=40)
+    inputbox.text = 'Best Game Lib!'
+    inputbox.cursor_index = 0
+    inputbox.on_focus()
+    view.add_ui_element(inputbox)
+
+    inputbox.on_event(UIEvent(TEXT_MOTION, motion=MOTION_LEFT))
+
+    assert inputbox.text == 'Best Game Lib!'
+    assert inputbox.cursor_index == 0
 
 
 def test_changes_text_on_delete(draw_commands, view):

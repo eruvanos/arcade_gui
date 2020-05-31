@@ -29,7 +29,7 @@ class KeyAdapter:
 
     def __init__(self, text=''):
         self._text = text
-        self._cursor_index = len(text) + 1
+        self._cursor_index = len(text)
         self.state_changed = True
 
     @property
@@ -51,6 +51,9 @@ class KeyAdapter:
     def cursor_index(self, index):
         if index != self._cursor_index:
             self.state_changed = True
+
+        index = min(len(self.text), index)
+        index = max(0, index)
 
         self._cursor_index = index
 
@@ -77,6 +80,7 @@ class KeyAdapter:
                 self.cursor_index = len(self.text)
             elif motion == MOTION_LEFT:
                 self.cursor_index -= 1
+                print(self.cursor_index)
             # elif motion == MOTION_NEXT_WORD:
             #     pass
             # elif motion == MOTION_PREVIOUS_WORD:
@@ -232,9 +236,6 @@ class UIInputBox(UIClickable):
 
     @cursor_index.setter
     def cursor_index(self, value):
-        value = min(len(self.text), value)
-        value = max(0, value)
-
         self.text_adapter.cursor_index = value
 
     @property
