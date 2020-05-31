@@ -104,7 +104,7 @@ class UIClickable(UIElement):
 
                 if self.hover_point(event.x, event.y):
                     self.on_click()
-                    self.parent.on_event(UIEvent(UIClickable.CLICKED, ui_element=self))
+                    self.view.on_event(UIEvent(UIClickable.CLICKED, ui_element=self))
 
     def set_proper_texture(self):
         """ Set normal, mouse-over, or clicked texture. """

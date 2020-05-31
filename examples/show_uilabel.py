@@ -16,13 +16,9 @@ class MyView(arcade_gui.UIView):
         self.purge_ui_elements()
 
         self.add_ui_element(arcade_gui.UILabel(
-            self,
             text='Hello world',
             center_x=self.window.width // 2,
             center_y=self.window.height // 2,
-            font_color=arcade.color.WHITE,
-            font_color_hover=arcade.color.LIGHT_GRAY,
-            font_color_press=arcade.color.GRAY,
         ))
 
 

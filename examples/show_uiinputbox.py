@@ -14,13 +14,12 @@ class MyView(arcade_gui.UIView):
     def setup(self):
         self.purge_ui_elements()
 
-        self.add_ui_element(arcade_gui.UIInputBox(
-            self,
-            center_x=400,
-            center_y=300,
-            width=200,
-            height=40
-        ))
+        box = arcade_gui.UIInputBox(text='hello',
+                                    center_x=400,
+                                    center_y=300,
+                                    width=200,
+                                    height=40)
+        self.add_ui_element(box)
 
     def on_text(self, text):
         super().on_text(text)

@@ -45,6 +45,8 @@ class UIElement(arcade.Sprite):
         self.style_classes = ['globals']
         self._style = style if style else UIStyle.default_style()
 
+        self.view: Optional[UIView] = None
+
         # what do we need to look like a proper arcade.Sprite
         # self.texture <- subclass
         # self.width/height <- subclass
@@ -65,6 +67,10 @@ class UIElement(arcade.Sprite):
 
         self.__id = value
 
+    @property
+    def style(self):
+        return self._style
+
     def set_style_attrs(self, **kwargs):
         """
         Sets a custom style attribute for this UIElement
@@ -81,6 +87,8 @@ class UIElement(arcade.Sprite):
                     del style_data[key]
             else:
                 style_data[key] = value
+
+        self.render()
 
     def style_attr(self, key, default=None):
         lookup_classes = [*self.style_classes, self.id, self.__style_id]
@@ -191,7 +199,7 @@ class UIView(arcade.View):
             raise UIException('UIElement seems not to be properly setup, please check if you'
                               ' overwrite the constructor and forgot "super().__init__(**kwargs)"')
 
-        ui_element.parent = self
+        ui_element.view = self
         self._ui_elements.append(ui_element)
 
         # Add elements with id to lookup

@@ -7,7 +7,8 @@ import arcade
 import pytest
 
 import arcade_gui
-from arcade_gui import UIClickable, UIView
+from arcade_gui import UIClickable
+from arcade_gui.ui_style import UIStyle
 
 
 class TestUIView(arcade_gui.UIView):
@@ -88,14 +89,15 @@ class MockButton(UIClickable):
     on_focus_called = False
     on_unfocus_called = False
 
-    def __init__(self, parent: UIView,
+    def __init__(self,
                  center_x=0,
                  center_y=0,
                  width=40,
                  height=40,
                  id: Optional[str] = None,
+                 style: UIStyle = None,
                  **kwargs):
-        super().__init__(parent, center_x, center_y, id=id, **kwargs)
+        super().__init__(center_x=center_x, center_y=center_y, id=id, style=style, **kwargs)
 
         self.normal_texture = arcade.Texture(image=PIL.Image.new("RGBA", (width, height)), name=str(uuid4()))
         self.hover_texture = arcade.Texture(image=PIL.Image.new("RGBA", (width, height)), name=str(uuid4()))

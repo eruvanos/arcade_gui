@@ -13,7 +13,6 @@ def button(view) -> UIClickable:
     press_texture = arcade.load_texture(arcade_gui.resources('basic_ui_pack/red/red_button00.png'))
 
     b = UIClickable(
-        view,
         center_x=30,
         center_y=40,
     )

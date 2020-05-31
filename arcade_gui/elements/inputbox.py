@@ -18,6 +18,7 @@ from arcade.key import (
 )
 
 from arcade_gui import UIEvent, TEXT_INPUT, TEXT_MOTION, UIClickable
+from arcade_gui.ui_style import UIStyle
 from arcade_gui.utils import get_text_image
 
 
@@ -28,7 +29,7 @@ class KeyAdapter:
 
     def __init__(self, text=''):
         self._text = text
-        self._cursor_index = 1
+        self._cursor_index = len(text) + 1
         self.state_changed = True
 
     @property
@@ -103,22 +104,23 @@ class UIInputBox(UIClickable):
     ENTER = 'ENTER'
 
     def __init__(self,
-                 parent,
                  center_x, center_y,
-                 width,  # any way to not give width?
-                 height=40,
+                 width: int,  # any way to not give width?
+                 height=0,
                  text='',
                  id: Optional[str] = None,
+                 style: UIStyle = None,
                  **kwargs):
         super().__init__(
-            parent,
             center_x=center_x,
             center_y=center_y,
             id=id,
+            style=style,
             **kwargs
         )
+        self.style_classes.append('inputbox')
 
-        self.width = width
+        self.width = width if width is not None else 200
         self.height = height
 
         self.symbol = '|'
@@ -141,28 +143,32 @@ class UIInputBox(UIClickable):
         else:
             return
 
-        font_name = ('Calibri', 'Arial')
-        font_size = 22
+        font_name = self.style_attr('font_name', ['Calibri', 'Arial'])
+        font_size = self.style_attr('font_size', 22)
 
-        margin_left = 10
-        align = "left"
+        font_color = self.style_attr('font_color', arcade.color.WHITE)
+        font_color_hover = self.style_attr('font_color_hover', None)
+        if font_color_hover is None:
+            font_color_hover = font_color
+        font_color_focus = self.style_attr('font_color_focus', None)
+        if font_color_focus is None:
+            font_color_focus = font_color_hover
+
+        border_width = self.style_attr('border_width', 2)
+        border_color = self.style_attr('border_color', arcade.color.WHITE)
+        border_color_hover = self.style_attr('border_color_hover', arcade.color.WHITE)
+        border_color_focus = self.style_attr('border_color_focus', arcade.color.WHITE)
+
+        bg_color = self.style_attr('bg_color', arcade.color.GRAY)
+        bg_color_hover = self.style_attr('bg_color_hover', arcade.color.GRAY)
+        bg_color_focus = self.style_attr('bg_color_focus', arcade.color.GRAY)
 
         width = int(self.width)
-        height = int(self.height)
+        vmargin = self.style_attr('vmargin', 0)
+        height = self.height if self.height else font_size + vmargin
 
-        font_color = arcade.color.WHITE
-        font_color_hover = arcade.color.WHITE
-        font_color_active = arcade.color.BLACK
-
-        DARK_GRAY = (21, 19, 21)
-        bg_color = DARK_GRAY
-        bg_color_hover = arcade.color.GRAY
-        bg_color_active = arcade.color.GRAY
-
-        border_width = 2
-        border_color = arcade.color.WHITE
-        border_color_hover = arcade.color.WHITE
-        border_color_active = arcade.color.WHITE
+        align = "left"
+        margin_left = self.style_attr('margin_left', 10)
 
         # text
         text_image_normal = get_text_image(text=self.text,
@@ -190,7 +196,7 @@ class UIInputBox(UIClickable):
 
         text_to_show = self.text[:self.cursor_index] + self.symbol + self.text[self.cursor_index:]
         text_image_focus = get_text_image(text=text_to_show,
-                                          font_color=font_color_active,
+                                          font_color=font_color_focus,
                                           font_size=font_size,
                                           font_name=font_name,
                                           align=align,
@@ -198,7 +204,7 @@ class UIInputBox(UIClickable):
                                           height=height,
                                           valign='middle',
                                           indent=margin_left,
-                                          background_color=bg_color_active
+                                          background_color=bg_color_focus
                                           )
 
         # draw outline
@@ -212,9 +218,9 @@ class UIInputBox(UIClickable):
             d = ImageDraw.Draw(text_image_hover)
             d.rectangle(rect, fill=None, outline=border_color_hover, width=border_width)
 
-        if border_color_active:
+        if border_color_focus:
             d = ImageDraw.Draw(text_image_focus)
-            d.rectangle(rect, fill=None, outline=border_color_active, width=border_width)
+            d.rectangle(rect, fill=None, outline=border_color_focus, width=border_width)
 
         self.normal_texture = arcade.Texture(image=text_image_normal, name=str(uuid4()))
         self.hover_texture = arcade.Texture(image=text_image_hover, name=str(uuid4()))
@@ -257,7 +263,7 @@ class UIInputBox(UIClickable):
 
         if self.focused:
             if event.type == TEXT_INPUT and event.text == '\r':
-                self.parent.on_event(UIEvent(UIInputBox.ENTER, ui_element=self))
+                self.view.on_event(UIEvent(UIInputBox.ENTER, ui_element=self))
                 return
 
             self.text_adapter.on_event(event)

@@ -5,11 +5,11 @@ import arcade
 from arcade import Texture
 
 from arcade_gui import UIClickable, utils, UIView
+from arcade_gui.ui_style import UIStyle
 
 
 class UIImageButton(UIClickable):
     def __init__(self,
-                 parent: UIView,
                  center_x,
                  center_y,
                  normal_texture: Texture,
@@ -17,15 +17,17 @@ class UIImageButton(UIClickable):
                  press_texture: Texture,
                  text='',
                  id: Optional[str] = None,
+                 style: UIStyle = None,
                  **kwargs
                  ):
         super().__init__(
-            parent,
             center_x=center_x,
             center_y=center_y,
             id=id,
+            style=style,
             **kwargs
         )
+        self.style_classes.append('imagebutton')
 
         self._normal_texture = normal_texture
         self._hover_texture = hover_texture
@@ -38,8 +40,15 @@ class UIImageButton(UIClickable):
             self.press_texture = press_texture
 
     def render_with_text(self, text: str):
-        font_color = arcade.color.GRAY
-        font_size = 20
+        font_size = self.style_attr('font_size', 22)
+        font_color = self.style_attr('font_color', arcade.color.GRAY)
+        font_color_hover = self.style_attr('font_color_hover', arcade.color.GRAY)
+        font_color_press = self.style_attr('font_color_press', arcade.color.GRAY)
+
+        if not font_color_hover:
+            font_color_hover = font_color
+        if not font_color_press:
+            font_color_press = font_color_hover
 
         normal_image = utils.get_image_with_text(text,
                                                  background_image=self._normal_texture.image,
@@ -52,7 +61,7 @@ class UIImageButton(UIClickable):
 
         hover_image = utils.get_image_with_text(text,
                                                 background_image=self._hover_texture.image,
-                                                font_color=font_color,
+                                                font_color=font_color_hover,
                                                 font_size=font_size,
                                                 align='center',
                                                 valign='middle'
@@ -61,7 +70,7 @@ class UIImageButton(UIClickable):
 
         press_image = utils.get_image_with_text(text,
                                                 background_image=self._press_texture.image,
-                                                font_color=font_color,
+                                                font_color=font_color_press,
                                                 font_size=font_size,
                                                 align='center',
                                                 valign='middle'

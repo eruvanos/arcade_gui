@@ -49,21 +49,22 @@ def load_view(abs_module_path) -> arcade.View:
 @pytest.mark.skipif(sys.platform == 'darwin', reason='Not yet supported on darwin')
 @pytest.mark.parametrize('example', [
     T('show_id_example', 'show_id_example'),
-    T('show_uibutton', 'show_uibutton'),
     T('show_uiinputbox', 'show_uiinputbox'),
     T('show_uilabel', 'show_uilabel'),
-    T('show_all', 'show_all')
+    T('show_all', 'show_all'),
+    T('show_uiflatbutton_custom_style', 'show_uiflatbutton_custom_style')
 ])
-def test_id_example(window, tmp_path, example):
+def test_id_example(window, example):
     expected_screen = Path(f'assets/{example}.png')
 
     # import example view
     MyView = import_module(f'examples.{example}').MyView
 
     # Render View and take screen shot
-    actual_screen = tmp_path / f'{example}.png'
+    actual_screen = expected_screen.with_name(f'{example}_tmp.png')
     view_to_png(window, MyView(), actual_screen)
 
     # compare files
     assert expected_screen.exists(), f'expected screen missing, actual at {actual_screen}'
     assert files_equal(expected_screen, actual_screen)
+    actual_screen.unlink()

@@ -8,7 +8,6 @@ from tests import T
 
 def test_hover_point(view):
     inputbox = UIInputBox(
-        view,
         center_x=30,
         center_y=30,
         width=40,
@@ -35,7 +34,7 @@ def test_hover_point(view):
 
 @pytest.mark.skip('This is hard to test, we would have to check the rendered texture, or mock the render calls')
 def test_shows_cursor_if_focused(draw_commands, view):
-    inputbox = UIInputBox(view, center_x=30, center_y=30, width=40, height=40)
+    inputbox = UIInputBox(center_x=30, center_y=30, width=40, height=40)
     inputbox.text = 'Great UI'
     inputbox.cursor_index = 6
     view.add_ui_element(inputbox)
@@ -45,8 +44,20 @@ def test_shows_cursor_if_focused(draw_commands, view):
     # maybe have a image comparision
 
 
+def test_set_cursor_behind_text_if_given_at_construction_time(draw_commands, view):
+    inputbox = UIInputBox(
+        text='arcade',
+        center_x=30,
+        center_y=30,
+        width=40,
+        height=40)
+
+    # THEN
+    assert inputbox.cursor_index == 7
+
+
 def test_changes_text_on_text_input(view):
-    inputbox = UIInputBox(view, center_x=30, center_y=30, width=40, height=40)
+    inputbox = UIInputBox(center_x=30, center_y=30, width=40, height=40)
     inputbox.text = 'Best Game Lib!'
     inputbox.cursor_index = 5
     inputbox.on_focus()
@@ -59,7 +70,7 @@ def test_changes_text_on_text_input(view):
 
 
 def test_ignores_newline(draw_commands, view):
-    inputbox = UIInputBox(view, center_x=30, center_y=30, width=40, height=40)
+    inputbox = UIInputBox(center_x=30, center_y=30, width=40, height=40)
     inputbox.text = 'Best Game Lib!'
     inputbox.cursor_index = 5
     inputbox.on_focus()
@@ -72,7 +83,7 @@ def test_ignores_newline(draw_commands, view):
 
 
 def test_emits_event_on_enter(view):
-    inputbox = UIInputBox(view, center_x=30, center_y=30, width=40, height=40)
+    inputbox = UIInputBox(center_x=30, center_y=30, width=40, height=40)
     inputbox.text = 'Best Game Lib!'
     inputbox.cursor_index = 5
     inputbox.on_focus()
@@ -85,7 +96,7 @@ def test_emits_event_on_enter(view):
 
 
 def test_changes_text_on_backspace(draw_commands, view):
-    inputbox = UIInputBox(view, center_x=30, center_y=30, width=40, height=40)
+    inputbox = UIInputBox(center_x=30, center_y=30, width=40, height=40)
     inputbox.text = 'Best Game Lib!'
     inputbox.cursor_index = 5
     inputbox.on_focus()
@@ -98,7 +109,7 @@ def test_changes_text_on_backspace(draw_commands, view):
 
 
 def test_changes_text_on_delete(draw_commands, view):
-    inputbox = UIInputBox(view, center_x=30, center_y=30, width=40, height=40)
+    inputbox = UIInputBox(center_x=30, center_y=30, width=40, height=40)
     inputbox.text = 'Best Game Lib!'
     inputbox.cursor_index = 5
     inputbox.on_focus()
@@ -131,7 +142,7 @@ def test_changes_text_on_delete(draw_commands, view):
     ]
 )
 def test_changes_cursor_on_text_motion(motion, expected_index, view):
-    inputbox = UIInputBox(view, center_x=30, center_y=30, width=40, height=40)
+    inputbox = UIInputBox(center_x=30, center_y=30, width=40, height=40)
     inputbox.text = 'Best Game Lib!'
     inputbox.cursor_index = 5
     inputbox.on_focus()
@@ -143,7 +154,7 @@ def test_changes_cursor_on_text_motion(motion, expected_index, view):
 
 
 def test_cursor_index_not_outside_text(view):
-    inputbox = UIInputBox(view, center_x=30, center_y=30, width=40, height=40)
+    inputbox = UIInputBox(center_x=30, center_y=30, width=40, height=40)
     inputbox.text = 'love'
     inputbox.cursor_index = 5
 
@@ -151,7 +162,7 @@ def test_cursor_index_not_outside_text(view):
 
 
 def test_cursor_index_always_greater_equals_0(view):
-    inputbox = UIInputBox(view, center_x=30, center_y=30, width=40, height=40)
+    inputbox = UIInputBox(center_x=30, center_y=30, width=40, height=40)
     inputbox.text = 'love'
     inputbox.cursor_index = -1
 

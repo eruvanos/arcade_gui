@@ -1,74 +1,56 @@
 import arcade
 
 from arcade_gui import UIFlatButton, UIGhostFlatButton
-from arcade_gui.ui_style import UIStyle, parse_color
+from arcade_gui.ui_style import UIStyle
 
 
-def test_view_loads_default_style(view):
-    assert view.style is not None
+def test_ui_element_uses_default_style():
+    button = UIFlatButton('Love snakes.', 100, 100, 100, 30)
+
+    assert button._style == UIStyle.default_style()
 
 
-def test_ui_element_provides_ui_style_from_parent(view):
-    button = UIFlatButton(view, 'Love snakes.', 100, 100, 100, 30)
-
-    view.add_ui_element(button)
-
-    assert button.parent_style() == view.style
-
-
-def test_style_returns_property_for_ui_elements(shared_datadir, view):
+def test_style_returns_property_for_ui_elements():
     style = UIStyle({
-        'flatbutton': {'normal_color': 'RED'},
-        'ghostflatbutton': {'normal_color': 'BLUE'},
+        'flatbutton': {'normal_color': arcade.color.RED},
+        'ghostflatbutton': {'normal_color': arcade.color.BLUE},
     })
-    flat = UIFlatButton(view, 'Love snakes.', 100, 100, 100, 30)
-    ghost = UIGhostFlatButton(view, 'Love snakes.', 100, 100, 100, 30)
+    flat = UIFlatButton('Love snakes.', 100, 100, 100, 30, style=style)
+    ghost = UIGhostFlatButton('Love snakes.', 100, 100, 100, 30, style=style)
 
-    assert style.get_attr(flat, 'normal_color') == arcade.color.RED
-    assert style.get_attr(ghost, 'normal_color') == arcade.color.BLUE
+    assert flat.style_attr('normal_color') == arcade.color.RED
+    assert ghost.style_attr('normal_color') == arcade.color.BLUE
 
 
-def test_style_returns_property_for_custom_ui_element(shared_datadir, view):
+def test_style_returns_property_for_custom_ui_element():
     class MyButton(UIFlatButton):
         """Custom button, which should use style attributes of FlatButton"""
         pass
 
     style = UIStyle({
-        'flatbutton': {'normal_color': 'RED'},
+        'flatbutton': {'normal_color': arcade.color.RED},
     })
 
-    flat = MyButton(view, 'Love snakes.', 100, 100, 100, 30)
+    flat = MyButton('Love snakes.', 100, 100, 100, 30, style=style)
 
-    assert style.get_attr(flat, 'normal_color') == arcade.color.RED
+    assert flat.style_attr('normal_color') == arcade.color.RED
 
 
-def test_style_returns_none_for_unknown_ui_element_class(shared_datadir, view):
+def test_style_returns_none_for_unknown_ui_element_class():
     style = UIStyle({
-        'flatbutton': {'normal_color': 'RED'},
+        'flatbutton': {'normal_color': arcade.color.RED},
     })
-    button = UIGhostFlatButton(view, 'Love snakes.', 100, 100, 100, 30)
+    button = UIGhostFlatButton('Love snakes.', 100, 100, 100, 30, style=style)
 
-    assert style.get_attr(button, 'normal_color') is None
-
-
-def test_parse_rgb_values():
-    rgb = parse_color('0,0,0')
-    assert rgb == (0, 0, 0)
+    assert button.style_attr('normal_color') is None
 
 
-def test_parse_rgb_values_with_space():
-    rgb = parse_color('0, 0, 0')
-    assert rgb == (0, 0, 0)
+def test_new_class_for_custom_overwrites():
+    style = UIStyle({
+        'flatbutton': {'normal_color': arcade.color.RED},
+    })
+    button = UIGhostFlatButton('Love snakes.', 100, 100, 100, 30, style=style)
+    button.set_style_attrs(normal_color=arcade.color.BLUE)
 
-
-def test_parse_hex_value():
-    rgb = parse_color('ffffff')
-    assert rgb == (255, 255, 255)
-
-
-def test_parse_arcade_color():
-    rgb = parse_color('BLUE')
-    assert rgb == arcade.color.BLUE
-
-    rgb = parse_color('DARK_BLUE')
-    assert rgb == arcade.color.DARK_BLUE
+    assert button.style_attr('normal_color') == arcade.color.BLUE
+    assert len(style.data) == 2

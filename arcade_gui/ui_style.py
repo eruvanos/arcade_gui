@@ -3,7 +3,6 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Dict, List, Any
 
 import yaml
-from PIL.ImageColor import getrgb
 
 import arcade_gui
 from arcade_gui.utils import parse_value
@@ -20,18 +19,24 @@ class UIStyle:
 
 
     """
+    __default_style = None
 
     def __init__(self, data: Dict, **kwargs):
         super().__init__(**kwargs)
-        self.style = data
+        self.data = data
 
     @staticmethod
-    def load(path: Path):
+    def from_file(path: Path):
         """
         Load style from a file, overwriting existing data
 
-        :param path:
+        :param path: Path to a valid style YAML file
         """
+        ui_style = UIStyle({})
+        ui_style.load(path)
+        return ui_style
+
+    def load(self, path: Path):
         with path.open() as file:
             data: Dict[str, Dict[str, Any]] = yaml.safe_load(file)
             assert isinstance(data, dict)
@@ -41,18 +46,28 @@ class UIStyle:
             for key, value in style_data.items():
                 style_data[key] = parse_value(value)
 
-        return UIStyle(data)
+        self.data = data
 
-    @staticmethod
-    @lru_cache
-    def default_style():
+    @classmethod
+    def default_style(cls):
         """
         :return: empty style # TODO maybe load the real default style once
         """
-        return UIStyle.load(arcade_gui.resources.path('style/default.yml'))
+        if cls.__default_style is None:
+            cls.__default_style = UIStyle.from_file(arcade_gui.resources.path('style/default.yml'))
+        return cls.__default_style
 
-    def get_class(self, key: str):
-        return self.style.setdefault(key, {})
+    def get_class(self, style_classes: str):
+        return self.data.setdefault(style_classes, {})
+
+    def set_class_attrs(self, style_classes: str, **kwargs):
+        style_data = self.get_class(style_classes)
+        for key, value in kwargs.items():
+            if value is None:
+                if key in style_data:
+                    del style_data[key]
+            else:
+                style_data[key] = value
 
     def get_attr(self, style_classes: List[str], attr: str):
         """
@@ -64,7 +79,7 @@ class UIStyle:
         """
         style_classes = reversed(style_classes)
         for style_class in style_classes:
-            style_data = self.style.get(style_class, {})
+            style_data = self.data.get(style_class, {})
             attr_value = style_data.get(attr)
             if attr_value:
                 return attr_value

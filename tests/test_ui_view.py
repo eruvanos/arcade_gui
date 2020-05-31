@@ -8,15 +8,15 @@ from tests import MockButton
 
 def test_ui_elements_get_reference_to_view():
     view = UIView()
-    ui_element = MockButton(view)
+    ui_element = MockButton()
 
     view.add_ui_element(ui_element)
 
-    assert ui_element.parent == view
+    assert ui_element.view == view
 
 
 def test_can_search_ui_elements_by_id(view):
-    mock_button = MockButton(view, id=str(uuid4()))
+    mock_button = MockButton(id=str(uuid4()))
 
     view.add_ui_element(mock_button)
 
@@ -37,8 +37,8 @@ def test_find_by_id_returns_none():
 
 
 def test_duplicate_ids_raise_an_ui_exception(view):
-    ui_element_1 = MockButton(view, id='element1')
-    ui_element_2 = MockButton(view, id='element1')
+    ui_element_1 = MockButton(id='element1')
+    ui_element_2 = MockButton(id='element1')
     view.add_ui_element(ui_element_1)
 
     with pytest.raises(UIException) as e:
@@ -63,10 +63,10 @@ def test_broken_ui_element_raises():
 
 def test_no_id_duplication_exception_after_purge(view):
     # GIVEN
-    view.add_ui_element(MockButton(view, id='dream'))
+    view.add_ui_element(MockButton(id='dream'))
 
     # WHEN
     view.purge_ui_elements()
 
     # THEN
-    view.add_ui_element(MockButton(view, id='dream'))
+    view.add_ui_element(MockButton(id='dream'))

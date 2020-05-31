@@ -16,16 +16,12 @@ globals:
     - 'Calibri'
     - 'Arial'
 
-  font_size: 12
-  font_color: WHITE
-  font_color_hover: WHITE
-  font_color_press: BLACK
-
-
 
 label:
-  font_size: 12
-  font_color: BLACK
+  font_size: 22
+  font_color: GRAY
+  font_color_hover: LIGHT_GRAY
+  font_color_press: WHITE
 
 
 flatbutton:
@@ -65,7 +61,25 @@ ghostflatbutton:
 
 
 inputbox:
+  font_size: 22
+  border_width: 2
+  margin_left: 15 # margin between text and left edge
+  vmargin: 15 # margin between text and border (top and bottom)
 
-  normal_color: BLACK
-  shadow_color: WHITE_SMOKE
-  highlight_color: WHITE
+  font_color: WHITE
+  border_color: WHITE
+  bg_color: 21, 19, 21
+
+  font_color_hover: WHITE
+  border_color_hover: WHITE
+  bg_color_hover: GRAY
+
+  font_color_focus: BLACK
+  border_color_focus: WHITE
+  bg_color_focus: GRAY
+
+imagebutton:
+  font_size: 22
+  font_color: WHITE
+  font_color_hover: WHITE
+  font_color_press: WHITE

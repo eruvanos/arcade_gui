@@ -34,8 +34,8 @@ def draw_commands():
 
 
 @pytest.fixture()
-def mock_button(view) -> MockButton:
-    return MockButton(view, center_x=50, center_y=50, width=40, height=40)
+def mock_button() -> MockButton:
+    return MockButton(center_x=50, center_y=50, width=40, height=40)
 
 
 # provide same fixture twice, in case we need a second button
