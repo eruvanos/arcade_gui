@@ -3,13 +3,15 @@ import os
 import sys
 from itertools import chain
 from pathlib import Path
-from typing import Union, cast, Tuple, Optional
+from typing import Union, cast, Tuple, Optional, Any
+from warnings import warn
 
 import PIL
 import arcade
 import pkg_resources
 from PIL import Image, ImageDraw
 from PIL.Image import Image
+from PIL.ImageColor import getrgb
 from arcade import RGBA, DEFAULT_FONT_NAMES, Color
 
 
@@ -79,6 +81,57 @@ class MColor:
 
     def rgb(self):
         return self.r, self.b, self.g
+
+
+def parse_value(value: Any):
+    """
+    Parses the input string returning rgb int-tuple.
+
+    Supported formats:
+
+    * RGB ('r,g,b', 'r, g, b')
+    * HEX ('00ff00')
+    * Arcade colors ('BLUE', 'DARK_BLUE')
+
+    """
+    import arcade
+
+    if value in (None, '', 'None'):
+        return None
+
+    if type(value) in (int, float, list):
+        return value
+
+    # if a string, then try parsing
+    if isinstance(value, str):
+        try:
+            return int(value)
+        except ValueError:
+            pass
+
+        # arcade color
+        if isinstance(value, str) and hasattr(arcade.color, value.upper()):
+            return getattr(arcade.color, value)
+
+        # hex
+        if len(value) in (3, 6) and ',' not in value:
+            try:
+                return getrgb(f'#{value}')
+            except ValueError:
+                pass
+
+        # rgb
+        try:
+            return getrgb(f'rgb({value})')
+        except ValueError:
+            pass
+
+        # last chance some Path
+        if os.path.exists(value):
+            return Path(value)
+
+    warn(f'Could not parse style value: {value}')
+    return value
 
 
 def add_margin(pil_img, top, right, bottom, left, color=None):
@@ -383,11 +436,9 @@ def render_text_image(
             height=height
         )
 
-    # add margin
-    # margin = (10, 15, 10, 15)
-    # image = add_margin(image, *margin, bg_color)
-
     # draw outline
+    if border_width is None:
+        border_width = 0
     rect = [0,
             0,
             image.width - border_width / 2,

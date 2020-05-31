@@ -1,5 +1,27 @@
+# Suppored types:
+#
+# Arcade color: BLACK -> arcade.color.BLACK
+# RGB color: RGB string 255, 255, 255 -> (255,255,255)
+# HEX color: FFFFFF or FFF -> (0,0,0)
+# Font names: (YAML List) ['Calibri', 'Arial'] -> ['Calibri', 'Arial']
+# Empty value: "" or '' or null -> None
+# Path: './images/ABC': Path('./images/ok_button.png')
+#
+# Returns value as parsed by PyYaml
+
+
 globals:
-  font_color: BLACK
+  # setting font global is a good idea ;)
+  font_name:
+    - 'Calibri'
+    - 'Arial'
+
+  font_size: 12
+  font_color: WHITE
+  font_color_hover: WHITE
+  font_color_press: BLACK
+
+
 
 label:
   font_size: 12
@@ -7,21 +29,42 @@ label:
 
 
 flatbutton:
-#  font_color: BLACK
+  font_size: 22
+  border_width: 2
+  vmargin: 15 # margin between text and border (top and bottom)
 
-  normal_color: 25A258
-  hover_color: 26C06D
-  pressed_color: 1E7339
+  font_color: WHITE
+  border_color: None
+  bg_color: 21,19,21
+
+  font_color_hover: WHITE
+  border_color_hover: WHITE
+  bg_color_hover: 21,19,21
+
+  font_color_press: BLACK
+  bg_color_press: WHITE
+  border_color_press: WHITE
+
 
 ghostflatbutton:
-#  font_color: BLACK
+  font_size: 22
+  border_width: 2
+  vmargin: 15 # margin between text and border (top and bottom)
 
-  normal_color: 25A258
-  hover_color: 2BA24E
-  pressed_color: 1E7339
+  font_color: WHITE
+  border_color: 21,19,21
+  bg_color: None
+
+  font_color_hover: WHITE
+  border_color_hover: 21,19,21
+  bg_color_hover: 21,19,21
+
+  font_color_press: BLACK
+  border_color_press: 21,19,21
+  bg_color_press: WHITE
+
 
 inputbox:
-#  font_color: BLACK
 
   normal_color: BLACK
   shadow_color: WHITE_SMOKE

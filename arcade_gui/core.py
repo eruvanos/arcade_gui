@@ -1,9 +1,9 @@
 from typing import Dict, Optional
+from uuid import uuid4
 
 import arcade
 from arcade import SpriteList
 
-import arcade_gui
 from arcade_gui.ui_style import UIStyle
 
 MOUSE_PRESS = 'MOUSE_PRESS'
@@ -29,44 +29,23 @@ class UIEvent:
         return ' '.join([f'{self.type} ', *[f'{key}={getattr(self, key)}' for key in self._repr_keys]])
 
 
-class UIStyled:
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-        self.style_classes = ['globals']
-        self._style = {}
-
-    def set_style_attrs(self, **kwargs):
-        """
-        Sets a custom style attribute for this UIElement
-
-        For a color the value should be formatted like 'BLACK', '42,42,42', '2A2A2A'
-
-        :param kwargs: key-value pairs
-        """
-        for key, value in kwargs.items():
-            if value is None:
-                if key in self._style:
-                    del self._style[key]
-            else:
-                self._style[key] = value
-
-    def get_style_attr(self, key, default=None):
-        return self._style.get(key, default)
-
-
-class UIElement(UIStyled, arcade.Sprite):
+class UIElement(arcade.Sprite):
     def __init__(self,
-                 parent: 'UIView',
                  center_x=0,
                  center_y=0,
                  id: Optional[str] = None,
+                 style: UIStyle = None,
                  **kwargs):
         super().__init__()
+        # ID for this element, to search in view by id or identify this element from an event
         self.__id = id
-        self.parent = parent
 
-        # what do we need to be a proper sprite
+        # unique id, to overwrite style for exactly this element, DONT CHANGE THIS LATER
+        self.__style_id = str(uuid4())
+        self.style_classes = ['globals']
+        self._style = style if style else UIStyle.default_style()
+
+        # what do we need to look like a proper arcade.Sprite
         # self.texture <- subclass
         # self.width/height <- subclass
         self.center_x = center_x
@@ -86,13 +65,35 @@ class UIElement(UIStyled, arcade.Sprite):
 
         self.__id = value
 
-    def parent_style(self) -> UIStyle:
-        return self.parent.style
+    def set_style_attrs(self, **kwargs):
+        """
+        Sets a custom style attribute for this UIElement
+        The value will be returned unparsed (like given)
+        Setting an attribute to None will remove the overwrite, defaults will apply
 
-    def find_color(self, param):
-        # TODO would be better to parse the values on load and just return the values, instead of find_xyz
-        parent_style = self.parent_style()
-        return parent_style.get_color(self, param)
+        :param kwargs: key-value pairs
+        """
+        style_data = self._style.get_class(self.__style_id)
+
+        for key, value in kwargs.items():
+            if value is None:
+                if key in style_data:
+                    del style_data[key]
+            else:
+                style_data[key] = value
+
+    def style_attr(self, key, default=None):
+        lookup_classes = [*self.style_classes, self.id, self.__style_id]
+        value = self._style.get_attr(lookup_classes, key)
+
+        return value if value else default
+
+    def render(self):
+        """
+        Optinally render own textures, a style change may be indicated
+        # TODO guess there is a better idea, but let's get it working!
+        """
+        pass
 
     def on_event(self, event: UIEvent):
         pass
@@ -149,9 +150,6 @@ class UIView(arcade.View):
 
         self._ui_elements: SpriteList[UIElement] = SpriteList(use_spatial_hash=True)
         self._id_cache: Dict[str, UIElement] = {}
-
-        self.style = UIStyle({})
-        self.style.load(arcade_gui.resources.path('style/default.yml'))
 
     @property
     def focused_element(self):

@@ -3,13 +3,13 @@ from uuid import uuid4
 
 import arcade
 
-from arcade_gui import UIClickable, UIView
+from arcade_gui import UIClickable
+from arcade_gui.ui_style import UIStyle
 from arcade_gui.utils import render_text_image
 
 
 class UIAbstractFlatButton(UIClickable):
     def __init__(self,
-                 parent: UIView,
                  text: str,
                  center_x: int,
                  center_y: int,
@@ -18,45 +18,57 @@ class UIAbstractFlatButton(UIClickable):
 
                  align="center",
                  id: Optional[str] = None,
+                 style: UIStyle = None,
                  **kwargs):
+        """
+        Do not forget to call render in subclass __init__
+        """
         super().__init__(
-            parent,
             center_x=center_x,
             center_y=center_y,
             id=id,
+            style=style,
             **kwargs
         )
 
-        # TODO load defaults from style
+        self.text = text
+        self.align = align
+        self.width = width
+        self.height = height
 
-        font_name = ('Calibri', 'Arial')
-        font_size = 22
+    def render(self):
+        font_name = self.style_attr('font_name', ['Calibri', 'Arial'])
+        font_size = self.style_attr('font_size', 12)
 
-        border_width = 2
-        border_color = None
-        border_color_hover = arcade.color.WHITE
-        border_color_press = arcade.color.WHITE
+        font_color = self.style_attr('font_color', arcade.color.WHITE)
+        font_color_hover = self.style_attr('font_color_hover', None)
+        if font_color_hover is None:
+            font_color_hover = font_color
+        font_color_press = self.style_attr('font_color_press', None)
+        if font_color_press is None:
+            font_color_press = font_color_hover
 
-        font_color = arcade.color.WHITE
-        font_color_hover = arcade.color.WHITE
-        font_color_press = arcade.color.BLACK
+        border_width = self.style_attr('border_width', 0)
+        border_color = self.style_attr('border_color', None)
+        border_color_hover = self.style_attr('border_color_hover', None)
+        border_color_press = self.style_attr('border_color_press', None)
 
-        DARK_GRAY = (21, 19, 21)
-        bg_color = DARK_GRAY
-        bg_color_hover = DARK_GRAY
-        bg_color_press = arcade.color.WHITE
+        bg_color = self.style_attr('bg_color', None)
+        bg_color_hover = self.style_attr('bg_color_hover', None)
+        bg_color_press = self.style_attr('bg_color_press', None)
 
-        vmargin = 15
+        vmargin = self.style_attr('vmargin', 0)
+        height = self.height if self.height else font_size + vmargin
 
         text_image_normal = render_text_image(
-            text,
+            self.text,
             font_size=22,
             font_name=font_name,
-            align=align,
+            align=self.align,
             valign='middle',
             bg_image=None,
-            width=width,
-            height= height if height else font_size + vmargin,
+            width=int(self.width),
+            height=height,
             indent=0,
 
             font_color=font_color,
@@ -65,14 +77,14 @@ class UIAbstractFlatButton(UIClickable):
             bg_color=bg_color,
         )
         text_image_hover = render_text_image(
-            text,
+            self.text,
             font_size=22,
             font_name=font_name,
-            align=align,
+            align=self.align,
             valign='middle',
             bg_image=None,
-            width=width,
-            height=font_size + vmargin,
+            width=int(self.width),
+            height=height,
             indent=0,
 
             font_color=font_color_hover,
@@ -81,14 +93,14 @@ class UIAbstractFlatButton(UIClickable):
             bg_color=bg_color_hover,
         )
         text_image_press = render_text_image(
-            text,
+            self.text,
             font_size=font_size,
             font_name=font_name,
-            align=align,
+            align=self.align,
             valign='middle',
             bg_image=None,
-            width=width,
-            height=font_size + vmargin,
+            width=int(self.width),
+            height=height,
             indent=0,
 
             font_color=font_color_press,
@@ -103,14 +115,32 @@ class UIAbstractFlatButton(UIClickable):
 
 
 class UIFlatButton(UIAbstractFlatButton):
-    def __init__(self, parent, text, center_x, center_y, width: int = None, height: int = None, align="center", id: Optional[str] = None,
+    def __init__(self,
+                 text: str,
+                 center_x: int,
+                 center_y: int,
+                 width: int = None,
+                 height: int = None,
+                 align="center",
+                 id: Optional[str] = None,
+                 style: UIStyle = None,
                  **kwargs):
-        super().__init__(parent, text, center_x, center_y, width, height, align, id=id, **kwargs)
+        super().__init__(text, center_x, center_y, width, height, align, id=id, style=style, **kwargs)
         self.style_classes.append('flatbutton')
+        self.render()
 
 
 class UIGhostFlatButton(UIAbstractFlatButton):
-    def __init__(self, parent, text, center_x, center_y, width: int = None, height: int = None, align="center", id: Optional[str] = None,
+    def __init__(self,
+                 text: str,
+                 center_x: int,
+                 center_y: int,
+                 width: int = None,
+                 height: int = None,
+                 align="center",
+                 id: Optional[str] = None,
+                 style: UIStyle = None,
                  **kwargs):
-        super().__init__(parent, text, center_x, center_y, width, height, align, id=id, **kwargs)
+        super().__init__(text, center_x, center_y, width, height, align, id=id, style=style, **kwargs)
         self.style_classes.append('ghostflatbutton')
+        self.render()

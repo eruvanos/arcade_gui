@@ -1,39 +1,15 @@
+from functools import lru_cache
 from pathlib import Path
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Dict, List, Any
 
 import yaml
+from PIL.ImageColor import getrgb
 
-from arcade_gui.utils import MColor
+import arcade_gui
+from arcade_gui.utils import parse_value
 
 if TYPE_CHECKING:
-    from arcade_gui import UIElement
-
-
-def parse_color(color: str):
-    """
-    Parses the input string returning rgb int-tuple.
-
-    Supported formats:
-
-    * RGB ('r,g,b', 'r, g, b')
-    * HEX ('00ff00')
-    * Arcade colors ('BLUE', 'DARK_BLUE')
-
-    """
-    import arcade
-
-    if hasattr(arcade.color, color.upper()):
-        return getattr(arcade.color, color)
-    elif len(color) == 6 and ',' not in color:
-        return MColor.from_hex(color).rgb()
-    elif len(color.split(',')) == 3:
-        r, g, b = color.split(',')
-        r = int(r.strip())
-        g = int(g.strip())
-        b = int(b.strip())
-        return r, g, b
-    else:
-        return None
+    pass
 
 
 class UIStyle:
@@ -45,35 +21,52 @@ class UIStyle:
 
     """
 
-    def __init__(self, data, *args, **kwargs):
+    def __init__(self, data: Dict, **kwargs):
+        super().__init__(**kwargs)
         self.style = data
 
-    def load(self, path: Path):
+    @staticmethod
+    def load(path: Path):
         """
         Load style from a file, overwriting existing data
 
         :param path:
         """
         with path.open() as file:
-            self.style = yaml.safe_load(file)
+            data: Dict[str, Dict[str, Any]] = yaml.safe_load(file)
+            assert isinstance(data, dict)
 
-    def _get(self, ui_element: 'UIElement', attr):
-        element_style = getattr(ui_element, '_style', {})
-        if attr in element_style:
-            return element_style[attr]
+        # parse values, expected structure Dict[class, Dict[key, value]]
+        for style_class, style_data in data.items():
+            for key, value in style_data.items():
+                style_data[key] = parse_value(value)
 
-        style_classes = reversed(ui_element.style_classes + [ui_element.id])
+        return UIStyle(data)
+
+    @staticmethod
+    @lru_cache
+    def default_style():
+        """
+        :return: empty style # TODO maybe load the real default style once
+        """
+        return UIStyle.load(arcade_gui.resources.path('style/default.yml'))
+
+    def get_class(self, key: str):
+        return self.style.setdefault(key, {})
+
+    def get_attr(self, style_classes: List[str], attr: str):
+        """
+        Retrieves an attribute, resolved from style by style_classes
+
+        :param style_classes: List of style classes, resolving from right to left
+        :param attr: attribute name to get value for
+        :return: value of the attribute, first found
+        """
+        style_classes = reversed(style_classes)
         for style_class in style_classes:
             style_data = self.style.get(style_class, {})
             attr_value = style_data.get(attr)
             if attr_value:
                 return attr_value
-        else:
-            return None
-
-    def get_color(self, ui_element, attr):
-        value = self._get(ui_element, attr)
-        if value:
-            return parse_color(value)
         else:
             return None
