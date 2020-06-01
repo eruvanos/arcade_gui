@@ -247,18 +247,6 @@ class UIInputBox(UIClickable):
         self.text_adapter.text = value
         self.render_textures()
 
-    def hover_point(self, hover_x: float, hover_y: float) -> bool:
-        if hover_x > self.center_x + self.width / 2:
-            return False
-        if hover_x < self.center_x - self.width / 2:
-            return False
-        if hover_y > self.center_y + self.height / 2:
-            return False
-        if hover_y < self.center_y - self.height / 2:
-            return False
-
-        return True
-
     def on_event(self, event: UIEvent):
         super().on_event(event)
 

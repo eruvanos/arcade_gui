@@ -130,21 +130,6 @@ class UIElement(arcade.Sprite):
         """
         pass
 
-    def hover_point(self, hover_x: float, hover_y: float) -> bool:
-        """
-        Test if a given point counts as 'hovering' this UI element. Normally that is a
-        straightforward matter of seeing if a point is inside the rectangle. Occasionally it
-        will also check if we are in a wider zone around a UI element once it is already active,
-        this makes it easier to move scroll bars and the like.
-
-        :param hover_x: The x (horizontal) position of the point.
-        :param hover_y: The y (vertical) position of the point.
-
-        :return: Returns True if we are hovering this element.
-
-        """
-        return False
-
 
 class UIException(Exception):
     pass
@@ -233,7 +218,7 @@ class UIView(arcade.View):
         """
         for ui_element in self._ui_elements:
             if event.type == MOUSE_PRESS:
-                if ui_element.hover_point(event.x, event.y):
+                if ui_element.collides_with_point((event.x, event.y)):
                     self.focused_element = ui_element
 
                 elif ui_element is self.focused_element:
@@ -241,7 +226,7 @@ class UIView(arcade.View):
                     self.focused_element = None
 
             if event.type == MOUSE_MOTION:
-                if ui_element.hover_point(event.x, event.y):
+                if ui_element.collides_with_point((event.x, event.y)):
                     self.hovered_element = ui_element
 
                 elif ui_element is self.hovered_element:
@@ -257,9 +242,11 @@ class UIView(arcade.View):
         self.on_event(UIEvent(MOUSE_PRESS, x=x, y=y, button=button, modifiers=modifiers))
 
     def on_mouse_release(self, x: float, y: float, button: int, modifiers: int):
+        super().on_mouse_release(x, y, button, modifiers)
         self.on_event(UIEvent(MOUSE_RELEASE, x=x, y=y, button=button, modifiers=modifiers))
 
     def on_mouse_scroll(self, x: int, y: int, scroll_x: int, scroll_y: int):
+        super().on_mouse_scroll(x, y, scroll_x, scroll_y)
         self.on_event(UIEvent(MOUSE_SCROLL,
                               x=x,
                               y=y,

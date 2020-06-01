@@ -96,13 +96,13 @@ class UIClickable(UIElement):
         self.set_proper_texture()
 
     def on_event(self, event: UIEvent):
-        if event.type == MOUSE_PRESS and self.hover_point(event.x, event.y):
+        if event.type == MOUSE_PRESS and self.collides_with_point((event.x, event.y)):
             self.on_press()
         elif event.type == MOUSE_RELEASE and self.pressed:
             if self.pressed:
                 self.on_release()
 
-                if self.hover_point(event.x, event.y):
+                if self.collides_with_point((event.x, event.y)):
                     self.on_click()
                     self.view.on_event(UIEvent(UIClickable.CLICKED, ui_element=self))
 
@@ -137,18 +137,3 @@ class UIClickable(UIElement):
 
     def on_click(self):
         pass
-
-    def hover_point(self, hover_x: float, hover_y: float) -> bool:
-        width = self.texture.width if self.texture else self.width
-        height = self.texture.height if self.texture else self.height
-
-        if hover_x > self.center_x + width / 2:
-            return False
-        if hover_x < self.center_x - width / 2:
-            return False
-        if hover_y > self.center_y + height / 2:
-            return False
-        if hover_y < self.center_y - height / 2:
-            return False
-
-        return True

@@ -6,32 +6,6 @@ from arcade_gui.elements.inputbox import UIInputBox
 from tests import T
 
 
-def test_hover_point(view):
-    inputbox = UIInputBox(
-        center_x=30,
-        center_y=30,
-        width=40,
-        height=40,
-    )
-
-    # CENTER
-    assert inputbox.hover_point(30, 30) is True
-    # LEFT
-    assert inputbox.hover_point(30, 40) is True
-    assert inputbox.hover_point(9, 40) is False
-    # TOP
-    assert inputbox.hover_point(40, 50) is True
-    assert inputbox.hover_point(40, 51) is False
-
-    # RIGHT
-    assert inputbox.hover_point(50, 40) is True
-    assert inputbox.hover_point(51, 40) is False
-
-    # BOTTOM
-    assert inputbox.hover_point(40, 30) is True
-    assert inputbox.hover_point(40, 9) is False
-
-
 @pytest.mark.skip('This is hard to test, we would have to check the rendered texture, or mock the render calls')
 def test_shows_cursor_if_focused(draw_commands, view):
     inputbox = UIInputBox(center_x=30, center_y=30, width=40, height=40)

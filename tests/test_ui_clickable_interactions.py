@@ -17,17 +17,9 @@ def test_change_state_on_press(mock_button):
     assert mock_button.pressed
 
 
-def test_change_state_on_button(mock_button):
+def test_change_state_on_focus(mock_button):
     mock_button.on_focus()
     assert mock_button.focused
-
-
-def test_hover_point(mock_button):
-    assert mock_button.hover_point(50, 50) is True
-    assert mock_button.hover_point(30, 50) is True
-    assert mock_button.hover_point(50, 30) is True
-    assert mock_button.hover_point(0, 30) is False
-    assert mock_button.hover_point(30, 0) is False
 
 
 def test_uibutton_is_pressed(view, mock_button):
