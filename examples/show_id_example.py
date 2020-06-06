@@ -47,7 +47,7 @@ class MyView(UIView):
         ))
 
     def on_event(self, event: UIEvent):
-        super(MyView, self).on_event(event)
+        super(MyView, self).on_ui_event(event)
 
         if event.type == UIClickable.CLICKED and event.ui_element.id == 'submit_button':
             # Trigger action if 'submit_button' was clicked

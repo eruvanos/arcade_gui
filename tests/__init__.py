@@ -7,17 +7,19 @@ import arcade
 import pytest
 
 import arcade_gui
-from arcade_gui import UIClickable
+from arcade_gui import UIClickable, UIManager
 from arcade_gui.ui_style import UIStyle
 
 
-class TestUIView(arcade_gui.UIView):
+class TestUIManager(UIManager):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.event_history: List[arcade_gui.UIEvent] = []
 
+        self.push_handlers(on_ui_event=self._on_ui_event)
+
     def click_and_hold(self, x: int, y: int):
-        self.on_event(arcade_gui.UIEvent(
+        self.disptach_ui_event(arcade_gui.UIEvent(
             arcade_gui.MOUSE_PRESS,
             x=x,
             y=y,
@@ -26,7 +28,7 @@ class TestUIView(arcade_gui.UIView):
         ))
 
     def release(self, x: int, y: int):
-        self.on_event(arcade_gui.UIEvent(
+        self.disptach_ui_event(arcade_gui.UIEvent(
             arcade_gui.MOUSE_RELEASE,
             x=x,
             y=y,
@@ -38,9 +40,8 @@ class TestUIView(arcade_gui.UIView):
         self.click_and_hold(x, y)
         self.release(x, y)
 
-    def on_event(self, event: arcade_gui.UIEvent):
+    def _on_ui_event(self, event: arcade_gui.UIEvent):
         self.event_history.append(event)
-        super().on_event(event)
 
     @property
     def last_event(self):
@@ -106,9 +107,9 @@ class MockButton(UIClickable):
 
         self.event_history: List[arcade_gui.UIEvent] = []
 
-    def on_event(self, event: arcade_gui.UIEvent):
+    def on_ui_event(self, event: arcade_gui.UIEvent):
         self.event_history.append(event)
-        super().on_event(event)
+        super().on_ui_event(event)
 
     @property
     def last_event(self):

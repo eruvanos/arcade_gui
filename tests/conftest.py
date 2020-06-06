@@ -1,18 +1,26 @@
 from contextlib import ExitStack
 from unittest.mock import patch
-from uuid import uuid4
 
-import PIL
-import arcade
 import pytest
+from pyglet.event import EventDispatcher
 from pytest import fixture
 
-from tests import TestUIView, MockHolder, MockButton
+from tests import MockHolder, MockButton, TestUIManager
 
 
-@fixture
-def view() -> TestUIView:
-    return TestUIView()
+class MockWindow(EventDispatcher):
+    def __init__(self):
+        self.register_event_type('on_update')
+        self.register_event_type('on_draw')
+        self.register_event_type('on_mouse_press')
+        self.register_event_type('on_mouse_release')
+        self.register_event_type('on_mouse_scroll')
+        self.register_event_type('on_mouse_motion')
+        self.register_event_type('on_key_press')
+        self.register_event_type('on_key_release')
+        self.register_event_type('on_text')
+        self.register_event_type('on_text_motion')
+        self.register_event_type('on_text_motion_selection')
 
 
 @fixture()
@@ -31,6 +39,20 @@ def draw_commands():
             holder[method] = stack.enter_context(patch(f'arcade.{method}'))
 
         yield holder
+
+
+@pytest.fixture
+def window():
+    return MockWindow()
+
+
+# @fixture
+# def mng(window):
+#     return UIManager(window)
+
+@fixture
+def mock_mng(window):
+    return TestUIManager(window)
 
 
 @pytest.fixture()

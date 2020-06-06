@@ -2,6 +2,7 @@ from typing import Optional
 from uuid import uuid4
 
 import arcade
+import pyglet
 from PIL import ImageDraw
 from arcade.key import (
     MOTION_UP,
@@ -16,6 +17,7 @@ from arcade.key import (
     MOTION_BACKSPACE,
     MOTION_DELETE, MOTION_BEGINNING_OF_LINE,
 )
+from pyglet.window import Window
 
 from arcade_gui import UIEvent, TEXT_INPUT, TEXT_MOTION, UIClickable
 from arcade_gui.ui_style import UIStyle
@@ -247,12 +249,12 @@ class UIInputBox(UIClickable):
         self.text_adapter.text = value
         self.render_textures()
 
-    def on_event(self, event: UIEvent):
-        super().on_event(event)
+    def on_ui_event(self, event: UIEvent):
+        super().on_ui_event(event)
 
         if self.focused:
             if event.type == TEXT_INPUT and event.text == '\r':
-                self.view.on_event(UIEvent(UIInputBox.ENTER, ui_element=self))
+                self.mng.disptach_ui_event(UIEvent(UIInputBox.ENTER, ui_element=self))
                 return
 
             self.text_adapter.on_event(event)

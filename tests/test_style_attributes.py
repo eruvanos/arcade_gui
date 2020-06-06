@@ -20,10 +20,10 @@ def style() -> UIStyle:
 
 
 @pytest.fixture()
-def element(view, style) -> MockButton:
+def element(mock_mng, style) -> MockButton:
     e = MockButton(style=style)
     e.style_classes.append(ELEMENT_STYLE_CLASS)
-    view.add_ui_element(e)
+    mock_mng.add_ui_element(e)
 
     yield e
 

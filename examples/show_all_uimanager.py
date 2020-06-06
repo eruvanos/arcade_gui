@@ -1,29 +1,24 @@
 import arcade
-from arcade import Window
 
 import arcade_gui
-from arcade_gui import UIManager
 
 
 class MyView(arcade.View):
-    def __init__(self, window: Window):
+
+    def __init__(self):
         super().__init__()
 
-        self.window = window
-        self.ui_manager = UIManager(window)
+        self.ui_mng: arcade_gui.UIManager = None
 
     def on_show(self):
-        print('on_show')
         arcade.set_background_color(arcade.color.BLACK)
-        self.setup()
+        self.ui_mng = arcade_gui.UIManager(self.window)
 
     def setup(self):
-        self.ui_manager.purge_ui_elements()
-
         y_slot = self.window.height // 4
 
         # left
-        self.ui_manager.add_ui_element(arcade_gui.UILabel(
+        self.add_ui_element(arcade_gui.UILabel(
             'UILabel',
             center_x=self.window.width // 4,
             center_y=y_slot * 3,
@@ -36,12 +31,12 @@ class MyView(arcade.View):
         )
         ui_input_box.text = 'UIInputBox'
         ui_input_box.cursor_index = len(ui_input_box.text)
-        self.ui_manager.add_ui_element(ui_input_box)
+        self.add_ui_element(ui_input_box)
 
         button_normal = arcade.load_texture(arcade_gui.resources('basic_ui_pack/red/red_button11.png'))
         hovered_texture = arcade.load_texture(arcade_gui.resources('basic_ui_pack/red/red_button01.png'))
         pressed_texture = arcade.load_texture(arcade_gui.resources('basic_ui_pack/red/red_button00.png'))
-        self.ui_manager.add_ui_element(arcade_gui.UIImageButton(
+        self.add_ui_element(arcade_gui.UIImageButton(
             center_x=self.window.width // 4,
             center_y=y_slot * 1,
             normal_texture=button_normal,
@@ -51,14 +46,14 @@ class MyView(arcade.View):
         ))
 
         # right
-        self.ui_manager.add_ui_element(arcade_gui.UIFlatButton(
+        self.add_ui_element(arcade_gui.UIFlatButton(
             'FlatButton',
             center_x=self.window.width // 4 * 3,
             center_y=y_slot * 1,
             width=250,
             # height=20
         ))
-        self.ui_manager.add_ui_element(arcade_gui.UIGhostFlatButton(
+        self.add_ui_element(arcade_gui.UIGhostFlatButton(
             'GhostFlatButton',
             center_x=self.window.width // 4 * 3,
             center_y=y_slot * 2,
@@ -68,6 +63,5 @@ class MyView(arcade.View):
 
 
 if __name__ == '__main__':
-    window = arcade.Window(title='ARCADE_GUI')
-    window.show_view(MyView(window))
+    arcade.Window(title='ARCADE_GUI').show_view(MyView())
     arcade.run()

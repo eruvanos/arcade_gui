@@ -22,37 +22,37 @@ def test_change_state_on_focus(mock_button):
     assert mock_button.focused
 
 
-def test_uibutton_is_pressed(view, mock_button):
-    view.add_ui_element(mock_button)
+def test_uibutton_is_pressed(mock_mng, mock_button):
+    mock_mng.add_ui_element(mock_button)
 
-    view.click_and_hold(50, 50)
+    mock_mng.click_and_hold(50, 50)
 
     assert mock_button.on_press_called
     assert not mock_button.on_click_called
 
 
-def test_uibutton_clicked(view, mock_button):
-    view.add_ui_element(mock_button)
+def test_uibutton_clicked(mock_mng, mock_button):
+    mock_mng.add_ui_element(mock_button)
 
-    view.click(50, 50)
+    mock_mng.click(50, 50)
 
     assert mock_button.on_release
     assert mock_button.on_click_called
 
 
-def test_uibutton_not_clicked_if_released_beside(view, mock_button):
-    view.add_ui_element(mock_button)
+def test_uibutton_not_clicked_if_released_beside(mock_mng, mock_button):
+    mock_mng.add_ui_element(mock_button)
 
-    view.click_and_hold(50, 50)
-    view.release(100, 100)
+    mock_mng.click_and_hold(50, 50)
+    mock_mng.release(100, 100)
 
     assert not mock_button.on_click_called
 
 
-def test_uibutton_send_custom_event(view, mock_button):
-    view.add_ui_element(mock_button)
+def test_uibutton_send_custom_event(mock_mng, mock_button):
+    mock_mng.add_ui_element(mock_button)
 
-    view.click(50, 50)
+    mock_mng.click(50, 50)
 
-    assert view.last_event.type == UIClickable.CLICKED
-    assert view.last_event.ui_element == mock_button
+    assert mock_mng.last_event.type == UIClickable.CLICKED
+    assert mock_mng.last_event.ui_element == mock_button

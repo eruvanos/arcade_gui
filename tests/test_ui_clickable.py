@@ -6,7 +6,7 @@ from arcade_gui import UIClickable
 
 
 @pytest.fixture()
-def button(view) -> UIClickable:
+def button(mock_mng) -> UIClickable:
     normal_texture = arcade.load_texture(arcade_gui.resources('basic_ui_pack/red/red_button00.png'))
     hover_texture = arcade.load_texture(arcade_gui.resources('basic_ui_pack/red/red_button00.png'))
     focus_texture = arcade.load_texture(arcade_gui.resources('basic_ui_pack/red/red_button00.png'))
@@ -21,7 +21,7 @@ def button(view) -> UIClickable:
     b.press_texture = press_texture
     b.focus_texture = focus_texture
 
-    view.add_ui_element(b)
+    mock_mng.add_ui_element(b)
     return b
 
 

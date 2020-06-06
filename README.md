@@ -65,14 +65,14 @@ Examples providing an overview of features, there will be dedicated documentatio
     * [x] Introduce style classes
     * [x] Style attributes can be set as global fallback under class `globals`
     * [x] Use UIElement.id to lookup special style data
-    * [ ] Use UIStyle in UIElements
+    * [x] Use UIStyle in UIElements
       * [x] UI3DButton
       * [x] FlatButton
       * [x] GhostFlatButton
       * [x] UILabel
       * [x] UIInputBox
       * [ ] UIImageButton (images)
-      * [ ] Read font attributes from style
+      * [x] Read font attributes from style
     * [ ] Provide different color styles
     * [x] Overwrite properties on UIElement 
 * [ ] Add documentation and doc strings (sphinx)
@@ -90,17 +90,21 @@ Examples providing an overview of features, there will be dedicated documentatio
 
 ## Roadmap to arcade 2.4
 
-* [ ] render textures, and draw UIElements using a SpriteList
+* [x] render textures, and draw UIElements using a SpriteList
+* [ ] UIManager instead of UIView
+
+#### Optional
+* [ ] Window (draggable)
+  Drag a window, move all elements contained, layered rendering
+* [ ] Layouting in general
 
 ## Features for later
-
 * [ ] Add hierarchy for ui_elements 
 * [ ] style classes can have effect on child elements
 * [ ] live refresh of loaded image
 * [ ] New UIElements
   * [ ] UITextArea
   * [ ] UIContainer supporting automatic positioning (row & column) 
-* [ ] Layouting in general
 
 
 ### Chores

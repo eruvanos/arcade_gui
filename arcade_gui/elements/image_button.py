@@ -4,7 +4,7 @@ from uuid import uuid4
 import arcade
 from arcade import Texture
 
-from arcade_gui import UIClickable, utils, UIView
+from arcade_gui import UIClickable, utils
 from arcade_gui.ui_style import UIStyle
 
 

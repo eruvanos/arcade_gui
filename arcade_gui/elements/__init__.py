@@ -95,7 +95,7 @@ class UIClickable(UIElement):
         self._focused = value
         self.set_proper_texture()
 
-    def on_event(self, event: UIEvent):
+    def on_ui_event(self, event: UIEvent):
         if event.type == MOUSE_PRESS and self.collides_with_point((event.x, event.y)):
             self.on_press()
         elif event.type == MOUSE_RELEASE and self.pressed:
@@ -104,7 +104,7 @@ class UIClickable(UIElement):
 
                 if self.collides_with_point((event.x, event.y)):
                     self.on_click()
-                    self.view.on_event(UIEvent(UIClickable.CLICKED, ui_element=self))
+                    self.mng.disptach_ui_event(UIEvent(UIClickable.CLICKED, ui_element=self))
 
     def set_proper_texture(self):
         """ Set normal, mouse-over, or clicked texture. """

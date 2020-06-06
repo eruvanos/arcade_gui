@@ -3,7 +3,6 @@ __version__ = '0.1.0'
 from arcade_gui import utils
 from arcade_gui.core import (
     UIEvent,
-    UIView,
     UIElement,
     UIException,
     MOUSE_PRESS,
@@ -21,12 +20,13 @@ from arcade_gui.elements.image_button import UIImageButton
 
 from arcade_gui.elements.inputbox import UIInputBox
 from arcade_gui.elements.label import UILabel
+from arcade_gui.manager import UIManager
 
 resources = utils.Resources()
 
 __all__ = [
     'UIEvent',
-    'UIView',
+    'UIManager',
     'UIElement',
     'UIException',
     'UILabel',
