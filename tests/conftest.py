@@ -10,7 +10,6 @@ from tests import MockHolder, MockButton, TestUIManager
 
 class MockWindow(EventDispatcher):
     def __init__(self):
-        self.register_event_type('on_update')
         self.register_event_type('on_draw')
         self.register_event_type('on_mouse_press')
         self.register_event_type('on_mouse_release')
@@ -20,7 +19,7 @@ class MockWindow(EventDispatcher):
         self.register_event_type('on_key_release')
         self.register_event_type('on_text')
         self.register_event_type('on_text_motion')
-        self.register_event_type('on_text_motion_selection')
+        self.register_event_type('on_text_motion_select')
 
 
 @fixture()

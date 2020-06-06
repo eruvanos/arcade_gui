@@ -9,15 +9,14 @@ def test_handler_pushed():
     msg = UIManager(window)
 
     window.assert_has_calls([
-        call.push_handlers(msg.on_update),
-        call.push_handlers(msg.on_draw),
-        call.push_handlers(msg.on_mouse_press),
-        call.push_handlers(msg.on_mouse_release),
-        call.push_handlers(msg.on_mouse_scroll),
-        call.push_handlers(msg.on_mouse_motion),
-        call.push_handlers(msg.on_key_press),
-        call.push_handlers(msg.on_key_release),
-        call.push_handlers(msg.on_text),
-        call.push_handlers(msg.on_text_motion),
-        call.push_handlers(msg.on_text_motion_selection),
+        call.push_handlers(msg.on_draw,
+                           msg.on_mouse_press,
+                           msg.on_mouse_release,
+                           msg.on_mouse_scroll,
+                           msg.on_mouse_motion,
+                           msg.on_key_press,
+                           msg.on_key_release,
+                           msg.on_text,
+                           msg.on_text_motion,
+                           msg.on_text_motion_select)
     ])

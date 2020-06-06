@@ -9,6 +9,7 @@ from pathlib import Path
 import arcade
 import pyglet
 import pytest
+from pyglet.event import EventDispatcher
 
 from tests import T
 
@@ -22,11 +23,11 @@ def view_to_png(window: arcade.Window, view: arcade.View, path: Path):
     window.clear()
 
     window.show_view(view)
-    view.on_update(0)
-    view.on_draw()
+    window.dispatch_event('on_draw')
+    window.dispatch_events()
 
     arcade.finish_render()
-    arcade.finish_render()  # Not sure, why this is required, but just see a black screen otherwise
+    arcade.finish_render()
 
     pyglet.image.get_buffer_manager().get_color_buffer().save(str(path))
 
@@ -42,7 +43,7 @@ def load_view(abs_module_path) -> arcade.View:
     assert isinstance(target_class, arcade.View)
     return target_class
 
-@pytest.mark.skip
+
 @pytest.mark.skipif(os.getenv('TRAVIS') == 'true',
                     reason=('Example tests not executable on travis, '
                             'check https://travis-ci.org/github/eruvanos/arcade_gui/jobs/678758144#L506'))
@@ -59,10 +60,15 @@ def test_id_example(window, example):
 
     # import example view
     MyView = import_module(f'examples.{example}').MyView
+    view = MyView(window)
 
     # Render View and take screen shot
     actual_screen = expected_screen.with_name(f'{example}_tmp.png')
-    view_to_png(window, MyView(), actual_screen)
+    view_to_png(window, view, actual_screen)
+
+    # manually clean up ui_manager handlers
+    # TODO this should be handled by arcade
+    window.remove_handlers(view.ui_manager)
 
     # compare files
     assert expected_screen.exists(), f'expected screen missing, actual at {actual_screen}'

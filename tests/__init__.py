@@ -86,7 +86,6 @@ class MockButton(UIClickable):
     on_press_called = False
     on_release_called = False
     on_click_called = False
-    on_update_called = False
     on_focus_called = False
     on_unfocus_called = False
 
@@ -142,7 +141,3 @@ class MockButton(UIClickable):
     def on_unfocus(self):
         super().on_unfocus()
         self.on_unfocus_called = True
-
-    def on_update(self, delta_time: float = 1 / 60):
-        super().on_update(delta_time)
-        self.on_update_called = True

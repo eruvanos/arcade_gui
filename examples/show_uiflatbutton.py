@@ -1,20 +1,26 @@
 import arcade
 
-import arcade_gui
-from arcade_gui import UIFlatButton, UIGhostFlatButton
+from arcade_gui import UIFlatButton, UIGhostFlatButton, UIManager
 
 
-class MyView(arcade_gui.UIView):
-    def __init__(self):
+class MyView(arcade.View):
+    def __init__(self, window: arcade.Window):
         super().__init__()
 
-    def on_show(self):
+        self.window = window
+        self.ui_manager = UIManager(window)
+
+    def on_draw(self):
+        arcade.start_render()
         arcade.set_background_color(arcade.color.BLACK)
+
+    def on_show(self):
+        print('on_show')
         self.setup()
 
     def setup(self):
-        self.purge_ui_elements()
-        self.add_ui_element(UIFlatButton(
+        self.ui_manager.purge_ui_elements()
+        self.ui_manager.add_ui_element(UIFlatButton(
             'Hello world',
             center_x=200,
             center_y=self.window.height // 2,
@@ -22,7 +28,7 @@ class MyView(arcade_gui.UIView):
             height=40
         ))
 
-        self.add_ui_element(UIGhostFlatButton(
+        self.ui_manager.add_ui_element(UIGhostFlatButton(
             'Hello world',
             center_x=600,
             center_y=self.window.height // 2,
@@ -32,5 +38,6 @@ class MyView(arcade_gui.UIView):
 
 
 if __name__ == '__main__':
-    arcade.Window(title='ARCADE_GUI').show_view(MyView())
+    window = arcade.Window(title='ARCADE_GUI')
+    window.show_view(MyView(window))
     arcade.run()

@@ -25,7 +25,6 @@ class UIManager(EventDispatcher):
         # self.window.push_handlers(self) # Not as explicit as following
         self.window.push_handlers(
             self.on_draw,
-            self.on_update,
             self.on_mouse_press,
             self.on_mouse_release,
             self.on_mouse_scroll,
@@ -34,7 +33,7 @@ class UIManager(EventDispatcher):
             self.on_key_release,
             self.on_text,
             self.on_text_motion,
-            # self.on_text_motion_selection,
+            self.on_text_motion_select,
         )
 
     @property
@@ -89,10 +88,6 @@ class UIManager(EventDispatcher):
 
     def find_by_id(self, ui_element_id: str) -> Optional[UIElement]:
         return self._id_cache.get(ui_element_id)
-
-    def on_update(self, delta_time: float):
-        for ui_element in self._ui_elements:
-            ui_element.on_update(delta_time)
 
     def on_draw(self):
         self._ui_elements.draw()
@@ -166,7 +161,7 @@ class UIManager(EventDispatcher):
                                        motion=motion,
                                        ))
 
-    def on_text_motion_selection(self, selection):
+    def on_text_motion_select(self, selection):
         self.disptach_ui_event(UIEvent(TEXT_MOTION_SELECTION,
                                        selection=selection,
                                        ))

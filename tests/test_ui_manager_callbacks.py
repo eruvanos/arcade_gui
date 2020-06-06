@@ -4,15 +4,6 @@ from arcade.key import MOTION_UP
 from arcade_gui import MOUSE_PRESS, MOUSE_RELEASE, MOUSE_SCROLL, KEY_PRESS, KEY_RELEASE, TEXT_MOTION_SELECTION
 from arcade_gui import TEXT_INPUT, TEXT_MOTION
 from arcade_gui.core import MOUSE_MOTION
-from tests import MockButton
-
-
-def test_added_ui_element_is_updated(mock_mng, mock_button: MockButton):
-    mock_mng.add_ui_element(mock_button)
-
-    mock_mng.on_update(0)
-
-    assert mock_button.on_update_called
 
 
 def test_on_mouse_press_passes_an_event(mock_mng, mock_button):
@@ -117,7 +108,7 @@ def test_on_text_motion_selection_passes_an_event(mock_mng, mock_button):
     mock_mng.add_ui_element(mock_button)
     mock_mng.add_ui_element(mock_button)
 
-    mock_mng.on_text_motion_selection(MOTION_UP)
+    mock_mng.on_text_motion_select(MOTION_UP)
 
     event = mock_button.last_event
     assert event.type == TEXT_MOTION_SELECTION

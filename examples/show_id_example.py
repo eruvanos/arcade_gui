@@ -1,34 +1,42 @@
 import arcade
 
-from arcade_gui import UIView, UILabel, UIClickable, UIInputBox, UIEvent, UIFlatButton
+from arcade_gui import UILabel, UIClickable, UIInputBox, UIEvent, UIFlatButton, UIManager
 
 
-class MyView(UIView):
-    def __init__(self):
+class MyView(arcade.View):
+    def __init__(self, window: arcade.Window):
         super().__init__()
 
-    def on_show(self):
+        self.window = window
+        self.ui_manager = UIManager(window)
+        self.ui_manager.push_handlers(self.on_ui_event)
+
+    def on_draw(self):
+        arcade.start_render()
         arcade.set_background_color(arcade.color.BLACK)
+
+    def on_show(self):
+        print('on_show')
         self.setup()
 
     def setup(self):
-        self.purge_ui_elements()
+        self.ui_manager.purge_ui_elements()
 
-        self.add_ui_element(UILabel(
+        self.ui_manager.add_ui_element(UILabel(
             text='Username:',
             center_x=100,
             center_y=self.window.height // 2,
             width=300,
             height=40,
         ))
-        self.add_ui_element(UIInputBox(
+        self.ui_manager.add_ui_element(UIInputBox(
             center_x=350,
             center_y=self.window.height // 2,
             width=300,
             height=40,
             id='username'
         ))
-        self.add_ui_element(UIFlatButton(
+        self.ui_manager.add_ui_element(UIFlatButton(
             text='Login',
             center_x=650,
             center_y=self.window.height // 2,
@@ -37,7 +45,7 @@ class MyView(UIView):
             id='submit_button'
         ))
 
-        self.add_ui_element(UILabel(
+        self.ui_manager.add_ui_element(UILabel(
             text='',
             center_x=self.window.width // 2,
             center_y=self.window.height // 2 - 100,
@@ -46,9 +54,7 @@ class MyView(UIView):
             id='login_message'
         ))
 
-    def on_event(self, event: UIEvent):
-        super(MyView, self).on_ui_event(event)
-
+    def on_ui_event(self, event: UIEvent):
         if event.type == UIClickable.CLICKED and event.ui_element.id == 'submit_button':
             # Trigger action if 'submit_button' was clicked
             self.submit()
@@ -58,13 +64,14 @@ class MyView(UIView):
 
     # noinspection PyTypeChecker
     def submit(self):
-        username_input: UIInputBox = self.find_by_id('username')
+        username_input: UIInputBox = self.ui_manager.find_by_id('username')
         username = username_input.text
 
-        login_message: UILabel = self.find_by_id('login_message')
+        login_message: UILabel = self.ui_manager.find_by_id('login_message')
         login_message.text = f'Welcome {username}, you are my first player.'
 
 
 if __name__ == '__main__':
-    arcade.Window(title='ARCADE_GUI').show_view(MyView())
+    window = arcade.Window(title='ARCADE_GUI')
+    window.show_view(MyView(window))
     arcade.run()

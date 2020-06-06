@@ -25,7 +25,7 @@ def element(mock_mng, style) -> MockButton:
     e.style_classes.append(ELEMENT_STYLE_CLASS)
     mock_mng.add_ui_element(e)
 
-    yield e
+    return e
 
 
 def test_get_style_attribute_by_element_class(element):

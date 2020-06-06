@@ -1,21 +1,23 @@
 import arcade
-from arcade import Window
 
 import arcade_gui
 from arcade_gui import UIManager
 
 
 class MyView(arcade.View):
-    def __init__(self, window: Window):
+    def __init__(self, window: arcade.Window):
         super().__init__()
 
         self.window = window
         self.ui_manager = UIManager(window)
 
+    def on_draw(self):
+        arcade.start_render()
+
     def on_show(self):
         print('on_show')
-        arcade.set_background_color(arcade.color.BLACK)
         self.setup()
+        arcade.set_background_color(arcade.color.BLACK)
 
     def setup(self):
         self.ui_manager.purge_ui_elements()
