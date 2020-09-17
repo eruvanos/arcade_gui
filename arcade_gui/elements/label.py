@@ -1,3 +1,4 @@
+import warnings
 from typing import Optional
 
 import arcade
@@ -5,6 +6,11 @@ import arcade
 from arcade_gui.elements import UIClickable
 from arcade_gui.ui_style import UIStyle
 from arcade_gui.utils import get_text_image
+
+warnings.warn(
+    "You are using UI Components from arcade-gui, which are now included in arcade itself.",
+    DeprecationWarning
+)
 
 
 class UILabel(UIClickable):

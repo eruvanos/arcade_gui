@@ -1,14 +1,17 @@
-from functools import lru_cache
 from pathlib import Path
-from typing import TYPE_CHECKING, Dict, List, Any
+import warnings
+from pathlib import Path
+from typing import Dict, List, Any
 
 import yaml
 
 import arcade_gui
 from arcade_gui.utils import parse_value
 
-if TYPE_CHECKING:
-    pass
+warnings.warn(
+    "You are using UI Components from arcade-gui, which are now included in arcade itself.",
+    DeprecationWarning
+)
 
 
 class UIStyle:

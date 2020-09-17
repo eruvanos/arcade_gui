@@ -1,3 +1,4 @@
+import warnings
 from typing import Optional
 from uuid import uuid4
 
@@ -20,6 +21,11 @@ from arcade.key import (
 from arcade_gui import UIEvent, TEXT_INPUT, TEXT_MOTION, UIClickable
 from arcade_gui.ui_style import UIStyle
 from arcade_gui.utils import get_text_image
+
+warnings.warn(
+    "You are using UI Components from arcade-gui, which are now included in arcade itself.",
+    DeprecationWarning
+)
 
 
 class KeyAdapter:

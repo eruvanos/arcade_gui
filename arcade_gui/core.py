@@ -1,3 +1,4 @@
+import warnings
 from typing import Dict, Optional
 from uuid import uuid4
 
@@ -6,6 +7,10 @@ from arcade import SpriteList
 
 from arcade_gui.ui_style import UIStyle
 
+warnings.warn(
+    "You are using UI Components from arcade-gui, which are now included in arcade itself.",
+    DeprecationWarning
+)
 MOUSE_PRESS = 'MOUSE_PRESS'
 MOUSE_RELEASE = 'MOUSE_RELEASE'
 MOUSE_SCROLL = 'MOUSE_SCROLL'

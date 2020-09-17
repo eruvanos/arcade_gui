@@ -1,6 +1,6 @@
-import colorsys
 import os
 import sys
+import warnings
 from itertools import chain
 from pathlib import Path
 from typing import Union, cast, Tuple, Optional, Any
@@ -13,6 +13,11 @@ from PIL import Image, ImageDraw
 from PIL.Image import Image
 from PIL.ImageColor import getrgb
 from arcade import RGBA, DEFAULT_FONT_NAMES, Color
+
+warnings.warn(
+    "You are using UI Components from arcade-gui, which are now included in arcade itself.",
+    DeprecationWarning
+)
 
 
 def create_resource_path(relative_path: Union[str, Path]):

@@ -1,3 +1,4 @@
+import warnings
 from typing import Optional
 from uuid import uuid4
 
@@ -6,6 +7,11 @@ import arcade
 from arcade_gui import UIClickable
 from arcade_gui.ui_style import UIStyle
 from arcade_gui.utils import render_text_image
+
+warnings.warn(
+    "You are using UI Components from arcade-gui, which are now included in arcade itself.",
+    DeprecationWarning
+)
 
 
 class UIAbstractFlatButton(UIClickable):
