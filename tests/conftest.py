@@ -1,10 +1,18 @@
-import arcade
 import pytest
+from arcade import Window
+
+from arcade_gui.layout import UIManager
 
 
 @pytest.fixture()
-def uimanager():
+def window():
+    window = Window()
+    yield window
+    window.close()
 
-    mng = arcade.gui
 
-    yield
+@pytest.fixture()
+def uimanager(window):
+    mng = UIManager()
+    yield mng
+    mng.unregister_handlers()

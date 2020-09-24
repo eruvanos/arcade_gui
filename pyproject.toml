@@ -26,10 +26,8 @@ keywords = ["arcade", "game", "gui"]
 
 
 [tool.poetry.dependencies]
-python = ">=3.7"
-pyyaml = "^5.3.1"
-arcade = "=2.4.2"
-pytiled-parser="=0.9.4a3"
+python = "~=3.6"
+arcade = "^2.4.2"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
