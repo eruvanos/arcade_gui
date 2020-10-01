@@ -1,7 +1,8 @@
 import pytest
 from arcade import Window
 
-from arcade_gui.layout import UIManager
+from arcade_gui.uilayout import UILayoutManager
+from tests import MockParent
 
 
 @pytest.fixture()
@@ -12,7 +13,17 @@ def window():
 
 
 @pytest.fixture()
-def uimanager(window):
-    mng = UIManager()
+def ui_manager(window):
+    mng = UILayoutManager(window)
     yield mng
     mng.unregister_handlers()
+
+
+@pytest.fixture()
+def parent():
+    return MockParent(
+        top=600,
+        bottom=0,
+        left=0,
+        right=800
+    )

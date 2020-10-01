@@ -1,22 +1,10 @@
 from typing import List
 
-import PIL
 import arcade
-from arcade import Sprite, Texture
 from arcade.gui import UIManager, UIElement, UIFlatButton
 
-from arcade_gui.utils import DimensionMixin
-
-
-class UIBox(UIElement):
-    def __init__(self, width: int, height: int, color):
-        super().__init__()
-
-        image = PIL.Image.new('RGBA', (width, height), color)
-        self.texture = Texture(f"Solid-{color[0]}-{color[1]}-{color[2]}", image, hit_box_algorithm='None')
-
-    def render(self):
-        pass
+from arcade_gui import UIBox
+from arcade_gui.uilayout.utils import DimensionMixin
 
 
 class UIGroup(DimensionMixin):
@@ -60,4 +48,3 @@ class UIGroup(DimensionMixin):
     def close(self):
         for element in self.elements:
             element.remove_from_sprite_lists()
-

@@ -41,21 +41,7 @@ Examples providing an overview of features, there will be dedicated documentatio
 
 ## Features planned to work on
 
-* [ ] Enhancements
-    * [ ] layered UI
-* [ ] Layout
-    * [ ] Modal 
-        * [ ] open 
-        * [ ] close 
-        * [ ] colour background 
-        * [ ] image background 
-* [ ] New Components
-    * [ ] UITextArea
-    * [ ] Scrollbar
-
-### Chores
-
-* [ ] 
+Please have a look on the [Roadmap](https://github.com/eruvanos/arcade_gui/projects/1)
 
 ## Background information and other frameworks
 

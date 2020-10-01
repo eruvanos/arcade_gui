@@ -6,8 +6,22 @@ participant UILayoutManager as UIM
 participant UILayout as UIL
 participant UIElement as UIE
 
+== Initialization ==
+
 DEV -> UIM: create
-DEV -> UILayout: create
+UIM -> UIL: create
+
+== Adding Elements ==
+
+DEV -> UIE: create
+DEV -> UIL: .pack(UIElement)
+
+UIL -> UIL : .place(UIElement)
+UIL -> UIL : .changed()
+UIL -> UIM : .changed()
+UIM -> UIL : .refresh()
+
+UIL -> DEV
 
 
 @enduml
