@@ -1,3 +1,4 @@
+from operator import attrgetter
 from typing import Union
 
 from arcade.gui import UIElement
@@ -12,23 +13,33 @@ class UIBoxLayout(UILayout):
 
         self._cursor = 0, 0
 
-    def refresh(self):
-        self._cursor = 0, 0
-        super().refresh()
+    def pack(self, element: Union['UILayout', UIElement], **kwargs):
+        super().pack(element, **kwargs)
 
-    def place(self, element: Union['UILayout', UIElement], space=0, **kwargs):
-        cx, cy = self._cursor
-        print(f'Box.pack {self._cursor}')
-
+        # TODO this change could be reflected in sizehint not in actual changed properties
+        space = kwargs.get('space', 0)
         if self.vertical:
-            cy -= space
-            self._cursor = cx, cy - element.height
+            self.width = max(map(attrgetter('width'), self))
+            self.height += element.height + space
         else:
-            cx += space
-            self._cursor = cx + element.width, cy
+            self.height = max(map(attrgetter('height'), self))
+            self.width += element.width + space
 
-        element.left = self.offset_x + cx
-        element.top = self.offset_y + cy
+    def place_elements(self):
+        cursor = 0, 0
+        for element, data in self._elements:
+            cx, cy = cursor
+            space = data.get('space', 0)
+
+            if self.vertical:
+                cy -= space
+                cursor = cx, cy - element.height
+            else:
+                cx += space
+                cursor = cx + element.width, cy
+
+            element.left = self.left + cx
+            element.top = self.top + cy
 
 #
 # class UIVerticalLayout(UIBoxLayout):

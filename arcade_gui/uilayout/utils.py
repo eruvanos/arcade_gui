@@ -126,8 +126,8 @@ class OffsetDimensionMixin(ABC):
     Requirements: iter(self)
     """
 
-    # offset_x: int
-    # offset_y: int
+    offset_x: int
+    offset_y: int
 
     @abstractmethod
     def __iter__(self):

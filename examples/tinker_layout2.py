@@ -29,16 +29,23 @@ class UIView(View):
             UILabel.__name__,
         )
 
-        self.manager.lazy_refresh = True
         root_layout = self.manager.root_layout
         # root_layout.bg = UIBox(100, 100, arcade.color.LIGHT_BLUE)
 
+        # top right
         layout_v_2 = UIBoxLayout()
         layout_v_2.pack(UILabel(text="1. Red Sun", **defaults))
         layout_v_2.pack(UILabel(text="2. Green Gras", **defaults))
         layout_v_2.pack(UILabel(text="3. Blue Sky", **defaults), space=20)
         root_layout.pack(layout_v_2, right=0, top=20)
 
+        # window center
+        # TODO
+
+        # bottom center
+        # TODO
+
+        # bottom left
         layout2 = UIBoxLayout(vertical=False)
         layout2.pack(UILabel(text="4. Red Sun", **defaults))
         layout2.pack(UILabel(text="5. Green Gras", **defaults))
@@ -67,13 +74,19 @@ class UIView(View):
     def on_draw(self):
         arcade.start_render()
 
-        self.draw_borders(self.manager.root_layout)
+        # self.draw_borders(self.manager.root_layout)
 
     def on_key_press(self, symbol: int, modifiers: int):
         if symbol == arcade.key.S:
             print(self.window.get_location())
         elif symbol == arcade.key.M:
             print(self._last_mouse_pos)
+        elif symbol == arcade.key.W:
+            print('Window size', self.window.get_size())
+        elif symbol == arcade.key.D:
+            self.debug_layout(self.manager.root_layout)
+        elif symbol == arcade.key.R:
+            (self.manager.refresh())
 
     def on_mouse_motion(self, x: float, y: float, dx: float, dy: float):
         self._last_mouse_pos = (x, y)
@@ -81,7 +94,9 @@ class UIView(View):
 
 def main():
     window = Window(resizable=True)
-    window.set_location(2012, 256)
+
+    if len(arcade.get_screens()) > 1:
+        window.set_location(2012, 256)
 
     view = UIView()
     window.show_view(view)
