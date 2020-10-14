@@ -1,7 +1,7 @@
 import pytest
 
 from arcade_gui.uilayout.box import UIBoxLayout
-from tests import dummy_element
+from tests import dummy_element, T
 
 
 @pytest.fixture()
@@ -90,3 +90,50 @@ def test_box_layout_updates_width_and_height(v_layout: UIBoxLayout):
     v_layout.pack(dummy_element(150, 50), space=10)
     assert v_layout.width == 150
     assert v_layout.height == 110
+
+
+def test_v_box_align_items_center():
+    box = UIBoxLayout(vertical=False, align='center')
+    element = dummy_element()
+    box.pack(element)
+    box.width = 400
+
+    box.refresh()
+
+    assert element.center_x == 200
+
+
+def test_v_box_align_items_left():
+    box = UIBoxLayout(vertical=False, align='left')
+    element = dummy_element()
+    box.pack(element)
+    box.width = 400
+
+    box.refresh()
+
+    assert element.left == 0
+
+
+@pytest.mark.parametrize(
+    ['vertical', 'align', 'center_x', 'center_y'], [
+        T('vertical top', True, 'top', 50, 475),
+        T('vertical center', True, 'center', 50, 250),
+        T('vertical bottom', True, 'bottom', 50, 25),
+
+        T('horizontal left', False, 'left', 50, 25),
+        T('horizontal center', False, 'center', 200, 25),
+        T('horizontal right', False, 'right', 350, 25),
+    ]
+)
+def test_box_alignment(vertical, align, center_x, center_y):
+    box = UIBoxLayout(vertical=vertical, align=align)
+    element = dummy_element(width=100, height=50)
+    box.pack(element)
+    box.height = 500
+    box.width = 400
+    box.left = 0
+    box.bottom = 0
+
+    box.refresh()
+
+    assert (element.center_x, element.center_y) == (center_x, center_y)

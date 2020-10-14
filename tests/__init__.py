@@ -1,9 +1,14 @@
 from dataclasses import dataclass
 
 import arcade
+import pytest
 
 from arcade_gui.elements import UIBox
 from arcade_gui.uilayout import UILayoutParent
+
+
+def T(name, *args):
+    return pytest.param(*args, id=name)
 
 
 def dummy_element(width=100, height=50, color=arcade.color.LIGHT_CORAL):

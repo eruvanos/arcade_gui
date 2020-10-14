@@ -27,7 +27,7 @@ keywords = ["arcade", "game", "gui"]
 
 [tool.poetry.dependencies]
 python = "~=3.6"
-arcade = "^2.4.2"
+arcade = { git = "https://github.com/pythonarcade/arcade.git", branch = "development" }
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"

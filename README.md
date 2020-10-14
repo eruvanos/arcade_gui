@@ -14,25 +14,13 @@ Starting with version `0.2.0` this library will
 contain experimental components, that could move into the arcade standard. 
 Consider them as alpha, so breaking changes could happen in every version update.  
 
+## New Features
 
-## Basic Components until version `0.1.0`
-
-#### UIView
-Central class to manager the ui components.
-Converts `on_` callback functions into events, so that UIElements
-just have to contain one method to interact with user input.
-
-#### UIElement
-A general interface of an UI element.
-
-## Examples
-
-Examples providing an overview of features, there will be dedicated documentation soon.
-
-* [UILabel](https://github.com/eruvanos/arcade_gui/blob/master/examples/show_uilabel.py)
-* [UIButton](https://github.com/eruvanos/arcade_gui/blob/master/examples/show_uibutton.py)
-* [UIInputBox](https://github.com/eruvanos/arcade_gui/blob/master/examples/show_uiinputbox.py)
-* [Example with ID](https://github.com/eruvanos/arcade_gui/blob/master/examples/show_id_example.py)
+* UIManager with Layout support
+* Layered drawing (every layout manager has its own SpriteList)
+* AnchorLayout: layout to pin elements to top, bottom, left, right (default root layout)
+* BoxLayout: Sequenzial layout supporting vertical and horizontal orientation, (supports to align items) 
+* 
 
 ### Screenshots
 

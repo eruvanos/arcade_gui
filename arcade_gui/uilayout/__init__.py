@@ -52,26 +52,6 @@ class UILayoutManager(UILayoutParent, arcade.gui.UIManager):
         self._changed = False
         self._ui_elements: SpriteList = SpriteList(use_spatial_hash=False)
 
-    def register_handlers(self):
-        """
-        Registers handler functions (`on_...`) to :py:attr:`arcade.gui.UIElement`
-        """
-        # self.window.push_handlers(self) # Not as explicit as following
-        self.window.push_handlers(
-            self.on_resize,
-            self.on_update,
-            self.on_draw,
-            self.on_mouse_press,
-            self.on_mouse_release,
-            self.on_mouse_scroll,
-            self.on_mouse_motion,
-            self.on_key_press,
-            self.on_key_release,
-            self.on_text,
-            self.on_text_motion,
-            self.on_text_motion_select,
-        )
-
     def on_draw(self):
         super().on_draw()
         self._root_layout.draw()
@@ -141,7 +121,7 @@ class UILayout(UILayoutParent, ABC):
                  draw_border=False,
                  **kwargs):
         super().__init__()
-        self.draw_border = draw_border
+        # self.draw_border = draw_border
         self._parent: Optional[UILayoutParent] = parent
 
         self._elements: List[PackedElement] = []
@@ -180,14 +160,26 @@ class UILayout(UILayoutParent, ABC):
         self.changed()
 
     def draw(self):
+        # TODO fix this!
+        self.draw_border()
+
         self._layer.draw()
         self._layer.draw_hit_boxes(arcade.color.LIGHT_RED_OCHRE, 2)
         for child in self._child_layouts:
             child.draw()
 
+    def draw_border(self):
+        arcade.draw_lrtb_rectangle_outline(
+            self.left,
+            self.right,
+            self.top,
+            self.bottom,
+            arcade.color.LIGHT_RED_OCHRE)
+
     # def update_size_hint(self):
     #     raise NotImplementedError()
     #
+    # @abstractmethod
     # def size_hint(self) -> SizeHint:
     #     raise NotImplementedError()
 
@@ -199,6 +191,8 @@ class UILayout(UILayoutParent, ABC):
     #         return SizeHint(
     #             width=int(element.width),
     #             height=int(element.height),
+    #             fill_x=False,
+    #             fill_y=False
     #         )
 
     # --------- position - fixed

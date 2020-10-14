@@ -22,6 +22,10 @@ pymunk = "*"
 pytiled-parser = "0.9.4a3"
 pyyaml = "*"
 
+[package.source]
+reference = "4bf228519ca2288497d0ffa32a8f65c37c23e92b"
+type = "git"
+url = "https://github.com/pythonarcade/arcade.git"
 [[package]]
 category = "dev"
 description = "Atomic file writes."
@@ -516,14 +520,14 @@ marker = "python_version < \"3.8\""
 name = "zipp"
 optional = false
 python-versions = ">=3.6"
-version = "3.2.0"
+version = "3.3.0"
 
 [package.extras]
 docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
 testing = ["pytest (>=3.5,<3.7.3 || >3.7.3)", "pytest-checkdocs (>=1.2.3)", "pytest-flake8", "pytest-cov", "jaraco.test (>=3.2.0)", "jaraco.itertools", "func-timeout", "pytest-black (>=0.3.7)", "pytest-mypy"]
 
 [metadata]
-content-hash = "5074254dc01d0b420951ce10a7f5d27ed32abe2e4885f69cec3fb036a78ae30a"
+content-hash = "18787083fe59ef166cb32459a1c8ab88d215d4359d7e4d02688e9788b3c27e15"
 python-versions = "~=3.6"
 
 [metadata.files]
@@ -531,9 +535,7 @@ alabaster = [
     {file = "alabaster-0.7.12-py2.py3-none-any.whl", hash = "sha256:446438bdcca0e05bd45ea2de1668c1d9b032e1a9154c2c259092d77031ddd359"},
     {file = "alabaster-0.7.12.tar.gz", hash = "sha256:a661d72d58e6ea8a57f7a86e37d86716863ee5e92788398526d58b26a4e4dc02"},
 ]
-arcade = [
-    {file = "arcade-2.4.3-py3-none-any.whl", hash = "sha256:8957723fc996a0fc2a7d3b070cb3ce0d6e75aaa0a88537da1ac9533d198c26ea"},
-]
+arcade = []
 atomicwrites = [
     {file = "atomicwrites-1.4.0-py2.py3-none-any.whl", hash = "sha256:6d1784dea7c0c8d4a5172b6c620f40b6e4cbfdf96d783691f2e1302a7b88e197"},
     {file = "atomicwrites-1.4.0.tar.gz", hash = "sha256:ae70396ad1a434f9c7046fd2dd196fc04b12f9e91ffb859164193be8b6168a7a"},
@@ -834,6 +836,6 @@ wcwidth = [
     {file = "wcwidth-0.2.5.tar.gz", hash = "sha256:c4d647b99872929fdb7bdcaa4fbe7f01413ed3d98077df798530e5b04f116c83"},
 ]
 zipp = [
-    {file = "zipp-3.2.0-py3-none-any.whl", hash = "sha256:43f4fa8d8bb313e65d8323a3952ef8756bf40f9a5c3ea7334be23ee4ec8278b6"},
-    {file = "zipp-3.2.0.tar.gz", hash = "sha256:b52f22895f4cfce194bc8172f3819ee8de7540aa6d873535a8668b730b8b411f"},
+    {file = "zipp-3.3.0-py3-none-any.whl", hash = "sha256:eed8ec0b8d1416b2ca33516a37a08892442f3954dee131e92cfd92d8fe3e7066"},
+    {file = "zipp-3.3.0.tar.gz", hash = "sha256:64ad89efee774d1897a58607895d80789c59778ea02185dd846ac38394a8642b"},
 ]
