@@ -123,6 +123,17 @@ def test_v_box_align_items_left():
         T('horizontal left', False, 'left', 50, 25),
         T('horizontal center', False, 'center', 200, 25),
         T('horizontal right', False, 'right', 350, 25),
+
+        # use synonyms
+        T('vertical start', True, 'start', 50, 475),
+        T('vertical end', True, 'end', 50, 25),
+        T('vertical left', True, 'left', 50, 475),
+        T('vertical right', True, 'right', 50, 25),
+
+        T('horizontal start', False, 'start', 50, 25),
+        T('horizontal end', False, 'end', 350, 25),
+        T('horizontal top', False, 'top', 50, 25),
+        T('horizontal bottom', False, 'bottom', 350, 25),
     ]
 )
 def test_box_alignment(vertical, align, center_x, center_y):

@@ -49,20 +49,20 @@ class UIBoxLayout(UILayout):
         start_y = 0
 
         if self.vertical:
-            if self.align in ('top',):
+            if self.align in ('top', 'start', 'left'):
                 pass
             elif self.align in ('center',):
                 start_y = (self.height - min_height) // 2
-            elif self.align in ('bottom',):
+            elif self.align in ('bottom', 'end', 'right'):
                 start_y = (self.height - min_height)
         else:  # horizontal
             start_y = (self.height - min_height)
 
-            if self.align in ('left',):
+            if self.align in ('top', 'start', 'left'):
                 pass
             elif self.align in ('center',):
                 start_x = (self.width - min_width) // 2
-            elif self.align in ('right',):
+            elif self.align in ('bottom', 'end', 'right'):
                 start_x = (self.width - min_width)
 
         # cursor: placeable position relative to self.left, self.top
