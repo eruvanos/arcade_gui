@@ -87,6 +87,9 @@ class UILayoutManager(UILayoutParent, arcade.gui.UIManager):
         self._changed = False
         self._root_layout.refresh()
 
+        if not self._root_layout.valid():
+            warn('Refresh produced invalid boundaries')
+
     def on_resize(self, width, height):
         self.changed()
 
@@ -119,6 +122,7 @@ class UILayout(UILayoutParent, ABC):
     def __init__(self,
                  parent: Optional[UILayoutParent] = None,
                  draw_border=False,
+                 id=None,
                  **kwargs):
         super().__init__()
         # self.draw_border = draw_border
@@ -134,6 +138,38 @@ class UILayout(UILayoutParent, ABC):
 
         self._width = 0
         self._height = 0
+        self._id = id
+
+    @property
+    def id(self):
+        return self._id
+
+    def valid(self):
+        left = self.left
+        right = self.right
+        top = self.top
+        bottom = self.bottom
+
+        if not (left <= right):
+            return False
+        if not (bottom <= top):
+            return False
+
+        for element, data in self._elements:
+            if not (left <= element.left <= right):
+                return False
+            if not (left <= element.right <= right):
+                return False
+            if not (bottom <= element.top <= top):
+                return False
+            if not (bottom <= element.bottom <= top):
+                return False
+
+            if isinstance(element, UILayout):
+                if not element.valid():
+                    return False
+
+        return True
 
     # ---------- propergate parent
     @property
@@ -254,6 +290,7 @@ class UILayout(UILayoutParent, ABC):
     def bottom(self, value):
         y_diff = value - self.bottom
         self.move(0, y_diff)
+        print('move', value, 'old:', self.bottom)
 
     def move(self, x, y):
         self._top += y

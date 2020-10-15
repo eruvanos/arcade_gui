@@ -138,13 +138,33 @@ def test_v_box_align_items_left():
 )
 def test_box_alignment(vertical, align, center_x, center_y):
     box = UIBoxLayout(vertical=vertical, align=align)
-    element = dummy_element(width=100, height=50)
-    box.pack(element)
+    element_1 = dummy_element(width=100, height=50)
+    box.pack(element_1)
     box.height = 500
     box.width = 400
-    box.left = 0
+    box.left = 0  # TODO use non 0 values
     box.bottom = 0
 
     box.refresh()
 
-    assert (element.center_x, element.center_y) == (center_x, center_y)
+    assert (element_1.center_x, element_1.center_y) == (center_x, center_y)
+
+
+def test_min_size_vertical():
+    box = UIBoxLayout(vertical=True)
+    box.pack(dummy_element(width=100, height=50))
+    box.pack(dummy_element(width=100, height=50), space=20)
+
+    box.refresh()
+
+    assert box.min_size() == (100, 120)
+
+
+def test_min_size_horizontal():
+    box = UIBoxLayout(vertical=False)
+    box.pack(dummy_element(width=100, height=50))
+    box.pack(dummy_element(width=100, height=50), space=20)
+
+    box.refresh()
+
+    assert box.min_size() == (220, 50)

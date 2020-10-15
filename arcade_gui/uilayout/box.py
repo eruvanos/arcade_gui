@@ -17,8 +17,6 @@ class UIBoxLayout(UILayout):
         self.align = align
         self.vertical = vertical
 
-        self._cursor = 0, 0
-
     # def size_hint(self) -> SizeHint:
     #     return SizeHint(
     #         width=self._width,
@@ -89,15 +87,18 @@ class UIBoxLayout(UILayout):
         width = 0
         height = 0
         for element, data in self._elements:
-            width += element.width
-            height += element.height
 
             if self.vertical:
+                height += element.height
                 height += data.get('space', 0)
+                width = max(width, element.width)
             else:
+                width += element.width
                 width += data.get('space', 0)
+                height = max(height, element.height)
 
         return width, height
+
 #
 # class UIVerticalLayout(UIBoxLayout):
 #     def __init__(
