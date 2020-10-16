@@ -1,8 +1,35 @@
-from typing import Optional
+from typing import Optional, Union
 
 import PIL
 import arcade
 from arcade.gui import UIElement, UIException
+
+from arcade_gui.uilayout import UILayout
+
+
+class UISpace(UILayout):
+    """
+    Empty space, fix size
+    """
+
+    def __init__(
+            self,
+            width,
+            height,
+            **kwargs
+    ):
+        super().__init__(**kwargs)
+        self.height = height
+        self.width = width
+
+    def refresh(self):
+        pass
+
+    def pack(self, element: Union['UILayout', UIElement], **kwargs):
+        raise NotImplementedError(f'Not supported on a {UISpace.__name__}')
+
+    def place_elements(self):
+        pass
 
 
 class UIBox(UIElement):
