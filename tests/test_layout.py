@@ -2,7 +2,10 @@ from arcade_gui.uilayout import UILayout
 from tests import dummy_element
 
 
-class AbstractLayout(UILayout):
+class TestAbstractLayout(UILayout):
+    """
+    Allow tests for the base UILayout functions.
+    """
     # def update_size_hint(self):
     #     pass
     #
@@ -14,7 +17,7 @@ class AbstractLayout(UILayout):
 
 
 def test_move_layout():
-    layout = AbstractLayout()
+    layout = TestAbstractLayout()
     layout.width = 100
     layout.height = 50
 
@@ -27,7 +30,7 @@ def test_move_layout():
 
 
 def test_layout_has_proper_position():
-    layout = AbstractLayout()
+    layout = TestAbstractLayout()
     layout.width = 100
     layout.height = 50
     layout.left = 50
@@ -38,7 +41,7 @@ def test_layout_has_proper_position():
 
 
 def test_layout_moves_children():
-    layout = AbstractLayout()
+    layout = TestAbstractLayout()
     child = dummy_element()
     layout.pack(child)
 
@@ -48,9 +51,9 @@ def test_layout_moves_children():
 
 
 def test_layout_forwards_new_parent():
-    layout = AbstractLayout()
-    layout_1 = AbstractLayout()
-    layout_2 = AbstractLayout()
+    layout = TestAbstractLayout()
+    layout_1 = TestAbstractLayout()
+    layout_2 = TestAbstractLayout()
     layout.pack(layout_1)
     layout.pack(layout_2)
 

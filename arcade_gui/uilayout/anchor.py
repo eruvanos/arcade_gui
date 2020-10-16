@@ -40,6 +40,8 @@ class UIAnchorLayout(UILayout):
             left = data.get('left')
             bottom = data.get('bottom')
             right = data.get('right')
+            center_x = data.get('center_x')
+            center_y = data.get('center_y')
 
             fill_x = data.get('fill_x')
             fill_y = data.get('fill_y')
@@ -54,8 +56,12 @@ class UIAnchorLayout(UILayout):
                 element.bottom = self.parent.bottom + bottom
             elif top is not None:
                 element.top = self.parent.top - top
+            elif center_y is not None:
+                element.center_y = self.parent.center_y + center_y
 
             if left is not None:
                 element.left = self.parent.left + left
             elif right is not None:
                 element.right = self.parent.right - right
+            elif center_x is not None:
+                element.center_x = self.parent.center_x + center_x

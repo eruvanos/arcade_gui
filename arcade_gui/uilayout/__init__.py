@@ -33,6 +33,14 @@ class UILayoutParent(ABC):
     def right(self):
         raise NotImplementedError
 
+    @property
+    def center_x(self):
+        return self.left + (self.right - self.left) // 2
+
+    @property
+    def center_y(self):
+        return self.bottom + (self.top - self.bottom) // 2
+
     @abstractmethod
     def changed(self):
         """Refresh the layouting of all children"""
@@ -290,7 +298,24 @@ class UILayout(UILayoutParent, ABC):
     def bottom(self, value):
         y_diff = value - self.bottom
         self.move(0, y_diff)
-        print('move', value, 'old:', self.bottom)
+
+    @property
+    def center_x(self):
+        return self.left + (self.right - self.left) // 2
+
+    @center_x.setter
+    def center_x(self, value):
+        x_diff = value - self.center_x
+        self.move(x_diff, 0)
+
+    @property
+    def center_y(self):
+        return self.bottom + (self.top - self.bottom) // 2
+
+    @center_y.setter
+    def center_y(self, value):
+        y_diff = value - self.center_y
+        self.move(0, y_diff)
 
     def move(self, x, y):
         self._top += y
