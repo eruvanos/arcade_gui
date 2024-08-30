@@ -1,3 +1,6 @@
+> # 🚨 All of these classes are now covered or superseeded within arcade itself.
+
+
 [![Build Status](https://travis-ci.org/eruvanos/arcade_gui.svg?branch=master)](https://travis-ci.org/eruvanos/arcade_gui)
 
 # GUI Library for Python Arcade
